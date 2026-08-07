@@ -823,14 +823,14 @@
         
         .version-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
             gap: 10px;
             margin-bottom: 12px;
         }
         .version-box {
             background: var(--input-bg);
             border: var(--border);
-            padding: 8px;
+            padding: 12px;
             border-radius: 6px;
             text-align: center;
         }
@@ -843,12 +843,13 @@
             text-align: left;
             margin: 10px 0 0 0;
             padding-left: 20px;
-            max-height: 120px;
+            max-height: 200px;
             overflow-y: auto;
         }
         .about-list li {
             font-size: 13px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            color: var(--text-color);
         }
         
         /* --- FULL SCREEN USER MANUAL OVERLAY --- */
@@ -1345,28 +1346,33 @@
             </div>
 
             <div class="form-group" style="background: #1a1a1a; padding: 16px; border: 1px solid #D4A017; border-radius: 8px; margin-bottom: 20px;">
-                <label style="color: #D4A017; font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 20px; line-height: 1;">📐</span>
-                    Version Configuration
+                <label style="color: #D4A017; font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                    <span><span style="font-size: 20px; line-height: 1;">📐</span> Version Configuration</span>
+                    <button type="button" id="devVersionHistoryBtn" class="dev-btn-gold" style="padding: 4px 10px; font-size: 12px;">Version History</button>
                 </label>
+                
                 <div class="version-grid">
                     <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
-                        <div id="devMajorText" class="version-num" style="color: #FFFFFF;">4</div>
-                    </div>
-                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
-                        <div id="devMinorText" class="version-num" style="color: #FFFFFF;">1</div>
-                    </div>
-                    <div class="version-box" style="background: #2a2a2a; border-color: #D4A017;">
-                        <div id="devRevisionText" class="version-num" style="color: #FFFFFF;">7</div>
+                        <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">Currently Published Build</div>
+                        <div id="devVersionDisplay" class="version-num" style="color: #FFFFFF;">Loading...</div>
                     </div>
                 </div>
-                <div class="btn-row" style="margin-top: 5px; gap: 10px; width: 100%;">
-                    <button type="button" id="btnUpdateMajor" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Major</button>
-                    <button type="button" id="btnUpdateMinor" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Minor</button>
-                    <button type="button" id="btnUpdateRevision" class="dev-btn-gold" style="flex: 1; padding: 8px 0;">Revision</button>
-                </div>
-                <div class="btn-row" style="margin-top: 10px; width: 100%;">
-                    <button type="button" id="devVersionHistoryBtn" class="dev-btn-gold" style="width: 100%; padding: 8px 0;">Version History</button>
+
+                <!-- NEW BUILD NOTIFICATION ALERT BOX -->
+                <div id="newBuildAlertContainer" class="hidden" style="margin-top: 15px; background: #2a1a1a; padding: 12px; border: 1px solid var(--danger); border-radius: 6px;">
+                    <label style="color: var(--danger); font-size: 14px; font-weight: bold; display: block; margin-bottom: 4px;">⚠️ New Git Build Detected!</label>
+                    <div style="font-size: 12px; color: #ccc; margin-bottom: 10px;">Ready to deploy Build: <span id="newBuildTagDisplay" style="color: #fff; font-weight: bold;"></span></div>
+                    
+                    <textarea id="devReleaseNotesInput" rows="3" placeholder="Enter release notes / developer updates for this version..." style="width: 100%; box-sizing: border-box; background: #000; color: #fff; border: 1px solid #D4A017; padding: 8px; border-radius: 4px; margin-bottom: 10px; font-family: inherit; font-size: 13px;"></textarea>
+                    
+                    <button type="button" id="btnPublishReleaseNotes" class="dev-btn-gold" style="width: 100%; padding: 10px 0; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Publish Update Info
+                    </button>
                 </div>
             </div>
 
@@ -1486,6 +1492,15 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    // ==============================================================
+    // GIT PIPELINE INJECTION VARIABLES
+    // Note for Dev: These constants should be replaced automatically 
+    // by your deployment pipeline/script during build.
+    // ==============================================================
+    const GIT_BUILD_NUMBER = "4.2.0"; // e.g. {{BUILD_TAG}}
+    const GIT_BUILD_DATE   = "2026-08-08"; // e.g. {{BUILD_DATE}}
+    const GIT_BUILD_TIME   = "01:34 AM IST"; // e.g. {{BUILD_TIME}}
 
     // --- THEME SWITCHER / SIDEBAR LOGIC ---
     const menuOpenBtn = document.getElementById('menuOpenBtn');
@@ -1649,13 +1664,12 @@
     const dashboardUpdateStoryBtn = document.getElementById('dashboardUpdateStoryBtn');
 
     // Version Controller UI Elements
-    const devMajorText = document.getElementById('devMajorText');
-    const devMinorText = document.getElementById('devMinorText');
-    const devRevisionText = document.getElementById('devRevisionText');
-    const btnUpdateMajor = document.getElementById('btnUpdateMajor');
-    const btnUpdateMinor = document.getElementById('btnUpdateMinor');
-    const btnUpdateRevision = document.getElementById('btnUpdateRevision');
+    const devVersionDisplay = document.getElementById('devVersionDisplay');
     const devVersionHistoryBtn = document.getElementById('devVersionHistoryBtn');
+    const newBuildAlertContainer = document.getElementById('newBuildAlertContainer');
+    const newBuildTagDisplay = document.getElementById('newBuildTagDisplay');
+    const devReleaseNotesInput = document.getElementById('devReleaseNotesInput');
+    const btnPublishReleaseNotes = document.getElementById('btnPublishReleaseNotes');
 
     const deleteStoryBtn = document.getElementById('deleteStoryBtn');
 
@@ -1723,7 +1737,7 @@
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
 
-    let currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
+    let currentVersionState = { buildNumber: "4.1.7", changesMade: [] };
     
     // Core Date Logic
     const initToday = new Date();
@@ -1738,12 +1752,6 @@
     const currentDayDisplay = document.getElementById('currentDayDisplay');
     if(currentDateDisplay) currentDateDisplay.textContent = `${initDd} ${initMmName} ${initYy}`;
     if(currentDayDisplay) currentDayDisplay.textContent = initDayName;
-
-    function getFormattedBuildStamp(maj, min, rev) {
-        const revTens = Math.floor(rev / 10);
-        const revOnes = rev % 10;
-        return `V 0.${maj}.${min}.${revTens}.${revOnes}`;
-    }
 
     // --- POPUP ALERT FOR LOCKED FIELDS ---
     function handleLockedSuggestionInteraction(inputEl, lockTime, featureName) {
@@ -2159,20 +2167,27 @@
         }
     });
 
+    // --- Developer Info & Update Handler ---
     onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
         if (docSnap.exists()) {
             const data = docSnap.data();
-            currentVersionState.major = data.major !== undefined ? Number(data.major) : 4;
-            currentVersionState.minor = data.minor !== undefined ? Number(data.minor) : 1;
-            currentVersionState.revision = data.revision !== undefined ? Number(data.revision) : 7;
+            currentVersionState.buildNumber = data.buildNumber || "4.1.7";
             currentVersionState.changesMade = Array.isArray(data.changesMade) ? data.changesMade : [];
         } else {
-            currentVersionState = { major: 4, minor: 1, revision: 7, changesMade: [] };
+            currentVersionState = { buildNumber: "4.1.7", changesMade: [] };
         }
         
-        devMajorText.textContent = currentVersionState.major;
-        devMinorText.textContent = currentVersionState.minor;
-        devRevisionText.textContent = currentVersionState.revision;
+        if(devVersionDisplay) devVersionDisplay.textContent = currentVersionState.buildNumber;
+
+        // Detect if GIT_BUILD_NUMBER (from pipeline) is different than Firebase recorded published build
+        if (GIT_BUILD_NUMBER && GIT_BUILD_NUMBER !== currentVersionState.buildNumber && !GIT_BUILD_NUMBER.includes("{{")) {
+            if (newBuildAlertContainer) {
+                newBuildAlertContainer.classList.remove('hidden');
+                newBuildTagDisplay.textContent = GIT_BUILD_NUMBER;
+            }
+        } else {
+            if (newBuildAlertContainer) newBuildAlertContainer.classList.add('hidden');
+        }
     });
 
     function updateUserFormFieldsVisibility() {
@@ -2227,8 +2242,7 @@
             deleteStorySelect, deleteStoryBtn, inputMonth, inputTopic, startSeasonBtn, 
             readerSuggestions, toggleAuthorGuessBtn, toggleTitleSuggestionBtn, authorGuessLockTime, titleSuggestionLockTime,
             headingSuggesterInput, correctGuesses, saveNotesBtn, clearWinnersBtn, updateLockTimesBtn,
-            previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput,
-            btnUpdateMajor, btnUpdateMinor, btnUpdateRevision
+            previewBtn, downloadBtn, goToFeedbackBtn, submitFeedbackBtn, feedbackNameInput, authorGivenHeadingInput
         ];
 
         if (isSystemPaused) {
@@ -2238,18 +2252,18 @@
             if (exclusiveModeText) exclusiveModeText.style.color = "var(--danger)";
             
             if (isDeveloperModeUnlocked) {
-                elements.forEach(el => el.disabled = false);
+                elements.forEach(el => { if (el) el.disabled = false; });
                 inputModName.disabled = isNameLockedByMod;
                 saveModNameBtn.disabled = isNameLockedByMod;
             } else {
-                elements.forEach(el => el.disabled = true);
+                elements.forEach(el => { if (el) el.disabled = true; });
                 inputModName.disabled = true;
                 saveModNameBtn.disabled = true;
             }
         } else {
             pausedBanner.classList.add('hidden');
             if (exclusiveModeText) exclusiveModeText.style.color = "#FFFFFF";
-            elements.forEach(el => el.disabled = false);
+            elements.forEach(el => { if (el) el.disabled = false; });
             evaluateSetupFlow();
             evaluateLocalStorageRestrictions();
         }
@@ -2711,53 +2725,39 @@
 
     dashboardUpdateStoryBtn.addEventListener('click', () => handleStoryAddition(dashboardNewStoryInput, dashboardUpdateStoryBtn));
 
-    async function processVersionUpgrade(targetField) {
-        if (isSystemPaused && !isDeveloperModeUnlocked) return;
-        
-        if (targetField === 'major' || targetField === 'minor') {
-            const check = await customConfirm(`Confirm Upgrade Alert!<br><br>Are you absolutely sure you want to increment the <b>${targetField}</b> build version metrics value?`);
-            if (!check) return;
-        }
-        
-        const changelogSummary = await customPrompt(`📝 Version Release Changelog Entry Query<br><br>Please input or state the changes made for this build update deployment:`);
-        if (changelogSummary === null) return; 
-        
-        const validatedLogString = changelogSummary.trim() || "General performance optimizations and maintenance update patches.";
-        
-        let nextMaj = currentVersionState.major;
-        let nextMin = currentVersionState.minor;
-        let nextRev = currentVersionState.revision;
-        
-        if (targetField === 'major') nextMaj++;
-        else if (targetField === 'minor') { nextMin++; nextRev = 0; }
-        else if (targetField === 'revision') nextRev++;
-        
-        const versionStamp = getFormattedBuildStamp(nextMaj, nextMin, nextRev);
-        const logEntry = `${versionStamp} | ${validatedLogString}`;
-        
-        let updatePayload = {
-            changesMade: arrayUnion(logEntry)
-        };
-        
-        if (targetField === 'minor') {
-            updatePayload.minor = nextMin;
-            updatePayload.revision = nextRev; 
-        } else {
-            updatePayload[targetField] = targetField === 'major' ? nextMaj : nextRev;
-        }
-        
-        try {
-            await setDoc(doc(db, "app_state", "version_control"), updatePayload, { merge: true });
-            customAlert("🚀 Application platform version target pipeline built and deployed successfully.");
-        } catch (err) {
-            console.error(err);
-            customAlert("Error syncing version deployment metrics to Firestore storage collections.");
-        }
+    // NEW BUILD PUBLISH LOGIC
+    if(btnPublishReleaseNotes) {
+        btnPublishReleaseNotes.addEventListener('click', async () => {
+            const notes = devReleaseNotesInput.value.trim();
+            if (!notes) { customAlert("Please enter release notes before publishing this update."); return; }
+            
+            const logEntry = `${GIT_BUILD_NUMBER} | ${notes}`;
+            btnPublishReleaseNotes.disabled = true;
+            btnPublishReleaseNotes.textContent = "Publishing...";
+            
+            try {
+                await setDoc(doc(db, "app_state", "version_control"), {
+                    buildNumber: GIT_BUILD_NUMBER,
+                    changesMade: arrayUnion(logEntry)
+                }, { merge: true });
+                
+                devReleaseNotesInput.value = "";
+                customAlert(`Release notes published successfully.\nVersion updated to Build ${GIT_BUILD_NUMBER}.`);
+            } catch (err) {
+                console.error(err);
+                customAlert("Error syncing version deployment metrics to Firestore storage collections.");
+            } finally {
+                btnPublishReleaseNotes.disabled = false;
+                btnPublishReleaseNotes.innerHTML = `
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Publish Update Info`;
+            }
+        });
     }
-
-    btnUpdateMajor.addEventListener('click', () => processVersionUpgrade('major'));
-    btnUpdateMinor.addEventListener('click', () => processVersionUpgrade('minor'));
-    btnUpdateRevision.addEventListener('click', () => processVersionUpgrade('revision'));
 
     if(devVersionHistoryBtn) {
         devVersionHistoryBtn.addEventListener('click', () => {
@@ -2786,7 +2786,7 @@
                     <table style="width:100%; border-collapse: collapse; font-size:13px;">
                         <thead>
                             <tr>
-                                <th style="background:var(--admin-color); color:#fff; padding:10px; border:1px solid #ccc;">Version</th>
+                                <th style="background:var(--admin-color); color:#fff; padding:10px; border:1px solid #ccc;">Build Version</th>
                                 <th style="background:var(--admin-color); color:#fff; padding:10px; border:1px solid #ccc;">Updates</th>
                             </tr>
                         </thead>
@@ -2813,14 +2813,16 @@
             bulletsHtml = `<li>Initial base system framework architecture initialized.</li>`;
         }
         
-        const buildStamp = getFormattedBuildStamp(currentVersionState.major, currentVersionState.minor, currentVersionState.revision);
+        const buildStamp = `Build Version: ${GIT_BUILD_NUMBER}`;
+        const dateStamp = `${GIT_BUILD_DATE} at ${GIT_BUILD_TIME}`;
 
         const viewTemplate = `
             <div style="text-align: left;">
-                <span style="font-size: 13px; font-weight: bold; color: var(--text-muted); text-transform: uppercase;">Build Stamp</span>
-                <div style="font-size: 26px; font-weight: 900; margin-bottom: 15px; color: var(--primary);">${buildStamp}</div>
+                <span style="font-size: 13px; font-weight: bold; color: var(--text-muted); text-transform: uppercase;">Git Build Information</span>
+                <div style="font-size: 20px; font-weight: 900; color: var(--primary); margin-top: 4px;">${buildStamp}</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px; margin-top: 4px;">Published: ${dateStamp}</div>
                 <hr style="border:0; border-top: 1px dashed var(--border-color); margin: 10px 0;">
-                <label style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: var(--h3-color);">What's new</label>
+                <label style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: var(--h3-color); display: block;">Latest Developer Updates:</label>
                 <ul class="about-list">${bulletsHtml}</ul>
             </div>
         `;
@@ -2985,16 +2987,6 @@
                                 <button style="background:#FFD700; color:black; font-weight:bold; font-size:11px; padding:4px 8px; border:none; border-radius:4px;">Download Feedback Table</button>
                             </td>
                             <td class="one-sentence-def">Converts parsed customer reviews into a downloadable system report file layout.</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center; vertical-align:middle;">
-                                <div style="display:flex; justify-content:center; gap:4px;">
-                                    <button style="background:#FFD700; color:black; font-weight:bold; font-size:10px; padding:2px; border:none; border-radius:4px;">Major</button>
-                                    <button style="background:#FFD700; color:black; font-weight:bold; font-size:10px; padding:2px; border:none; border-radius:4px;">Minor</button>
-                                    <button style="background:#FFD700; color:black; font-weight:bold; font-size:10px; padding:2px; border:none; border-radius:4px;">Rev</button>
-                                </div>
-                            </td>
-                            <td class="one-sentence-def">Increments structural version counters and triggers change entry workflows for tracking builds.</td>
                         </tr>
                         <tr>
                             <td style="text-align:center; vertical-align:middle;">
