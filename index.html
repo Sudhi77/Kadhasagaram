@@ -1322,7 +1322,7 @@
                 <label for="inputModName">Moderator Name</label>
                 <div class="d-flex gap-3 align-center">
                     <input type="text" id="inputModName" placeholder="Handle" class="m-0 flex-1">
-                    <button type="button" id="saveModNameBtn" class="btn-mod-action d-flex align-center justify-center w-auto" style="padding: 10px 20px; width: max-content;">
+                    <button type="button" id="saveModNameBtn" class="btn-mod-action d-flex align-center justify-center w-auto" style="padding: 10px 20px; width: max-content;" title="Save Profile">
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 16v-9"></path>
                             <path d="M8 11l4-4 4 4"></path>
@@ -1353,7 +1353,7 @@
                         <option value="December">December</option>
                     </select>
                     
-                    <button type="button" id="startSeasonBtn" class="btn-mod-action m-0" style="padding: 10px 20px; width: max-content;">Start Season</button>
+                    <button type="button" id="startSeasonBtn" class="btn-mod-action w-max m-0" style="padding: 10px 20px; width: max-content;">Start Season</button>
                 </div>
             </div>
 
@@ -1854,6 +1854,10 @@
 </div>
 
 <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, deleteDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
     class CustomDropdown {
         constructor(nativeSelect) {
             this.select = nativeSelect;
@@ -2140,10 +2144,6 @@
             return result;
         };
     });
-
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, deleteDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
     const dateModified = new Date(document.lastModified);
     const utcTime = dateModified.getTime() + (dateModified.getTimezoneOffset() * 60000);
