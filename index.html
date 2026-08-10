@@ -74,6 +74,9 @@
             --winner-text: var(--admin-color);
             --winner-border: 1px solid var(--admin-color);
             --nav-divider-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='%23ced4da' stroke-width='4'/%3E%3C/svg%3E");
+            
+            /* Custom Dropdown Variable */
+            --dropdown-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         }
 
         [data-theme]:not([data-theme="light"]) {
@@ -114,6 +117,9 @@
             --status-bg: rgba(220, 38, 38, 0.15);
             --status-icon-bg: rgba(220, 38, 38, 0.25);
             --status-text: #FECACA;
+            
+            /* Custom Dropdown Variable Dark */
+            --dropdown-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
         }
 
         [data-theme="cyan"] {
@@ -184,6 +190,186 @@
             padding: 0 20px;
             box-sizing: border-box;
         }
+
+        /*======================================================
+           CUSTOM MODERN DROPDOWN STYLES
+        ======================================================*/
+        
+        .custom-select-wrapper {
+            position: relative;
+            /* Override padding and background to let the wrapper act purely as a layout box */
+            padding: 0 !important;
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            outline: none !important;
+            box-sizing: border-box;
+        }
+        
+        /* Lower specificity base style to ensure utility classes like bg-admin, p-3, etc. apply easily */
+        :where(.custom-select-trigger) {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px 14px;
+            background-color: var(--input-bg);
+            color: var(--input-text);
+            border: var(--border);
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            user-select: none;
+            box-sizing: border-box;
+            min-height: 42px;
+        }
+
+        .custom-select-trigger:hover {
+            border-color: var(--primary);
+        }
+
+        .custom-select-trigger:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.2); 
+        }
+        
+        /* Disabled State */
+        .custom-select-wrapper.disabled .custom-select-trigger {
+            background-color: rgba(128, 128, 128, 0.1);
+            color: rgba(128, 128, 128, 0.6);
+            cursor: not-allowed;
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+        .custom-select-wrapper.disabled .custom-select-chevron {
+            color: rgba(128, 128, 128, 0.5);
+        }
+
+        .custom-select-value {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            text-align: left;
+            margin-right: 12px;
+        }
+
+        .custom-select-value.placeholder {
+            color: var(--input-placeholder);
+        }
+
+        .custom-select-chevron {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: inherit;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        .custom-select-wrapper.open .custom-select-chevron {
+            transform: rotate(180deg);
+        }
+
+        .custom-select-panel {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            width: 100%;
+            max-height: 260px;
+            overflow-y: auto;
+            background-color: var(--modal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--dropdown-shadow);
+            z-index: 100000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.2s;
+            box-sizing: border-box;
+            padding: 6px;
+        }
+
+        .custom-select-wrapper.open .custom-select-panel {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .custom-select-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            margin-bottom: 2px;
+            color: var(--modal-text);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.15s ease, color 0.15s ease;
+            font-size: 14px;
+        }
+
+        .custom-select-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .custom-select-option:hover, 
+        .custom-select-option.focused {
+            background-color: var(--nav-btn-hover-bg);
+            color: var(--nav-btn-hover-text);
+        }
+
+        .custom-select-option.selected {
+            color: var(--primary);
+            font-weight: 600;
+            background-color: rgba(74, 124, 89, 0.08); 
+        }
+
+        .custom-select-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 10px;
+        }
+
+        .custom-select-check {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        /* Handle prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            .custom-select-chevron, 
+            .custom-select-panel, 
+            .custom-select-trigger, 
+            .custom-select-option {
+                transition: none !important;
+            }
+        }
+
+        /* Panel custom scrollbar */
+        .custom-select-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-select-panel::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 4px;
+        }
+        .custom-select-panel::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 4px;
+        }
+        .custom-select-panel::-webkit-scrollbar-thumb:hover {
+            background-color: var(--text-muted);
+        }
+
+        /*======================================================*/
 
         .brand-purple-banner {
             background-color: var(--purple-banner);
@@ -1660,6 +1846,280 @@
 </div>
 
 <script type="module">
+    // Custom Modern Dropdown Initializer
+    class CustomDropdown {
+        constructor(nativeSelect) {
+            this.select = nativeSelect;
+            if(this.select.hasAttribute('data-custom-dropdown')) return;
+            this.select.setAttribute('data-custom-dropdown', 'true');
+            
+            this.options = [];
+            this.isOpen = false;
+            this.focusedIndex = -1;
+            
+            this.setupUI();
+            this.overrideSetters();
+            this.setupObserver();
+            this.updateFromNative();
+            this.setupEvents();
+        }
+
+        setupUI() {
+            this.wrapper = document.createElement('div');
+            this.wrapper.className = `custom-select-wrapper ${this.select.className}`;
+            this.wrapper.setAttribute('role', 'combobox');
+            this.wrapper.setAttribute('aria-expanded', 'false');
+            this.wrapper.setAttribute('aria-haspopup', 'listbox');
+            
+            this.select.parentNode.insertBefore(this.wrapper, this.select);
+            this.wrapper.appendChild(this.select);
+            this.select.style.display = 'none';
+
+            this.trigger = document.createElement('div');
+            this.trigger.className = `custom-select-trigger ${this.select.className}`;
+            this.trigger.tabIndex = this.select.disabled ? -1 : 0;
+
+            this.valueDisplay = document.createElement('span');
+            this.valueDisplay.className = 'custom-select-value';
+            this.trigger.appendChild(this.valueDisplay);
+
+            this.chevron = document.createElement('div');
+            this.chevron.className = 'custom-select-chevron';
+            this.chevron.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+            this.trigger.appendChild(this.chevron);
+
+            this.panel = document.createElement('div');
+            this.panel.className = 'custom-select-panel';
+            this.panel.setAttribute('role', 'listbox');
+
+            this.wrapper.appendChild(this.trigger);
+            this.wrapper.appendChild(this.panel);
+
+            if(this.select.disabled) {
+                this.wrapper.classList.add('disabled');
+            }
+        }
+
+        overrideSetters() {
+            const self = this;
+            const originalValSet = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set;
+            Object.defineProperty(this.select, 'value', {
+                set: function(val) {
+                    originalValSet.call(this, val);
+                    self.updateFromNative();
+                },
+                get: function() {
+                    return Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').get.call(this);
+                }
+            });
+
+            const originalIndexSet = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'selectedIndex').set;
+            Object.defineProperty(this.select, 'selectedIndex', {
+                set: function(val) {
+                    originalIndexSet.call(this, val);
+                    self.updateFromNative();
+                },
+                get: function() {
+                    return Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'selectedIndex').get.call(this);
+                }
+            });
+
+            const originalDisabledSet = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'disabled').set;
+            Object.defineProperty(this.select, 'disabled', {
+                set: function(val) {
+                    originalDisabledSet.call(this, val);
+                    if(val) {
+                        self.wrapper.classList.add('disabled');
+                        self.trigger.tabIndex = -1;
+                        self.close();
+                    } else {
+                        self.wrapper.classList.remove('disabled');
+                        self.trigger.tabIndex = 0;
+                    }
+                },
+                get: function() {
+                    return Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'disabled').get.call(this);
+                }
+            });
+        }
+
+        setupObserver() {
+            this.observer = new MutationObserver(() => {
+                this.updateFromNative();
+            });
+            this.observer.observe(this.select, { childList: true, subtree: true, attributes: true, attributeFilter: ['value', 'disabled'] });
+        }
+
+        updateFromNative() {
+            this.panel.innerHTML = '';
+            this.options = Array.from(this.select.options);
+            
+            if (this.options.length === 0) {
+                this.valueDisplay.textContent = 'Select...';
+                this.valueDisplay.classList.add('placeholder');
+                return;
+            }
+
+            const selectedOption = this.options[this.select.selectedIndex] || this.options[0];
+            this.valueDisplay.textContent = selectedOption ? selectedOption.text : 'Select...';
+            
+            if (!this.select.value || this.select.value === "") {
+                this.valueDisplay.classList.add('placeholder');
+            } else {
+                this.valueDisplay.classList.remove('placeholder');
+            }
+
+            this.options.forEach((opt, index) => {
+                const optEl = document.createElement('div');
+                optEl.className = 'custom-select-option';
+                optEl.setAttribute('role', 'option');
+                if (opt.selected) {
+                    optEl.classList.add('selected');
+                    optEl.setAttribute('aria-selected', 'true');
+                    this.focusedIndex = index;
+                } else {
+                    optEl.setAttribute('aria-selected', 'false');
+                }
+                
+                const textSpan = document.createElement('span');
+                textSpan.className = 'custom-select-text';
+                textSpan.textContent = opt.text;
+                optEl.appendChild(textSpan);
+
+                if (opt.selected) {
+                    const checkMark = document.createElement('div');
+                    checkMark.className = 'custom-select-check';
+                    checkMark.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                    optEl.appendChild(checkMark);
+                }
+
+                optEl.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.selectValue(index);
+                    this.close();
+                });
+                
+                optEl.addEventListener('mouseenter', () => {
+                    this.setFocusIndex(index);
+                });
+
+                this.panel.appendChild(optEl);
+            });
+        }
+
+        selectValue(index) {
+            if(this.select.selectedIndex !== index) {
+                this.select.selectedIndex = index;
+                this.select.dispatchEvent(new Event('change', { bubbles: true }));
+                this.updateFromNative();
+            }
+        }
+
+        setFocusIndex(index) {
+            const els = this.panel.querySelectorAll('.custom-select-option');
+            els.forEach(el => el.classList.remove('focused'));
+            if(els[index]) {
+                els[index].classList.add('focused');
+                this.focusedIndex = index;
+            }
+        }
+
+        open() {
+            if (this.select.disabled) return;
+            this.isOpen = true;
+            this.wrapper.classList.add('open');
+            this.wrapper.setAttribute('aria-expanded', 'true');
+            
+            if(this.focusedIndex === -1) {
+                this.focusedIndex = Math.max(0, this.select.selectedIndex);
+            }
+            this.setFocusIndex(this.focusedIndex);
+            
+            const focusedEl = this.panel.querySelectorAll('.custom-select-option')[this.focusedIndex];
+            if(focusedEl) {
+                setTimeout(() => {
+                    focusedEl.scrollIntoView({ block: 'nearest' });
+                }, 10);
+            }
+        }
+
+        close() {
+            this.isOpen = false;
+            this.wrapper.classList.remove('open');
+            this.wrapper.setAttribute('aria-expanded', 'false');
+        }
+
+        toggle() {
+            this.isOpen ? this.close() : this.open();
+        }
+
+        setupEvents() {
+            this.trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggle();
+            });
+
+            this.trigger.addEventListener('keydown', (e) => {
+                if (this.select.disabled) return;
+                
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if(this.isOpen && this.focusedIndex !== -1) {
+                        this.selectValue(this.focusedIndex);
+                        this.close();
+                    } else {
+                        this.toggle();
+                    }
+                } else if (e.key === 'Escape') {
+                    this.close();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (!this.isOpen) this.open();
+                    else {
+                        let newIdx = this.focusedIndex + 1;
+                        if(newIdx >= this.options.length) newIdx = this.options.length - 1;
+                        this.setFocusIndex(newIdx);
+                        const focusedEl = this.panel.querySelectorAll('.custom-select-option')[newIdx];
+                        if(focusedEl) focusedEl.scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (!this.isOpen) this.open();
+                    else {
+                        let newIdx = this.focusedIndex - 1;
+                        if(newIdx < 0) newIdx = 0;
+                        this.setFocusIndex(newIdx);
+                        const focusedEl = this.panel.querySelectorAll('.custom-select-option')[newIdx];
+                        if(focusedEl) focusedEl.scrollIntoView({ block: 'nearest' });
+                    }
+                } else if (e.key === 'Tab') {
+                    this.close();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!this.wrapper.contains(e.target) && this.isOpen) {
+                    this.close();
+                }
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('select').forEach(select => {
+            new CustomDropdown(select);
+        });
+        
+        const originalInsert = Element.prototype.appendChild;
+        Element.prototype.appendChild = function() {
+            const res = originalInsert.apply(this, arguments);
+            if (arguments[0].tagName === 'SELECT') {
+                new CustomDropdown(arguments[0]);
+            }
+            return res;
+        };
+    });
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
