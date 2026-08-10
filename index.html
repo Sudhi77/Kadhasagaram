@@ -1585,7 +1585,7 @@
                     Download
                 </button>
             </div>
-            <button type="button" id="feedbackCloseBtn" class="manual-close-trigger">✕ Close</button>
+            <button type="button" id="feedbackCloseBtn" class="manual-close-trigger" style="width: 36px; padding: 6px 0; display: flex; justify-content: center; align-items: center; font-size: 16px;">✕</button>
         </div>
         <div class="m-0 mt-0">
             <div class="webview-scroll-frame max-h-70vh" style="border: none; background: transparent; overflow-x: auto;">
@@ -1594,6 +1594,30 @@
                     <tbody id="feedbackTableBody"></tbody>
                 </table>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="feedbackDetailOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000001; backdrop-filter: blur(4px);">
+    <div class="custom-modal-box bg-darker-alt border-gold-alt w-100 box-border" style="max-width: 500px; padding: 25px; text-align: left;">
+        <h3 id="fdModalTitle" class="color-gold-alt mt-0 border-bottom-gold-alt pb-2 mb-3">Reviewer Feedback</h3>
+        <div id="fdModalComments" class="mb-4 text-white text-md" style="max-height: 200px; overflow-y: auto;"></div>
+        <div class="form-group mb-3">
+            <label class="color-gold-alt text-sm mb-1 block">Developer Notes</label>
+            <input type="text" id="fdModalNotes" class="p-2 border-gold-alt radius-1 box-border bg-dark-alt text-white w-100" placeholder="Type notes here...">
+        </div>
+        <div class="form-group mb-4">
+            <label class="color-gold-alt text-sm mb-1 block">Status</label>
+            <select id="fdModalStatus" class="p-2 border-gold-alt radius-1 bg-dark-alt text-white w-100 box-border cursor-pointer">
+                <option value="Pending">Pending</option>
+                <option value="In Review">In Review</option>
+                <option value="Implemented">Implemented</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+        <div class="d-flex justify-end gap-3 mt-2">
+            <button type="button" id="fdModalCloseBtn" class="bg-dark-alt text-white border-gold-alt padding-6-12 radius-1 shadow-none cursor-pointer">Cancel</button>
+            <button type="button" id="fdModalSaveBtn" class="dev-btn-gold padding-6-12 radius-1 cursor-pointer">Save Changes</button>
         </div>
     </div>
 </div>
@@ -1845,6 +1869,15 @@
     const navBtnModerator = document.getElementById('navBtnModerator');
     const logoutBtn = document.getElementById('logoutBtn');
 
+    const feedbackDetailOverlay = document.getElementById('feedbackDetailOverlay');
+    const fdModalTitle = document.getElementById('fdModalTitle');
+    const fdModalComments = document.getElementById('fdModalComments');
+    const fdModalNotes = document.getElementById('fdModalNotes');
+    const fdModalStatus = document.getElementById('fdModalStatus');
+    const fdModalCloseBtn = document.getElementById('fdModalCloseBtn');
+    const fdModalSaveBtn = document.getElementById('fdModalSaveBtn');
+    let currentFeedbackUser = null;
+
     let currentModName = "Mod";
     let isNameLockedByMod = false;
     let isSeasonStarted = false;
@@ -1865,6 +1898,7 @@
     let headingToReviewerMap = {};
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
+    let feedbackDevState = {};
 
     let currentVersionState = { 
         buildNumber: GIT_BUILD_NUMBER, 
@@ -2093,6 +2127,50 @@
         submitFeedbackBtn.disabled = false;
     });
 
+    function openFeedbackDetails(user, feedbacks) {
+        currentFeedbackUser = user;
+        setSafeText(fdModalTitle, `Feedback from: ${user}`);
+        
+        fdModalComments.innerHTML = '';
+        feedbacks.forEach((fb, idx) => {
+            const p = document.createElement('p');
+            p.className = "bg-dark-alt p-2 radius-1 border-gold-alt mt-0 mb-2";
+            setSafeText(p, `${idx + 1}. ${fb}`);
+            fdModalComments.appendChild(p);
+        });
+
+        if (feedbackDevState[user]) {
+            fdModalNotes.value = feedbackDevState[user].notes || "";
+            fdModalStatus.value = feedbackDevState[user].status || "Pending";
+        }
+
+        feedbackDetailOverlay.classList.remove('hidden');
+    }
+
+    fdModalCloseBtn.addEventListener('click', () => {
+        feedbackDetailOverlay.classList.add('hidden');
+        currentFeedbackUser = null;
+    });
+
+    fdModalSaveBtn.addEventListener('click', () => {
+        if (currentFeedbackUser) {
+            feedbackDevState[currentFeedbackUser].notes = fdModalNotes.value;
+            feedbackDevState[currentFeedbackUser].status = fdModalStatus.value;
+            
+            const safeId = currentFeedbackUser.replace(/[^a-zA-Z0-9]/g, '-');
+            const statusSpan = document.getElementById(`status-span-${safeId}`);
+            if (statusSpan) {
+                setSafeText(statusSpan, fdModalStatus.value);
+                statusSpan.style.color = '#fff';
+                if(fdModalStatus.value === 'Implemented') statusSpan.style.color = '#4a7c59';
+                else if(fdModalStatus.value === 'Rejected') statusSpan.style.color = 'var(--danger)';
+                else if(fdModalStatus.value === 'In Review') statusSpan.style.color = '#D4A017';
+            }
+        }
+        feedbackDetailOverlay.classList.add('hidden');
+        currentFeedbackUser = null;
+    });
+
     devLoadFeedbackBtn.addEventListener('click', async () => {
         try {
             devLoadFeedbackBtn.disabled = true;
@@ -2122,78 +2200,55 @@
                 const headTr = document.createElement('tr');
                 
                 const th1 = document.createElement('th');
-                th1.className = "bg-gold text-black text-center";
+                th1.className = "bg-gold text-black text-center p-3 border-bottom-gold-alt";
                 th1.style.backgroundColor = "#D4A017"; th1.style.color = "#000";
                 const b1 = document.createElement('b'); setSafeText(b1, "Reviewer Name");
                 th1.appendChild(b1);
                 headTr.appendChild(th1);
 
-                for(let i = 1; i <= maxCols; i++) {
-                    const th = document.createElement('th');
-                    th.style.backgroundColor = "#D4A017"; th.style.color = "#000"; th.className = "text-center";
-                    const b = document.createElement('b'); setSafeText(b, `Feedback Entry ${i}`);
-                    th.appendChild(b);
-                    headTr.appendChild(th);
-                }
-
                 const th2 = document.createElement('th');
-                th2.style.backgroundColor = "#D4A017"; th2.style.color = "#000"; th2.className = "text-center";
-                const b2 = document.createElement('b'); setSafeText(b2, "My Comments");
+                th2.style.backgroundColor = "#D4A017"; th2.style.color = "#000"; th2.className = "text-center p-3 border-bottom-gold-alt";
+                const b2 = document.createElement('b'); setSafeText(b2, "Status");
                 th2.appendChild(b2);
                 headTr.appendChild(th2);
-
-                const th3 = document.createElement('th');
-                th3.style.backgroundColor = "#D4A017"; th3.style.color = "#000"; th3.className = "text-center";
-                const b3 = document.createElement('b'); setSafeText(b3, "Status");
-                th3.appendChild(b3);
-                headTr.appendChild(th3);
 
                 feedbackTableHead.appendChild(headTr);
 
                 feedbackTableBody.innerHTML = '';
                 Object.keys(data).forEach(user => {
+                    if(!feedbackDevState[user]) {
+                        feedbackDevState[user] = { notes: "", status: "Pending" };
+                    }
+
                     const tr = document.createElement('tr');
                     
                     const tdName = document.createElement('td');
-                    const strongName = document.createElement('strong');
-                    strongName.className = "text-white";
-                    setSafeText(strongName, user);
-                    tdName.appendChild(strongName);
+                    tdName.className = "p-3 border-bottom";
+                    const nameBtn = document.createElement('button');
+                    nameBtn.className = "text-white font-bold cursor-pointer m-0 p-0";
+                    nameBtn.style.background = "transparent";
+                    nameBtn.style.border = "none";
+                    nameBtn.style.textDecoration = "underline";
+                    nameBtn.style.fontSize = "14px";
+                    setSafeText(nameBtn, user);
+                    nameBtn.onclick = () => openFeedbackDetails(user, data[user] || []);
+                    tdName.appendChild(nameBtn);
                     tr.appendChild(tdName);
 
-                    const userFeedbacks = data[user] || [];
-                    for(let i = 0; i < maxCols; i++) {
-                        const td = document.createElement('td');
-                        const span = document.createElement('span');
-                        span.className = "text-white";
-                        if (userFeedbacks[i] !== undefined) {
-                            setSafeText(span, userFeedbacks[i]);
-                        } else {
-                            span.style.color = "#aaa";
-                            setSafeText(span, "-");
-                        }
-                        td.appendChild(span);
-                        tr.appendChild(td);
-                    }
+                    const tdStatus = document.createElement('td');
+                    tdStatus.className = "p-3 border-bottom";
+                    const statusSpan = document.createElement('span');
+                    statusSpan.className = "text-white font-bold";
+                    const safeId = user.replace(/[^a-zA-Z0-9]/g, '-');
+                    statusSpan.id = `status-span-${safeId}`;
+                    setSafeText(statusSpan, feedbackDevState[user].status);
                     
-                    const tdInput = document.createElement('td');
-                    const input = document.createElement('input');
-                    input.type = "text";
-                    input.placeholder = "Type notes here...";
-                    input.className = "p-2 border-gold radius-1 box-border bg-darker text-white";
-                    input.style.width = "180px";
-                    tdInput.appendChild(input);
-                    tr.appendChild(tdInput);
+                    if (feedbackDevState[user].status === 'Implemented') statusSpan.style.color = '#4a7c59';
+                    else if (feedbackDevState[user].status === 'Rejected') statusSpan.style.color = 'var(--danger)';
+                    else if (feedbackDevState[user].status === 'In Review') statusSpan.style.color = '#D4A017';
 
-                    const tdSelect = document.createElement('td');
-                    const select = document.createElement('select');
-                    select.className = "p-2 border-gold radius-1 bg-darker text-white w-100 box-border";
-                    select.appendChild(createOption("Pending", "Pending"));
-                    select.appendChild(createOption("In Review", "In Review"));
-                    select.appendChild(createOption("Implemented", "Implemented"));
-                    select.appendChild(createOption("Rejected", "Rejected"));
-                    tdSelect.appendChild(select);
-                    tr.appendChild(tdSelect);
+                    tdStatus.appendChild(statusSpan);
+                    tr.appendChild(tdStatus);
 
                     feedbackTableBody.appendChild(tr);
                 });
@@ -2223,6 +2278,8 @@
         for(let i = 1; i <= cachedMaxCols; i++) {
             theadHtml += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
         }
+        theadHtml += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Dev Notes</b></th>`;
+        theadHtml += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Status</b></th>`;
         theadHtml += `</tr>`;
 
         let tbodyHtml = "";
@@ -2232,6 +2289,10 @@
             for(let i = 0; i < cachedMaxCols; i++) {
                 tbodyHtml += `<td style="border: 1px solid #ccc; text-align: center;">${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `-`}</td>`;
             }
+            const notes = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].notes) : "-";
+            const status = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].status) : "Pending";
+            tbodyHtml += `<td style="border: 1px solid #ccc; text-align: center;">${notes}</td>`;
+            tbodyHtml += `<td style="border: 1px solid #ccc; text-align: center;">${status}</td>`;
             tbodyHtml += `</tr>`;
         });
 
@@ -2945,6 +3006,9 @@
             const notes = devReleaseNotesInput.value.trim();
             if (!notes) { customAlert("Please enter release notes before publishing this update."); return; }
             
+            const now = new Date();
+            const pubDate = now.toISOString().split('T')[0];
+            const pubTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " IST";
             const logEntry = `${GIT_BUILD_NUMBER} | ${notes}`;
             
             btnPublishReleaseNotes.disabled = true;
@@ -2953,8 +3017,8 @@
             try {
                 await setDoc(doc(db, "app_state", "version_control"), {
                     buildNumber: GIT_BUILD_NUMBER,
-                    publishedDate: GIT_BUILD_DATE,
-                    publishedTime: GIT_BUILD_TIME,
+                    publishedDate: pubDate,
+                    publishedTime: pubTime,
                     changesMade: arrayUnion(logEntry)
                 }, { merge: true });
                 
