@@ -1613,9 +1613,22 @@
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    const GIT_BUILD_NUMBER = "4.2.0"; 
-    const GIT_BUILD_DATE   = "2026-08-08"; 
-    const GIT_BUILD_TIME   = "01:34 AM IST"; 
+    const _d = new Date(document.lastModified);
+    const _utc = _d.getTime() + (_d.getTimezoneOffset() * 60000);
+    const _ist = new Date(_utc + (3600000 * 5.5));
+    const _yyyy = _ist.getFullYear();
+    const _mm = String(_ist.getMonth() + 1).padStart(2, '0');
+    const _dd = String(_ist.getDate()).padStart(2, '0');
+    const GIT_BUILD_DATE = `${_yyyy}-${_mm}-${_dd}`;
+    
+    let _hrs = _ist.getHours();
+    let _mins = String(_ist.getMinutes()).padStart(2, '0');
+    const _ampm = _hrs >= 12 ? 'PM' : 'AM';
+    _hrs = _hrs % 12;
+    _hrs = _hrs ? _hrs : 12;
+    
+    const GIT_BUILD_TIME = `${String(_hrs).padStart(2, '0')}:${_mins} ${_ampm} IST`;
+    const GIT_BUILD_NUMBER = `4.2.${_mm}${_dd}.${String(_ist.getHours()).padStart(2,'0')}${_mins}`;
 
     const menuOpenBtn = document.getElementById('menuOpenBtn');
     const menuCloseBtn = document.getElementById('menuCloseBtn');
@@ -2362,7 +2375,7 @@
             };
         }
         
-        if(devVersionDisplay) setSafeText(devVersionDisplay, currentVersionState.buildNumber);
+        if(devVersionDisplay) setSafeText(devVersionDisplay, GIT_BUILD_NUMBER);
 
         if (GIT_BUILD_NUMBER && GIT_BUILD_NUMBER !== currentVersionState.buildNumber && !GIT_BUILD_NUMBER.includes("{{")) {
             if (newBuildAlertContainer) {
@@ -2932,9 +2945,6 @@
             const notes = devReleaseNotesInput.value.trim();
             if (!notes) { customAlert("Please enter release notes before publishing this update."); return; }
             
-            const now = new Date();
-            const pubDate = now.toISOString().split('T')[0];
-            const pubTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " IST";
             const logEntry = `${GIT_BUILD_NUMBER} | ${notes}`;
             
             btnPublishReleaseNotes.disabled = true;
@@ -2943,8 +2953,8 @@
             try {
                 await setDoc(doc(db, "app_state", "version_control"), {
                     buildNumber: GIT_BUILD_NUMBER,
-                    publishedDate: pubDate,
-                    publishedTime: pubTime,
+                    publishedDate: GIT_BUILD_DATE,
+                    publishedTime: GIT_BUILD_TIME,
                     changesMade: arrayUnion(logEntry)
                 }, { merge: true });
                 
@@ -3024,19 +3034,15 @@
         titleSpan.className = "text-md font-bold text-muted"; titleSpan.style.textTransform = "uppercase";
         setSafeText(titleSpan, "Git Build Information");
         wrapDiv.appendChild(titleSpan);
-        
-        const buildVersion = currentVersionState.buildNumber || GIT_BUILD_NUMBER;
-        const buildDate = currentVersionState.publishedDate || GIT_BUILD_DATE;
-        const buildTime = currentVersionState.publishedTime || GIT_BUILD_TIME;
 
         const vDiv = document.createElement('div');
         vDiv.className = "text-xxl font-bold mt-1"; vDiv.style.color = "var(--primary);";
-        setSafeText(vDiv, `Build Version: ${buildVersion}`);
+        setSafeText(vDiv, `Build Version: ${GIT_BUILD_NUMBER}`);
         wrapDiv.appendChild(vDiv);
         
         const dDiv = document.createElement('div');
         dDiv.className = "text-sm text-muted mb-4 mt-1";
-        setSafeText(dDiv, `Published: ${buildDate} at ${buildTime}`);
+        setSafeText(dDiv, `Published: ${GIT_BUILD_DATE} at ${GIT_BUILD_TIME}`);
         wrapDiv.appendChild(dDiv);
         
         const hr = document.createElement('hr');
