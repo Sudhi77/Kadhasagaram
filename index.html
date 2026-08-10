@@ -1400,8 +1400,17 @@
             </div>
             
             <div class="d-flex justify-between align-center mb-2">
-                <label class="text-xl text-admin m-0 font-bold">📊 Submissions Data</label>
-                <button type="button" id="backToStoriesListBtn" class="hidden bg-admin text-white border-none padding-6-12 radius-1 cursor-pointer font-bold text-sm">Back to Stories</button>
+                <label class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
+                <div class="d-flex gap-3 align-center">
+                    <button type="button" id="downloadStoryReviewsBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 4px 8px; display: flex; align-items: center; justify-content: center;" title="Download Reviews">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                    <button type="button" id="backToStoriesListBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer font-bold text-sm" style="padding: 4px 12px; width: max-content;">Back</button>
+                </div>
             </div>
             <div class="webview-scroll-frame mb-5 radius-2" style="border: var(--border);">
                 <table class="webview-table m-0">
@@ -1606,6 +1615,7 @@
     <div class="custom-modal-box w-100 box-border" style="max-width: 400px; padding: 25px; text-align: left;">
         <h3 class="mt-0 border-bottom pb-2 mb-3" style="color: var(--primary);">Detailed Review</h3>
         <div class="mb-2"><strong style="color: var(--h3-color);">Reviewer:</strong> <span id="drModalName" style="color: var(--text-color);"></span></div>
+        <div class="mb-2"><strong style="color: var(--h3-color);">Date:</strong> <span id="drModalDate" style="color: var(--text-color);"></span></div>
         <div class="mb-2"><strong style="color: var(--h3-color);">Rating:</strong> <span id="drModalRating" style="color: var(--text-color);"></span></div>
         <div class="mb-2"><strong style="color: var(--h3-color);">Author Guess:</strong> <span id="drModalGuess" style="color: var(--text-color);"></span></div>
         <div class="mb-4"><strong style="color: var(--h3-color);">Suggested Title:</strong> <span id="drModalSuggTitle" style="color: var(--text-color);"></span></div>
@@ -1885,6 +1895,8 @@
     const navBtnReviewer = document.getElementById('navBtnReviewer');
     const navBtnModerator = document.getElementById('navBtnModerator');
     const logoutBtn = document.getElementById('logoutBtn');
+    
+    const downloadStoryReviewsBtn = document.getElementById('downloadStoryReviewsBtn');
 
     const feedbackDetailOverlay = document.getElementById('feedbackDetailOverlay');
     const fdModalTitle = document.getElementById('fdModalTitle');
@@ -1897,6 +1909,7 @@
 
     const detailedReviewOverlay = document.getElementById('detailedReviewOverlay');
     const drModalName = document.getElementById('drModalName');
+    const drModalDate = document.getElementById('drModalDate');
     const drModalRating = document.getElementById('drModalRating');
     const drModalGuess = document.getElementById('drModalGuess');
     const drModalSuggTitle = document.getElementById('drModalSuggTitle');
@@ -1905,8 +1918,13 @@
         detailedReviewOverlay.classList.add('hidden');
     });
 
-    function openDetailedReviewModal(name, rating, guess, suggTitle) {
+    function openDetailedReviewModal(name, rating, guess, suggTitle, dateStr) {
         setSafeText(drModalName, name);
+        let formattedDate = dateStr;
+        if(dateStr !== "N/A" && dateStr) {
+            try { formattedDate = new Date(dateStr).toLocaleString(); } catch(e){}
+        }
+        setSafeText(drModalDate, formattedDate || "N/A");
         setSafeText(drModalRating, rating);
         setSafeText(drModalGuess, guess);
         setSafeText(drModalSuggTitle, suggTitle);
@@ -1915,6 +1933,84 @@
 
     document.getElementById('backToStoriesListBtn').addEventListener('click', () => {
         renderMasterStoryList();
+    });
+    
+    downloadStoryReviewsBtn.addEventListener('click', () => {
+        if (!activeStorySnapshotDataCache) {
+            customAlert("No data available to download.");
+            return;
+        }
+        const currentStory = document.getElementById('deleteStorySelect').value;
+        const dlDate = new Date().toLocaleString();
+        
+        let rowsHtml = '';
+        Object.keys(activeStorySnapshotDataCache).forEach(key => {
+            if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses' && key !== '_authorGivenHeading' && key !== 'season') {
+                const review = activeStorySnapshotDataCache[key];
+                let score = "N/A", guess = "None", title = "None", detail = "";
+                if (typeof review === 'object' && review !== null) {
+                    score = review.score ?? "N/A";
+                    guess = review.authorGuess ?? "None";
+                    title = review.suggestedTitle ?? "None";
+                } else {
+                    score = review;
+                }
+                rowsHtml += `<tr>
+                    <td>${sanitizeText(key)}</td>
+                    <td>${sanitizeText(score)}</td>
+                    <td>${sanitizeText(guess)}</td>
+                    <td>${sanitizeText(title)}</td>
+                    <td>${sanitizeText(detail)}</td>
+                </tr>`;
+            }
+        });
+
+        const htmlStr = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews - ${sanitizeText(currentStory)}</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; color: #333; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 2px solid #2b4c7e; padding-bottom: 10px; }
+        .header h2 { margin: 0; color: #2b4c7e; }
+        .header span { font-size: 14px; color: #666; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #f8f9fa; color: #2b4c7e; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>${sanitizeText(currentStory)}</h2>
+        <span>Downloaded: ${dlDate}</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Reviewer Name</th>
+                <th>Rating</th>
+                <th>Suggested Heading</th>
+                <th>Suggested Title</th>
+                <th>Detailed Review</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${rowsHtml}
+        </tbody>
+    </table>
+</body>
+</html>`;
+
+        const blob = new Blob([htmlStr], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${currentStory}_Reviews.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     });
 
     let currentModName = "Mod";
@@ -2100,13 +2196,15 @@
 
         submitRatingBtn.disabled = true;
         setSafeText(submitRatingBtn, "Submitting...");
+        const currentISODate = new Date().toISOString();
 
         try {
             await setDoc(doc(db, "competitions", targetStory), {
                 [friendName]: {
                     score: ratingRaw,
                     authorGuess: authorGuess,
-                    suggestedTitle: titleSuggestion
+                    suggestedTitle: titleSuggestion,
+                    date: currentISODate
                 }
             }, { merge: true });
 
@@ -2116,7 +2214,8 @@
                     name: friendName,
                     score: ratingRaw,
                     authorGuess: authorGuess,
-                    suggestedTitle: titleSuggestion
+                    suggestedTitle: titleSuggestion,
+                    date: currentISODate
                 }));
             }
 
@@ -2703,6 +2802,7 @@
 
     function renderMasterStoryList() {
         document.getElementById('backToStoriesListBtn').classList.add('hidden');
+        document.getElementById('downloadStoryReviewsBtn').classList.add('hidden');
         const thead = document.getElementById('submissionsTableHead');
         thead.innerHTML = '';
         const headTr = document.createElement('tr');
@@ -2900,6 +3000,7 @@
 
     async function loadCurrentStoryNotes(targetSelected) {
         document.getElementById('backToStoriesListBtn').classList.remove('hidden');
+        document.getElementById('downloadStoryReviewsBtn').classList.remove('hidden');
         const thead = document.getElementById('submissionsTableHead');
         thead.innerHTML = '';
         const headTr = document.createElement('tr');
@@ -2965,11 +3066,13 @@
                         let score = "N/A";
                         let title = "None";
                         let guess = "None";
+                        let reviewDate = "N/A";
 
                         if (typeof data[reviewerKey] === 'object' && data[reviewerKey] !== null) {
                             score = data[reviewerKey].score ?? "N/A";
                             title = data[reviewerKey].suggestedTitle || "None";
                             guess = data[reviewerKey].authorGuess || "None";
+                            reviewDate = data[reviewerKey].date ?? "N/A";
                             
                             const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
                             const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
@@ -2997,7 +3100,7 @@
                         setSafeText(tdName, reviewerKey);
                         tdName.onclick = (e) => {
                             e.stopPropagation();
-                            openDetailedReviewModal(reviewerKey, score, guess, title);
+                            openDetailedReviewModal(reviewerKey, score, guess, title, reviewDate);
                         };
                         
                         const tdScore = document.createElement('td'); setSafeText(tdScore, score);
