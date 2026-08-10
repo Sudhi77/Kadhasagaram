@@ -1093,6 +1093,8 @@
         .bg-darker-alt { background: #2a1a1a; }
         .bg-black-alt { background: #000; }
         .white-space-nowrap { white-space: nowrap; }
+        .hover-bg-alt:hover td { background-color: var(--nav-btn-hover-bg); cursor: pointer; }
+        .hover-text-primary:hover { color: var(--primary) !important; }
     </style>
 </head>
 <body>
@@ -1397,14 +1399,16 @@
                 </div>
             </div>
             
+            <div class="d-flex justify-between align-center mb-2">
+                <label class="text-xl text-admin m-0 font-bold">📊 Submissions Data</label>
+                <button type="button" id="backToStoriesListBtn" class="hidden bg-admin text-white border-none padding-6-12 radius-1 cursor-pointer font-bold text-sm">Back to Stories</button>
+            </div>
             <div class="webview-scroll-frame mb-5 radius-2" style="border: var(--border);">
                 <table class="webview-table m-0">
-                    <thead>
+                    <thead id="submissionsTableHead">
                         <tr>
-                            <th><b>Reviewer</b></th>
-                            <th><b>Rating</b></th>
-                            <th><b>Author Guess</b></th>
-                            <th><b>Suggested Title</b></th>
+                            <th><b>Published Date</b></th>
+                            <th><b>Story Name</b></th>
                         </tr>
                     </thead>
                     <tbody id="dailyReviewsTableBody">
@@ -1594,6 +1598,19 @@
                     <tbody id="feedbackTableBody"></tbody>
                 </table>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="detailedReviewOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000002; backdrop-filter: blur(4px);">
+    <div class="custom-modal-box w-100 box-border" style="max-width: 400px; padding: 25px; text-align: left;">
+        <h3 class="mt-0 border-bottom pb-2 mb-3" style="color: var(--primary);">Detailed Review</h3>
+        <div class="mb-2"><strong style="color: var(--h3-color);">Reviewer:</strong> <span id="drModalName" style="color: var(--text-color);"></span></div>
+        <div class="mb-2"><strong style="color: var(--h3-color);">Rating:</strong> <span id="drModalRating" style="color: var(--text-color);"></span></div>
+        <div class="mb-2"><strong style="color: var(--h3-color);">Author Guess:</strong> <span id="drModalGuess" style="color: var(--text-color);"></span></div>
+        <div class="mb-4"><strong style="color: var(--h3-color);">Suggested Title:</strong> <span id="drModalSuggTitle" style="color: var(--text-color);"></span></div>
+        <div class="d-flex justify-end gap-3 mt-4">
+            <button type="button" id="drModalCloseBtn" class="bg-admin text-white padding-6-12 radius-1 shadow-none cursor-pointer border-none font-bold text-md">Close</button>
         </div>
     </div>
 </div>
@@ -1877,6 +1894,28 @@
     const fdModalCloseBtn = document.getElementById('fdModalCloseBtn');
     const fdModalSaveBtn = document.getElementById('fdModalSaveBtn');
     let currentFeedbackUser = null;
+
+    const detailedReviewOverlay = document.getElementById('detailedReviewOverlay');
+    const drModalName = document.getElementById('drModalName');
+    const drModalRating = document.getElementById('drModalRating');
+    const drModalGuess = document.getElementById('drModalGuess');
+    const drModalSuggTitle = document.getElementById('drModalSuggTitle');
+    
+    document.getElementById('drModalCloseBtn').addEventListener('click', () => {
+        detailedReviewOverlay.classList.add('hidden');
+    });
+
+    function openDetailedReviewModal(name, rating, guess, suggTitle) {
+        setSafeText(drModalName, name);
+        setSafeText(drModalRating, rating);
+        setSafeText(drModalGuess, guess);
+        setSafeText(drModalSuggTitle, suggTitle);
+        detailedReviewOverlay.classList.remove('hidden');
+    }
+
+    document.getElementById('backToStoriesListBtn').addEventListener('click', () => {
+        renderMasterStoryList();
+    });
 
     let currentModName = "Mod";
     let isNameLockedByMod = false;
@@ -2221,11 +2260,12 @@
                     }
 
                     const tr = document.createElement('tr');
+                    tr.className = "hover-bg-alt";
                     
                     const tdName = document.createElement('td');
                     tdName.className = "p-3 border-bottom";
                     const nameBtn = document.createElement('button');
-                    nameBtn.className = "text-white font-bold cursor-pointer m-0 p-0";
+                    nameBtn.className = "text-white font-bold cursor-pointer m-0 p-0 hover-text-primary";
                     nameBtn.style.background = "transparent";
                     nameBtn.style.border = "none";
                     nameBtn.style.textDecoration = "underline";
@@ -2643,6 +2683,63 @@
         if ([...seasonsSet, "All", globalSeasonCache].includes(dVal)) dSelect.value = dVal;
     }
 
+    function clearDailyUpdatesUI() {
+        if (authorGivenHeadingInput) authorGivenHeadingInput.value = "";
+        if (readerSuggestions) {
+            readerSuggestions.innerHTML = '';
+            readerSuggestions.appendChild(createOption("", "-- Title --"));
+        }
+        if (headingSuggesterInput) {
+            headingSuggesterInput.innerHTML = '';
+            headingSuggesterInput.appendChild(createOption("", "-- Name --"));
+        }
+        if (correctGuesses) {
+            correctGuesses.innerHTML = '';
+            correctGuesses.appendChild(createOption("", "-- Select Winner --"));
+        }
+        accumulatedWinnersStateArray = [];
+        renderAccumulatedWinnersChips();
+    }
+
+    function renderMasterStoryList() {
+        document.getElementById('backToStoriesListBtn').classList.add('hidden');
+        const thead = document.getElementById('submissionsTableHead');
+        thead.innerHTML = '';
+        const headTr = document.createElement('tr');
+        const thDate = document.createElement('th');
+        const bDate = document.createElement('b'); setSafeText(bDate, "Published Date"); thDate.appendChild(bDate);
+        const thStory = document.createElement('th');
+        const bStory = document.createElement('b'); setSafeText(bStory, "Story Name"); thStory.appendChild(bStory);
+        headTr.appendChild(thDate); headTr.appendChild(thStory);
+        thead.appendChild(headTr);
+
+        dailyReviewsTableBody.innerHTML = '';
+        clearDailyUpdatesUI();
+
+        if (arrayedStoriesList.length === 0) {
+            appendEmptyRow(dailyReviewsTableBody, 2, "No stories available.");
+            return;
+        }
+
+        arrayedStoriesList.forEach(storyObj => {
+            const tr = document.createElement('tr');
+            tr.className = "cursor-pointer hover-bg-alt";
+            tr.onclick = () => loadCurrentStoryNotes(storyObj.id);
+
+            const tdDate = document.createElement('td');
+            const d = new Date(storyObj.created);
+            setSafeText(tdDate, d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
+            
+            const tdName = document.createElement('td');
+            tdName.className = "font-bold text-admin";
+            setSafeText(tdName, storyObj.id);
+
+            tr.appendChild(tdDate);
+            tr.appendChild(tdName);
+            dailyReviewsTableBody.appendChild(tr);
+        });
+    }
+
     onSnapshot(collection(db, "competitions"), (snapshot) => {
         arrayedStoriesList = [];
         let uniqueSeasons = new Set();
@@ -2667,10 +2764,10 @@
         if(arrayedStoriesList.length > 0) {
             if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
             if(!deleteStorySelect.value) deleteStorySelect.selectedIndex = 0;
-            loadCurrentStoryNotes();
+            renderMasterStoryList();
             autoFillPreviousUserInputs();
         } else {
-            appendEmptyRow(dailyReviewsTableBody, 4, "Select a story to load submissions");
+            renderMasterStoryList();
         }
         evaluateLocalStorageRestrictions();
     });
@@ -2714,7 +2811,7 @@
     });
 
     deleteStorySelect.addEventListener('change', () => {
-        loadCurrentStoryNotes();
+        loadCurrentStoryNotes(deleteStorySelect.value);
     });
     
     readerSuggestions.addEventListener('change', () => {
@@ -2801,8 +2898,24 @@
         renderAccumulatedWinnersChips();
     });
 
-    async function loadCurrentStoryNotes() {
-        const targetSelected = deleteStorySelect.value;
+    async function loadCurrentStoryNotes(targetSelected) {
+        document.getElementById('backToStoriesListBtn').classList.remove('hidden');
+        const thead = document.getElementById('submissionsTableHead');
+        thead.innerHTML = '';
+        const headTr = document.createElement('tr');
+        const headers = ["Reviewer", "Rating", "Author Guess", "Suggested Title"];
+        headers.forEach(hText => {
+            const th = document.createElement('th');
+            const b = document.createElement('b');
+            setSafeText(b, hText);
+            th.appendChild(b);
+            headTr.appendChild(th);
+        });
+        thead.appendChild(headTr);
+
+        dailyReviewsTableBody.innerHTML = '';
+        appendEmptyRow(dailyReviewsTableBody, 4, "Loading reviews...");
+
         if (!targetSelected) {
             appendEmptyRow(dailyReviewsTableBody, 4, "Select a story to load submissions");
             return;
@@ -2810,6 +2923,9 @@
 
         if(storyDropdown.value !== targetSelected) {
             storyDropdown.value = targetSelected;
+        }
+        if(deleteStorySelect.value !== targetSelected) {
+            deleteStorySelect.value = targetSelected;
         }
 
         try {
@@ -2875,7 +2991,15 @@
                         }
                         
                         const tr = document.createElement('tr');
-                        const tdName = document.createElement('td'); setSafeText(tdName, reviewerKey);
+                        const tdName = document.createElement('td'); 
+                        tdName.className = "font-bold cursor-pointer text-admin hover-text-primary";
+                        tdName.style.textDecoration = "underline";
+                        setSafeText(tdName, reviewerKey);
+                        tdName.onclick = (e) => {
+                            e.stopPropagation();
+                            openDetailedReviewModal(reviewerKey, score, guess, title);
+                        };
+                        
                         const tdScore = document.createElement('td'); setSafeText(tdScore, score);
                         const tdGuess = document.createElement('td'); setSafeText(tdGuess, guess);
                         
@@ -3006,9 +3130,6 @@
             const notes = devReleaseNotesInput.value.trim();
             if (!notes) { customAlert("Please enter release notes before publishing this update."); return; }
             
-            const now = new Date();
-            const pubDate = now.toISOString().split('T')[0];
-            const pubTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " IST";
             const logEntry = `${GIT_BUILD_NUMBER} | ${notes}`;
             
             btnPublishReleaseNotes.disabled = true;
@@ -3017,8 +3138,8 @@
             try {
                 await setDoc(doc(db, "app_state", "version_control"), {
                     buildNumber: GIT_BUILD_NUMBER,
-                    publishedDate: pubDate,
-                    publishedTime: pubTime,
+                    publishedDate: GIT_BUILD_DATE,
+                    publishedTime: GIT_BUILD_TIME,
                     changesMade: arrayUnion(logEntry)
                 }, { merge: true });
                 
@@ -3099,14 +3220,18 @@
         setSafeText(titleSpan, "Git Build Information");
         wrapDiv.appendChild(titleSpan);
 
+        const buildVersion = currentVersionState.buildNumber || GIT_BUILD_NUMBER;
+        const buildDate = currentVersionState.publishedDate || GIT_BUILD_DATE;
+        const buildTime = currentVersionState.publishedTime || GIT_BUILD_TIME;
+
         const vDiv = document.createElement('div');
         vDiv.className = "text-xxl font-bold mt-1"; vDiv.style.color = "var(--primary);";
-        setSafeText(vDiv, `Build Version: ${GIT_BUILD_NUMBER}`);
+        setSafeText(vDiv, `Build Version: ${buildVersion}`);
         wrapDiv.appendChild(vDiv);
         
         const dDiv = document.createElement('div');
         dDiv.className = "text-sm text-muted mb-4 mt-1";
-        setSafeText(dDiv, `Published: ${GIT_BUILD_DATE} at ${GIT_BUILD_TIME}`);
+        setSafeText(dDiv, `Published: ${buildDate} at ${buildTime}`);
         wrapDiv.appendChild(dDiv);
         
         const hr = document.createElement('hr');
