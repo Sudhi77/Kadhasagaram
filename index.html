@@ -74,8 +74,6 @@
             --winner-text: var(--admin-color);
             --winner-border: 1px solid var(--admin-color);
             --nav-divider-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/svg' viewBox='0 0 20 52' preserveAspectRatio='none'%3E%3Cpath d='M20,0 C10,13 10,39 0,52' fill='none' stroke='%23ced4da' stroke-width='4'/%3E%3C/svg%3E");
-            
-            /* Custom Dropdown Variable */
             --dropdown-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         }
 
@@ -117,8 +115,6 @@
             --status-bg: rgba(220, 38, 38, 0.15);
             --status-icon-bg: rgba(220, 38, 38, 0.25);
             --status-text: #FECACA;
-            
-            /* Custom Dropdown Variable Dark */
             --dropdown-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
         }
 
@@ -190,14 +186,9 @@
             padding: 0 20px;
             box-sizing: border-box;
         }
-
-        /*======================================================
-           CUSTOM MODERN DROPDOWN STYLES
-        ======================================================*/
         
         .custom-select-wrapper {
             position: relative;
-            /* Override padding and background to let the wrapper act purely as a layout box */
             padding: 0 !important;
             border: none !important;
             background: transparent !important;
@@ -206,7 +197,6 @@
             box-sizing: border-box;
         }
         
-        /* Lower specificity base style to ensure utility classes like bg-admin, p-3, etc. apply easily */
         :where(.custom-select-trigger) {
             display: flex !important;
             align-items: center;
@@ -235,7 +225,6 @@
             box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.2); 
         }
         
-        /* Disabled State */
         .custom-select-wrapper.disabled .custom-select-trigger {
             background-color: rgba(128, 128, 128, 0.1);
             color: rgba(128, 128, 128, 0.6);
@@ -343,7 +332,6 @@
             flex-shrink: 0;
         }
 
-        /* Handle prefers-reduced-motion */
         @media (prefers-reduced-motion: reduce) {
             .custom-select-chevron, 
             .custom-select-panel, 
@@ -353,7 +341,6 @@
             }
         }
 
-        /* Panel custom scrollbar */
         .custom-select-panel::-webkit-scrollbar {
             width: 6px;
         }
@@ -368,8 +355,6 @@
         .custom-select-panel::-webkit-scrollbar-thumb:hover {
             background-color: var(--text-muted);
         }
-
-        /*======================================================*/
 
         .brand-purple-banner {
             background-color: var(--purple-banner);
@@ -560,6 +545,8 @@
             backdrop-filter: var(--card-backdrop);
             border: var(--card-border);
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         h2 {
@@ -581,6 +568,13 @@
 
         .form-group {
             margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .plain-section.dropdown-active, 
+        .form-group.dropdown-active {
+            z-index: 100;
         }
 
         .btn-row {
@@ -1846,7 +1840,6 @@
 </div>
 
 <script type="module">
-    // Custom Modern Dropdown Initializer
     class CustomDropdown {
         constructor(nativeSelect) {
             this.select = nativeSelect;
@@ -1904,8 +1897,8 @@
             const self = this;
             const originalValSet = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set;
             Object.defineProperty(this.select, 'value', {
-                set: function(val) {
-                    originalValSet.call(this, val);
+                set: function(value) {
+                    originalValSet.call(this, value);
                     self.updateFromNative();
                 },
                 get: function() {
@@ -1915,8 +1908,8 @@
 
             const originalIndexSet = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'selectedIndex').set;
             Object.defineProperty(this.select, 'selectedIndex', {
-                set: function(val) {
-                    originalIndexSet.call(this, val);
+                set: function(value) {
+                    originalIndexSet.call(this, value);
                     self.updateFromNative();
                 },
                 get: function() {
@@ -1926,9 +1919,9 @@
 
             const originalDisabledSet = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'disabled').set;
             Object.defineProperty(this.select, 'disabled', {
-                set: function(val) {
-                    originalDisabledSet.call(this, val);
-                    if(val) {
+                set: function(value) {
+                    originalDisabledSet.call(this, value);
+                    if(value) {
                         self.wrapper.classList.add('disabled');
                         self.trigger.tabIndex = -1;
                         self.close();
@@ -1969,41 +1962,41 @@
                 this.valueDisplay.classList.remove('placeholder');
             }
 
-            this.options.forEach((opt, index) => {
-                const optEl = document.createElement('div');
-                optEl.className = 'custom-select-option';
-                optEl.setAttribute('role', 'option');
-                if (opt.selected) {
-                    optEl.classList.add('selected');
-                    optEl.setAttribute('aria-selected', 'true');
+            this.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'custom-select-option';
+                optionElement.setAttribute('role', 'option');
+                if (option.selected) {
+                    optionElement.classList.add('selected');
+                    optionElement.setAttribute('aria-selected', 'true');
                     this.focusedIndex = index;
                 } else {
-                    optEl.setAttribute('aria-selected', 'false');
+                    optionElement.setAttribute('aria-selected', 'false');
                 }
                 
                 const textSpan = document.createElement('span');
                 textSpan.className = 'custom-select-text';
-                textSpan.textContent = opt.text;
-                optEl.appendChild(textSpan);
+                textSpan.textContent = option.text;
+                optionElement.appendChild(textSpan);
 
-                if (opt.selected) {
+                if (option.selected) {
                     const checkMark = document.createElement('div');
                     checkMark.className = 'custom-select-check';
                     checkMark.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-                    optEl.appendChild(checkMark);
+                    optionElement.appendChild(checkMark);
                 }
 
-                optEl.addEventListener('click', (e) => {
-                    e.stopPropagation();
+                optionElement.addEventListener('click', (event) => {
+                    event.stopPropagation();
                     this.selectValue(index);
                     this.close();
                 });
                 
-                optEl.addEventListener('mouseenter', () => {
+                optionElement.addEventListener('mouseenter', () => {
                     this.setFocusIndex(index);
                 });
 
-                this.panel.appendChild(optEl);
+                this.panel.appendChild(optionElement);
             });
         }
 
@@ -2016,10 +2009,10 @@
         }
 
         setFocusIndex(index) {
-            const els = this.panel.querySelectorAll('.custom-select-option');
-            els.forEach(el => el.classList.remove('focused'));
-            if(els[index]) {
-                els[index].classList.add('focused');
+            const elements = this.panel.querySelectorAll('.custom-select-option');
+            elements.forEach(element => element.classList.remove('focused'));
+            if(elements[index]) {
+                elements[index].classList.add('focused');
                 this.focusedIndex = index;
             }
         }
@@ -2030,15 +2023,20 @@
             this.wrapper.classList.add('open');
             this.wrapper.setAttribute('aria-expanded', 'true');
             
+            const parentSection = this.wrapper.closest('.plain-section');
+            if (parentSection) parentSection.classList.add('dropdown-active');
+            const parentGroup = this.wrapper.closest('.form-group');
+            if (parentGroup) parentGroup.classList.add('dropdown-active');
+            
             if(this.focusedIndex === -1) {
                 this.focusedIndex = Math.max(0, this.select.selectedIndex);
             }
             this.setFocusIndex(this.focusedIndex);
             
-            const focusedEl = this.panel.querySelectorAll('.custom-select-option')[this.focusedIndex];
-            if(focusedEl) {
+            const focusedElement = this.panel.querySelectorAll('.custom-select-option')[this.focusedIndex];
+            if(focusedElement) {
                 setTimeout(() => {
-                    focusedEl.scrollIntoView({ block: 'nearest' });
+                    focusedElement.scrollIntoView({ block: 'nearest' });
                 }, 10);
             }
         }
@@ -2047,6 +2045,15 @@
             this.isOpen = false;
             this.wrapper.classList.remove('open');
             this.wrapper.setAttribute('aria-expanded', 'false');
+
+            setTimeout(() => {
+                if (!this.isOpen) {
+                    const parentSection = this.wrapper.closest('.plain-section');
+                    if (parentSection) parentSection.classList.remove('dropdown-active');
+                    const parentGroup = this.wrapper.closest('.form-group');
+                    if (parentGroup) parentGroup.classList.remove('dropdown-active');
+                }
+            }, 200);
         }
 
         toggle() {
@@ -2054,51 +2061,51 @@
         }
 
         setupEvents() {
-            this.trigger.addEventListener('click', (e) => {
-                e.stopPropagation();
+            this.trigger.addEventListener('click', (event) => {
+                event.stopPropagation();
                 this.toggle();
             });
 
-            this.trigger.addEventListener('keydown', (e) => {
+            this.trigger.addEventListener('keydown', (event) => {
                 if (this.select.disabled) return;
                 
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
                     if(this.isOpen && this.focusedIndex !== -1) {
                         this.selectValue(this.focusedIndex);
                         this.close();
                     } else {
                         this.toggle();
                     }
-                } else if (e.key === 'Escape') {
+                } else if (event.key === 'Escape') {
                     this.close();
-                } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
+                } else if (event.key === 'ArrowDown') {
+                    event.preventDefault();
                     if (!this.isOpen) this.open();
                     else {
-                        let newIdx = this.focusedIndex + 1;
-                        if(newIdx >= this.options.length) newIdx = this.options.length - 1;
-                        this.setFocusIndex(newIdx);
-                        const focusedEl = this.panel.querySelectorAll('.custom-select-option')[newIdx];
-                        if(focusedEl) focusedEl.scrollIntoView({ block: 'nearest' });
+                        let newIndex = this.focusedIndex + 1;
+                        if(newIndex >= this.options.length) newIndex = this.options.length - 1;
+                        this.setFocusIndex(newIndex);
+                        const focusedElement = this.panel.querySelectorAll('.custom-select-option')[newIndex];
+                        if(focusedElement) focusedElement.scrollIntoView({ block: 'nearest' });
                     }
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
+                } else if (event.key === 'ArrowUp') {
+                    event.preventDefault();
                     if (!this.isOpen) this.open();
                     else {
-                        let newIdx = this.focusedIndex - 1;
-                        if(newIdx < 0) newIdx = 0;
-                        this.setFocusIndex(newIdx);
-                        const focusedEl = this.panel.querySelectorAll('.custom-select-option')[newIdx];
-                        if(focusedEl) focusedEl.scrollIntoView({ block: 'nearest' });
+                        let newIndex = this.focusedIndex - 1;
+                        if(newIndex < 0) newIndex = 0;
+                        this.setFocusIndex(newIndex);
+                        const focusedElement = this.panel.querySelectorAll('.custom-select-option')[newIndex];
+                        if(focusedElement) focusedElement.scrollIntoView({ block: 'nearest' });
                     }
-                } else if (e.key === 'Tab') {
+                } else if (event.key === 'Tab') {
                     this.close();
                 }
             });
 
-            document.addEventListener('click', (e) => {
-                if (!this.wrapper.contains(e.target) && this.isOpen) {
+            document.addEventListener('click', (event) => {
+                if (!this.wrapper.contains(event.target) && this.isOpen) {
                     this.close();
                 }
             });
@@ -2112,11 +2119,11 @@
         
         const originalInsert = Element.prototype.appendChild;
         Element.prototype.appendChild = function() {
-            const res = originalInsert.apply(this, arguments);
+            const result = originalInsert.apply(this, arguments);
             if (arguments[0].tagName === 'SELECT') {
                 new CustomDropdown(arguments[0]);
             }
-            return res;
+            return result;
         };
     });
 
@@ -2124,22 +2131,22 @@
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    const _d = new Date(document.lastModified);
-    const _utc = _d.getTime() + (_d.getTimezoneOffset() * 60000);
-    const _ist = new Date(_utc + (3600000 * 5.5));
-    const _yyyy = _ist.getFullYear();
-    const _mm = String(_ist.getMonth() + 1).padStart(2, '0');
-    const _dd = String(_ist.getDate()).padStart(2, '0');
-    const GIT_BUILD_DATE = `${_yyyy}-${_mm}-${_dd}`;
+    const dateModified = new Date(document.lastModified);
+    const utcTime = dateModified.getTime() + (dateModified.getTimezoneOffset() * 60000);
+    const istTime = new Date(utcTime + (3600000 * 5.5));
+    const fullYear = istTime.getFullYear();
+    const formattedMonth = String(istTime.getMonth() + 1).padStart(2, '0');
+    const formattedDay = String(istTime.getDate()).padStart(2, '0');
+    const GIT_BUILD_DATE = `${fullYear}-${formattedMonth}-${formattedDay}`;
     
-    let _hrs = _ist.getHours();
-    let _mins = String(_ist.getMinutes()).padStart(2, '0');
-    const _ampm = _hrs >= 12 ? 'PM' : 'AM';
-    _hrs = _hrs % 12;
-    _hrs = _hrs ? _hrs : 12;
+    let hours = istTime.getHours();
+    let minutes = String(istTime.getMinutes()).padStart(2, '0');
+    const amPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
     
-    const GIT_BUILD_TIME = `${String(_hrs).padStart(2, '0')}:${_mins} ${_ampm} IST`;
-    const GIT_BUILD_NUMBER = `4.2.${_mm}${_dd}.${String(_ist.getHours()).padStart(2,'0')}${_mins}`;
+    const GIT_BUILD_TIME = `${String(hours).padStart(2, '0')}:${minutes} ${amPm} IST`;
+    const GIT_BUILD_NUMBER = `4.2.${formattedMonth}${formattedDay}.${String(istTime.getHours()).padStart(2,'0')}${minutes}`;
 
     const menuOpenBtn = document.getElementById('menuOpenBtn');
     const menuCloseBtn = document.getElementById('menuCloseBtn');
@@ -2186,67 +2193,67 @@
     menuCloseBtn.addEventListener('click', () => toggleMenu(false));
     menuOverlay.addEventListener('click', () => toggleMenu(false));
 
-    themeSelect.addEventListener('change', (e) => {
-        currentTheme = e.target.value;
+    themeSelect.addEventListener('change', (event) => {
+        currentTheme = event.target.value;
         localStorage.setItem('kathasagaram_theme', currentTheme);
         applyTheme();
         setTimeout(() => toggleMenu(false), 150); 
     });
 
     const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
-    function sanitizeText(str) {
-        if (str === null || str === undefined) return "";
-        return String(str).replace(/[&<>"'`=/]/g, function (s) { return entityMap[s]; });
+    function sanitizeText(stringToSanitize) {
+        if (stringToSanitize === null || stringToSanitize === undefined) return "";
+        return String(stringToSanitize).replace(/[&<>"'`=/]/g, function (match) { return entityMap[match]; });
     }
     
-    function setSafeText(el, text) {
-        el.textContent = text;
+    function setSafeText(element, text) {
+        element.textContent = text;
     }
 
-    function showCustomModal(type, messageText, defaultVal = "") {
+    function showCustomModal(type, messageText, defaultValue = "") {
         return new Promise((resolve) => {
             const overlay = document.getElementById('customModalOverlay');
-            const msgEl = document.getElementById('customModalMessage');
-            const inputEl = document.getElementById('customModalInput');
-            const btnCancel = document.getElementById('customModalCancel');
-            const btnOk = document.getElementById('customModalOk');
+            const messageElement = document.getElementById('customModalMessage');
+            const inputElement = document.getElementById('customModalInput');
+            const buttonCancel = document.getElementById('customModalCancel');
+            const buttonOk = document.getElementById('customModalOk');
 
             if(messageText.includes('<table') || messageText.includes('<div')) {
-                msgEl.innerHTML = messageText;
+                messageElement.innerHTML = messageText;
             } else {
-                setSafeText(msgEl, messageText);
+                setSafeText(messageElement, messageText);
             }
             
-            inputEl.value = defaultVal;
+            inputElement.value = defaultValue;
 
             if(type === 'alert') {
-                inputEl.classList.add('hidden');
-                btnCancel.classList.add('hidden');
+                inputElement.classList.add('hidden');
+                buttonCancel.classList.add('hidden');
             } else if(type === 'confirm') {
-                inputEl.classList.add('hidden');
-                btnCancel.classList.remove('hidden');
+                inputElement.classList.add('hidden');
+                buttonCancel.classList.remove('hidden');
             } else if(type === 'prompt') {
-                inputEl.classList.remove('hidden');
-                btnCancel.classList.remove('hidden');
+                inputElement.classList.remove('hidden');
+                buttonCancel.classList.remove('hidden');
             }
 
             overlay.classList.remove('hidden');
 
             const cleanup = () => {
                 overlay.classList.add('hidden');
-                btnOk.onclick = null;
-                btnCancel.onclick = null;
+                buttonOk.onclick = null;
+                buttonCancel.onclick = null;
             };
 
-            btnOk.onclick = () => {
-                const val = inputEl.value;
+            buttonOk.onclick = () => {
+                const value = inputElement.value;
                 cleanup();
-                if(type === 'prompt') resolve(val);
+                if(type === 'prompt') resolve(value);
                 else if(type === 'confirm') resolve(true);
                 else resolve(true);
             };
 
-            btnCancel.onclick = () => {
+            buttonCancel.onclick = () => {
                 cleanup();
                 if(type === 'prompt') resolve(null);
                 else if(type === 'confirm') resolve(false);
@@ -2255,9 +2262,9 @@
         });
     }
 
-    const customAlert = (msg) => showCustomModal('alert', msg);
-    const customConfirm = (msg) => showCustomModal('confirm', msg);
-    const customPrompt = (msg, def) => showCustomModal('prompt', msg, def);
+    const customAlert = (messageText) => showCustomModal('alert', messageText);
+    const customConfirm = (messageText) => showCustomModal('confirm', messageText);
+    const customPrompt = (messageText, defaultValue) => showCustomModal('prompt', messageText, defaultValue);
 
     const firebaseConfig = {
         apiKey: "AIzaSyDZlBZdqqet5e9Y-WCnAZ76daCQPVYMGRc",
@@ -2378,11 +2385,11 @@
         detailedReviewOverlay.classList.add('hidden');
     });
 
-    function openDetailedReviewModal(name, rating, guess, suggTitle, dateStr) {
+    function openDetailedReviewModal(name, rating, guess, suggTitle, dateString) {
         setSafeText(drModalName, name);
-        let formattedDate = dateStr;
-        if(dateStr !== "N/A" && dateStr) {
-            try { formattedDate = new Date(dateStr).toLocaleString(); } catch(e){}
+        let formattedDate = dateString;
+        if(dateString !== "N/A" && dateString) {
+            try { formattedDate = new Date(dateString).toLocaleString(); } catch(error){}
         }
         setSafeText(drModalDate, formattedDate || "N/A");
         setSafeText(drModalRating, rating);
@@ -2401,7 +2408,7 @@
             return;
         }
         const currentStory = document.getElementById('deleteStorySelect').value;
-        const dlDate = new Date().toLocaleString();
+        const downloadDate = new Date().toLocaleString();
         
         let rowsHtml = '';
         Object.keys(activeStorySnapshotDataCache).forEach(key => {
@@ -2425,7 +2432,7 @@
             }
         });
 
-        const htmlStr = `<!DOCTYPE html>
+        const htmlString = `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -2444,7 +2451,7 @@
 <body>
     <div class="header">
         <h2>${sanitizeText(currentStory)}</h2>
-        <span>Downloaded: ${dlDate}</span>
+        <span>Downloaded: ${downloadDate}</span>
     </div>
     <table>
         <thead>
@@ -2463,14 +2470,14 @@
 </body>
 </html>`;
 
-        const blob = new Blob([htmlStr], { type: "text/html;charset=utf-8" });
+        const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${currentStory}_Reviews.html`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        const anchorElement = document.createElement('a');
+        anchorElement.href = url;
+        anchorElement.download = `${currentStory}_Reviews.html`;
+        document.body.appendChild(anchorElement);
+        anchorElement.click();
+        document.body.removeChild(anchorElement);
     });
 
     let currentModName = "Mod";
@@ -2502,54 +2509,54 @@
         changesMade: [] 
     };
     
-    const initToday = new Date();
-    const initDd = String(initToday.getDate()).padStart(2, '0');
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const initMmName = monthNames[initToday.getMonth()];
-    const initYy = String(initToday.getFullYear()).slice(-2);
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const initDayName = dayNames[initToday.getDay()];
+    const initialTodayDate = new Date();
+    const initialDayString = String(initialTodayDate.getDate()).padStart(2, '0');
+    const monthNamesArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const initialMonthName = monthNamesArray[initialTodayDate.getMonth()];
+    const initialYearString = String(initialTodayDate.getFullYear()).slice(-2);
+    const dayNamesArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const initialDayName = dayNamesArray[initialTodayDate.getDay()];
 
-    const currentDateDisplay = document.getElementById('currentDateDisplay');
-    const currentDayDisplay = document.getElementById('currentDayDisplay');
-    if(currentDateDisplay) setSafeText(currentDateDisplay, `${initDd} ${initMmName} ${initYy}`);
-    if(currentDayDisplay) setSafeText(currentDayDisplay, initDayName);
+    const currentDateDisplayElement = document.getElementById('currentDateDisplay');
+    const currentDayDisplayElement = document.getElementById('currentDayDisplay');
+    if(currentDateDisplayElement) setSafeText(currentDateDisplayElement, `${initialDayString} ${initialMonthName} ${initialYearString}`);
+    if(currentDayDisplayElement) setSafeText(currentDayDisplayElement, initialDayName);
 
     function createOption(value, text) {
-        const opt = document.createElement('option');
-        opt.value = value;
-        setSafeText(opt, text);
-        return opt;
+        const optionElement = document.createElement('option');
+        optionElement.value = value;
+        setSafeText(optionElement, text);
+        return optionElement;
     }
 
-    function appendEmptyRow(tbody, colspan, text) {
-        tbody.innerHTML = '';
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = colspan;
-        td.className = "text-center p-5 text-italic text-muted";
-        setSafeText(td, text);
-        tr.appendChild(td);
-        tbody.appendChild(tr);
+    function appendEmptyRow(tableBody, columnsSpan, text) {
+        tableBody.innerHTML = '';
+        const tableRow = document.createElement('tr');
+        const tableData = document.createElement('td');
+        tableData.colSpan = columnsSpan;
+        tableData.className = "text-center p-5 text-italic text-muted";
+        setSafeText(tableData, text);
+        tableRow.appendChild(tableData);
+        tableBody.appendChild(tableRow);
     }
 
-    function handleLockedSuggestionInteraction(inputEl, lockTime, featureName) {
-        if (inputEl.readOnly && !isDeveloperModeUnlocked) {
-            inputEl.blur(); 
+    function handleLockedSuggestionInteraction(inputElement, lockTime, featureName) {
+        if (inputElement.readOnly && !isDeveloperModeUnlocked) {
+            inputElement.blur(); 
             
-            const now = new Date();
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            const timeStringFormatted = `${currentHour}:${currentMinute}`;
+            const timeNow = new Date();
+            const currentHourString = String(timeNow.getHours()).padStart(2, '0');
+            const currentMinuteString = String(timeNow.getMinutes()).padStart(2, '0');
+            const timeStringFormatted = `${currentHourString}:${currentMinuteString}`;
             
             const targetStory = storyDropdown.value;
-            const activeStoryObject = arrayedStoriesList.find(s => s.id === targetStory);
+            const activeStoryObject = arrayedStoriesList.find(story => story.id === targetStory);
             let isPreviousDay = false;
             
             if (activeStoryObject) {
-                const createdDateStr = new Date(activeStoryObject.created).toDateString();
-                const currentDateStr = new Date().toDateString();
-                isPreviousDay = createdDateStr !== currentDateStr;
+                const createdDateString = new Date(activeStoryObject.created).toDateString();
+                const currentDateString = new Date().toDateString();
+                isPreviousDay = createdDateString !== currentDateString;
             }
 
             if (isPreviousDay || timeStringFormatted > lockTime) {
@@ -2583,7 +2590,7 @@
             loginInterface.classList.add('hidden');
             modInterface.classList.add('hidden');
             devInterface.classList.add('hidden');
-        } catch (e) {}
+        } catch (error) {}
     });
 
     navBtnModerator.addEventListener('click', () => {
@@ -2601,11 +2608,11 @@
                 modInterface.classList.add('hidden');
                 devInterface.classList.add('hidden');
             }
-        } catch (e) {}
+        } catch (error) {}
     });
 
-    ratingForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); 
+    ratingForm.addEventListener('submit', async (event) => {
+        event.preventDefault(); 
 
         if (isSystemPaused && !isDeveloperModeUnlocked) {
             customAlert("System Maintenance Active. Submissions are temporarily paused.");
@@ -2635,14 +2642,14 @@
             try {
                 const storedUserData = JSON.parse(localStorage.getItem(`userdata_${targetStory}`));
                 ratingRaw = storedUserData.score; 
-            } catch (e) {}
+            } catch (error) {}
         } else {
             if (isDeveloperModeUnlocked) {
                 if (ratingRaw === "") {
                     ratingRaw = "N/A"; 
                 } else {
-                    let r = parseInt(ratingRaw, 10);
-                    if (!isNaN(r)) ratingRaw = r;
+                    let parsedRating = parseInt(ratingRaw, 10);
+                    if (!isNaN(parsedRating)) ratingRaw = parsedRating;
                 }
             } else {
                 const rating = parseInt(ratingRaw, 10);
@@ -2719,7 +2726,7 @@
             customAlert("Feedback submitted successfully! Thank you for helping us improve.");
             feedbackInterface.classList.add('hidden');
             userInterface.classList.remove('hidden');
-        } catch(e) {
+        } catch(error) {
             customAlert("Error submitting feedback. Check your connection.");
         }
         submitFeedbackBtn.disabled = false;
@@ -2730,11 +2737,11 @@
         setSafeText(fdModalTitle, `Feedback from: ${user}`);
         
         fdModalComments.innerHTML = '';
-        feedbacks.forEach((fb, idx) => {
-            const p = document.createElement('p');
-            p.className = "bg-dark-alt p-2 radius-1 border-gold-alt mt-0 mb-2";
-            setSafeText(p, `${idx + 1}. ${fb}`);
-            fdModalComments.appendChild(p);
+        feedbacks.forEach((feedbackText, index) => {
+            const paragraphElement = document.createElement('p');
+            paragraphElement.className = "bg-dark-alt p-2 radius-1 border-gold-alt mt-0 mb-2";
+            setSafeText(paragraphElement, `${index + 1}. ${feedbackText}`);
+            fdModalComments.appendChild(paragraphElement);
         });
 
         if (feedbackDevState[user]) {
@@ -2755,14 +2762,14 @@
             feedbackDevState[currentFeedbackUser].notes = fdModalNotes.value;
             feedbackDevState[currentFeedbackUser].status = fdModalStatus.value;
             
-            const safeId = currentFeedbackUser.replace(/[^a-zA-Z0-9]/g, '-');
-            const statusSpan = document.getElementById(`status-span-${safeId}`);
-            if (statusSpan) {
-                setSafeText(statusSpan, fdModalStatus.value);
-                statusSpan.style.color = '#fff';
-                if(fdModalStatus.value === 'Implemented') statusSpan.style.color = '#4a7c59';
-                else if(fdModalStatus.value === 'Rejected') statusSpan.style.color = 'var(--danger)';
-                else if(fdModalStatus.value === 'In Review') statusSpan.style.color = '#D4A017';
+            const safeIdString = currentFeedbackUser.replace(/[^a-zA-Z0-9]/g, '-');
+            const statusSpanElement = document.getElementById(`status-span-${safeIdString}`);
+            if (statusSpanElement) {
+                setSafeText(statusSpanElement, fdModalStatus.value);
+                statusSpanElement.style.color = '#fff';
+                if(fdModalStatus.value === 'Implemented') statusSpanElement.style.color = '#4a7c59';
+                else if(fdModalStatus.value === 'Rejected') statusSpanElement.style.color = 'var(--danger)';
+                else if(fdModalStatus.value === 'In Review') statusSpanElement.style.color = '#D4A017';
             }
         }
         feedbackDetailOverlay.classList.add('hidden');
@@ -2774,43 +2781,43 @@
             devLoadFeedbackBtn.disabled = true;
             setSafeText(devLoadFeedbackBtn, "Loading Platform Data...");
 
-            const docSnap = await getDoc(doc(db, "app_feedback", "user_submissions"));
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                let maxCols = 0;
+            const documentSnapshot = await getDoc(doc(db, "app_feedback", "user_submissions"));
+            if (documentSnapshot.exists()) {
+                const data = documentSnapshot.data();
+                let maximumColumns = 0;
                 
                 Object.keys(data).forEach(user => {
-                    if (Array.isArray(data[user]) && data[user].length > maxCols) {
-                        maxCols = data[user].length;
+                    if (Array.isArray(data[user]) && data[user].length > maximumColumns) {
+                        maximumColumns = data[user].length;
                     }
                 });
 
-                if (maxCols === 0) {
+                if (maximumColumns === 0) {
                     customAlert("Feedback document exists but no valid entries found.");
                     return;
                 }
 
                 cachedFeedbackData = data;
-                cachedMaxCols = maxCols;
+                cachedMaxCols = maximumColumns;
                 devDownloadFeedbackBtn.classList.remove('hidden');
 
                 feedbackTableHead.innerHTML = '';
-                const headTr = document.createElement('tr');
+                const headTableRow = document.createElement('tr');
                 
-                const th1 = document.createElement('th');
-                th1.className = "bg-gold text-black text-center p-3 border-bottom-gold-alt";
-                th1.style.backgroundColor = "#D4A017"; th1.style.color = "#000";
-                const b1 = document.createElement('b'); setSafeText(b1, "Reviewer Name");
-                th1.appendChild(b1);
-                headTr.appendChild(th1);
+                const tableHeaderOne = document.createElement('th');
+                tableHeaderOne.className = "bg-gold text-black text-center p-3 border-bottom-gold-alt";
+                tableHeaderOne.style.backgroundColor = "#D4A017"; tableHeaderOne.style.color = "#000";
+                const boldOne = document.createElement('b'); setSafeText(boldOne, "Reviewer Name");
+                tableHeaderOne.appendChild(boldOne);
+                headTableRow.appendChild(tableHeaderOne);
 
-                const th2 = document.createElement('th');
-                th2.style.backgroundColor = "#D4A017"; th2.style.color = "#000"; th2.className = "text-center p-3 border-bottom-gold-alt";
-                const b2 = document.createElement('b'); setSafeText(b2, "Status");
-                th2.appendChild(b2);
-                headTr.appendChild(th2);
+                const tableHeaderTwo = document.createElement('th');
+                tableHeaderTwo.style.backgroundColor = "#D4A017"; tableHeaderTwo.style.color = "#000"; tableHeaderTwo.className = "text-center p-3 border-bottom-gold-alt";
+                const boldTwo = document.createElement('b'); setSafeText(boldTwo, "Status");
+                tableHeaderTwo.appendChild(boldTwo);
+                headTableRow.appendChild(tableHeaderTwo);
 
-                feedbackTableHead.appendChild(headTr);
+                feedbackTableHead.appendChild(headTableRow);
 
                 feedbackTableBody.innerHTML = '';
                 Object.keys(data).forEach(user => {
@@ -2818,38 +2825,38 @@
                         feedbackDevState[user] = { notes: "", status: "Pending" };
                     }
 
-                    const tr = document.createElement('tr');
-                    tr.className = "hover-bg-alt";
+                    const tableRowElement = document.createElement('tr');
+                    tableRowElement.className = "hover-bg-alt";
                     
-                    const tdName = document.createElement('td');
-                    tdName.className = "p-3 border-bottom";
-                    const nameBtn = document.createElement('button');
-                    nameBtn.className = "text-white font-bold cursor-pointer m-0 p-0 hover-text-primary";
-                    nameBtn.style.background = "transparent";
-                    nameBtn.style.border = "none";
-                    nameBtn.style.textDecoration = "underline";
-                    nameBtn.style.fontSize = "14px";
-                    setSafeText(nameBtn, user);
-                    nameBtn.onclick = () => openFeedbackDetails(user, data[user] || []);
-                    tdName.appendChild(nameBtn);
-                    tr.appendChild(tdName);
+                    const tableDataName = document.createElement('td');
+                    tableDataName.className = "p-3 border-bottom";
+                    const nameButton = document.createElement('button');
+                    nameButton.className = "text-white font-bold cursor-pointer m-0 p-0 hover-text-primary";
+                    nameButton.style.background = "transparent";
+                    nameButton.style.border = "none";
+                    nameButton.style.textDecoration = "underline";
+                    nameButton.style.fontSize = "14px";
+                    setSafeText(nameButton, user);
+                    nameButton.onclick = () => openFeedbackDetails(user, data[user] || []);
+                    tableDataName.appendChild(nameButton);
+                    tableRowElement.appendChild(tableDataName);
 
-                    const tdStatus = document.createElement('td');
-                    tdStatus.className = "p-3 border-bottom";
+                    const tableDataStatus = document.createElement('td');
+                    tableDataStatus.className = "p-3 border-bottom";
                     const statusSpan = document.createElement('span');
                     statusSpan.className = "text-white font-bold";
-                    const safeId = user.replace(/[^a-zA-Z0-9]/g, '-');
-                    statusSpan.id = `status-span-${safeId}`;
+                    const safeIdValue = user.replace(/[^a-zA-Z0-9]/g, '-');
+                    statusSpan.id = `status-span-${safeIdValue}`;
                     setSafeText(statusSpan, feedbackDevState[user].status);
                     
                     if (feedbackDevState[user].status === 'Implemented') statusSpan.style.color = '#4a7c59';
                     else if (feedbackDevState[user].status === 'Rejected') statusSpan.style.color = 'var(--danger)';
                     else if (feedbackDevState[user].status === 'In Review') statusSpan.style.color = '#D4A017';
 
-                    tdStatus.appendChild(statusSpan);
-                    tr.appendChild(tdStatus);
+                    tableDataStatus.appendChild(statusSpan);
+                    tableRowElement.appendChild(tableDataStatus);
 
-                    feedbackTableBody.appendChild(tr);
+                    feedbackTableBody.appendChild(tableRowElement);
                 });
                 
                 document.getElementById('fullscreenFeedbackOverlay').classList.remove('hidden');
@@ -2857,7 +2864,7 @@
             } else {
                 customAlert("No feedback records have been found in the database yet.");
             }
-        } catch(e) {
+        } catch(error) {
             customAlert("Error parsing feedback metrics.");
         } finally {
             devLoadFeedbackBtn.disabled = false;
@@ -2873,50 +2880,50 @@
     devDownloadFeedbackBtn.addEventListener('click', () => {
         if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
 
-        let theadHtml = `<tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer Name</b></th>`;
-        for(let i = 1; i <= cachedMaxCols; i++) {
-            theadHtml += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${i}</b></th>`;
+        let tableHeadHtmlString = `<tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer Name</b></th>`;
+        for(let increment = 1; increment <= cachedMaxCols; increment++) {
+            tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${increment}</b></th>`;
         }
-        theadHtml += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Dev Notes</b></th>`;
-        theadHtml += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Status</b></th>`;
-        theadHtml += `</tr>`;
+        tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Dev Notes</b></th>`;
+        tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Status</b></th>`;
+        tableHeadHtmlString += `</tr>`;
 
-        let tbodyHtml = "";
+        let tableBodyHtmlString = "";
         Object.keys(cachedFeedbackData).forEach(user => {
-            tbodyHtml += `<tr><td style="border: 1px solid #ccc; text-align: center;"><strong>${sanitizeText(user)}</strong></td>`;
-            const userFeedbacks = cachedFeedbackData[user] || [];
-            for(let i = 0; i < cachedMaxCols; i++) {
-                tbodyHtml += `<td style="border: 1px solid #ccc; text-align: center;">${userFeedbacks[i] !== undefined ? sanitizeText(userFeedbacks[i]) : `-`}</td>`;
+            tableBodyHtmlString += `<tr><td style="border: 1px solid #ccc; text-align: center;"><strong>${sanitizeText(user)}</strong></td>`;
+            const userFeedbacksArray = cachedFeedbackData[user] || [];
+            for(let loopIndex = 0; loopIndex < cachedMaxCols; loopIndex++) {
+                tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${userFeedbacksArray[loopIndex] !== undefined ? sanitizeText(userFeedbacksArray[loopIndex]) : `-`}</td>`;
             }
-            const notes = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].notes) : "-";
-            const status = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].status) : "Pending";
-            tbodyHtml += `<td style="border: 1px solid #ccc; text-align: center;">${notes}</td>`;
-            tbodyHtml += `<td style="border: 1px solid #ccc; text-align: center;">${status}</td>`;
-            tbodyHtml += `</tr>`;
+            const notesText = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].notes) : "-";
+            const statusText = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].status) : "Pending";
+            tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${notesText}</td>`;
+            tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${statusText}</td>`;
+            tableBodyHtmlString += `</tr>`;
         });
 
-        const htmlString = `
+        const fullHtmlString = `
             <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
             <head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: center; }</style></head>
             <body>
                 <table>
-                    <thead>${theadHtml}</thead>
-                    <tbody>${tbodyHtml}</tbody>
+                    <thead>${tableHeadHtmlString}</thead>
+                    <tbody>${tableBodyHtmlString}</tbody>
                 </table>
             </body>
             </html>
         `;
 
-        const blob = new Blob([htmlString], { type: "application/vnd.ms-excel" });
-        const downloadUrl = URL.createObjectURL(blob);
+        const blobObject = new Blob([fullHtmlString], { type: "application/vnd.ms-excel" });
+        const downloadUrlPath = URL.createObjectURL(blobObject);
 
-        const clientLink = document.createElement("a");
-        clientLink.href = downloadUrl;
-        clientLink.download = `Feedback_Master_Data_${new Date().toISOString().split('T')[0]}.xls`;
+        const clientLinkElement = document.createElement("a");
+        clientLinkElement.href = downloadUrlPath;
+        clientLinkElement.download = `Feedback_Master_Data_${new Date().toISOString().split('T')[0]}.xls`;
 
-        document.body.appendChild(clientLink);
-        clientLink.click();
-        document.body.removeChild(clientLink);
+        document.body.appendChild(clientLinkElement);
+        clientLinkElement.click();
+        document.body.removeChild(clientLinkElement);
 
         customAlert("📥 Feedback table exported successfully.");
     });
@@ -2957,11 +2964,11 @@
         }
     }
 
-    onSnapshot(doc(db, "app_state", "global_config"), (docSnap) => {
+    onSnapshot(doc(db, "app_state", "global_config"), (documentSnapshot) => {
         try {
             let data = {};
-            if (docSnap.exists()) {
-                data = docSnap.data();
+            if (documentSnapshot.exists()) {
+                data = documentSnapshot.data();
             }
 
             setSafeText(topicDisplay, data.topic || "*****");
@@ -2969,9 +2976,9 @@
             inputMonth.value = data.month || "";
             inputTopic.value = data.topic || "";
 
-            const currentSeasonName = data.seasonName || "---";
-            globalSeasonCache = currentSeasonName;
-            setSafeText(sidebarSeasonDisplay, currentSeasonName);
+            const currentSeasonNameString = data.seasonName || "---";
+            globalSeasonCache = currentSeasonNameString;
+            setSafeText(sidebarSeasonDisplay, currentSeasonNameString);
 
             currentModName = data.modName || "Mod";
             setSafeText(headerModNameDisplay, `Moderator: ${currentModName}`);
@@ -3003,7 +3010,7 @@
             evaluateSystemFreezeState();
             evaluateSetupFlow(); 
 
-        } catch(e) {}
+        } catch(error) {}
     });
     
     updateLockTimesBtn.addEventListener('click', async () => {
@@ -3014,14 +3021,14 @@
                 titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59"
             }, { merge: true });
             customAlert("Lock times updated successfully.");
-        } catch(e) { 
+        } catch(error) { 
             customAlert("Error saving time locks.");
         }
     });
 
-    onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
-        if (docSnap.exists()) {
-            const data = docSnap.data();
+    onSnapshot(doc(db, "app_state", "version_control"), (documentSnapshot) => {
+        if (documentSnapshot.exists()) {
+            const data = documentSnapshot.data();
             currentVersionState.buildNumber = data.buildNumber || GIT_BUILD_NUMBER;
             currentVersionState.publishedDate = data.publishedDate || GIT_BUILD_DATE;
             currentVersionState.publishedTime = data.publishedTime || GIT_BUILD_TIME;
@@ -3069,7 +3076,7 @@
             await setDoc(doc(db, "app_state", "global_config"), {
                 enableAuthorGuess: toggleAuthorGuessBtn.checked
             }, { merge: true });
-        } catch(e) { customAlert("Error syncing configuration."); }
+        } catch(error) { customAlert("Error syncing configuration."); }
     });
 
     toggleTitleSuggestionBtn.addEventListener('change', async () => {
@@ -3078,7 +3085,7 @@
             await setDoc(doc(db, "app_state", "global_config"), {
                 enableTitleSuggestion: toggleTitleSuggestionBtn.checked
             }, { merge: true });
-        } catch(e) { customAlert("Error syncing configuration."); }
+        } catch(error) { customAlert("Error syncing configuration."); }
     });
 
     devPauseToggle.addEventListener('change', async () => {
@@ -3086,14 +3093,14 @@
             await setDoc(doc(db, "app_state", "global_config"), {
                 systemPaused: devPauseToggle.checked
             }, { merge: true });
-        } catch(e) {
+        } catch(error) {
             customAlert("Error syncing Exclusive Mode configuration.");
             devPauseToggle.checked = !devPauseToggle.checked;
         }
     });
 
     function evaluateSystemFreezeState() {
-        const elements = [
+        const formElementsArray = [
             friendNameInput, ratingValueInput, authorGuessInput, titleSuggestionInput,
             dashboardNewStoryInput, dashboardUpdateStoryBtn,
             deleteStorySelect, deleteStoryBtn, inputMonth, inputTopic, startSeasonBtn, 
@@ -3109,18 +3116,18 @@
             if (exclusiveModeText) exclusiveModeText.style.color = "var(--danger)";
             
             if (isDeveloperModeUnlocked) {
-                elements.forEach(el => { if (el) el.disabled = false; });
+                formElementsArray.forEach(element => { if (element) element.disabled = false; });
                 inputModName.disabled = isNameLockedByMod;
                 saveModNameBtn.disabled = isNameLockedByMod;
             } else {
-                elements.forEach(el => { if (el) el.disabled = true; });
+                formElementsArray.forEach(element => { if (element) element.disabled = true; });
                 inputModName.disabled = true;
                 saveModNameBtn.disabled = true;
             }
         } else {
             pausedBanner.classList.add('hidden');
             if (exclusiveModeText) exclusiveModeText.style.color = "#FFFFFF";
-            elements.forEach(el => { if (el) el.disabled = false; });
+            formElementsArray.forEach(element => { if (element) element.disabled = false; });
             evaluateSetupFlow();
             evaluateLocalStorageRestrictions();
         }
@@ -3150,17 +3157,17 @@
                 return;
             }
 
-            const activeStoryObject = arrayedStoriesList.find(s => s.id === targetStory);
+            const activeStoryObject = arrayedStoriesList.find(story => story.id === targetStory);
             if (!activeStoryObject) return;
 
-            const createdDateStr = new Date(activeStoryObject.created).toDateString();
-            const currentDateStr = new Date().toDateString();
-            const isPreviousDay = createdDateStr !== currentDateStr;
+            const createdDateString = new Date(activeStoryObject.created).toDateString();
+            const currentDateString = new Date().toDateString();
+            const isPreviousDay = createdDateString !== currentDateString;
             
-            const now = new Date();
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            const timeStringFormatted = `${currentHour}:${currentMinute}`;
+            const timeNow = new Date();
+            const currentHourString = String(timeNow.getHours()).padStart(2, '0');
+            const currentMinuteString = String(timeNow.getMinutes()).padStart(2, '0');
+            const timeStringFormatted = `${currentHourString}:${currentMinuteString}`;
 
             const pastAuthorGuessTime = timeStringFormatted > cachedAuthorGuessLockTime;
             const pastTitleSuggestionTime = timeStringFormatted > cachedTitleSuggestionLockTime;
@@ -3208,38 +3215,38 @@
                 submitRatingBtn.disabled = false;
                 setSafeText(submitRatingBtn, "Submit Review");
             }
-        } catch (e) {
+        } catch (error) {
             submitRatingBtn.disabled = false;
             setSafeText(submitRatingBtn, "Submit Review");
         }
     }
 
-    function updateSeasonDropdowns(seasonsSet) {
-        const pSelect = document.getElementById('previewSeasonSelect');
-        const dSelect = document.getElementById('downloadSeasonSelect');
-        const pVal = pSelect.value;
-        const dVal = dSelect.value;
+    function updateSeasonDropdowns(seasonsSetCollection) {
+        const previewSelectElement = document.getElementById('previewSeasonSelect');
+        const downloadSelectElement = document.getElementById('downloadSeasonSelect');
+        const previewValue = previewSelectElement.value;
+        const downloadValue = downloadSelectElement.value;
 
-        pSelect.innerHTML = '';
-        dSelect.innerHTML = '';
+        previewSelectElement.innerHTML = '';
+        downloadSelectElement.innerHTML = '';
         
-        pSelect.appendChild(createOption("All", "All Seasons"));
-        dSelect.appendChild(createOption("All", "All Seasons"));
+        previewSelectElement.appendChild(createOption("All", "All Seasons"));
+        downloadSelectElement.appendChild(createOption("All", "All Seasons"));
 
-        if (globalSeasonCache && globalSeasonCache !== "---" && !seasonsSet.has(globalSeasonCache)) {
-            pSelect.appendChild(createOption(globalSeasonCache, globalSeasonCache));
-            dSelect.appendChild(createOption(globalSeasonCache, globalSeasonCache));
+        if (globalSeasonCache && globalSeasonCache !== "---" && !seasonsSetCollection.has(globalSeasonCache)) {
+            previewSelectElement.appendChild(createOption(globalSeasonCache, globalSeasonCache));
+            downloadSelectElement.appendChild(createOption(globalSeasonCache, globalSeasonCache));
         }
         
-        seasonsSet.forEach(s => {
-            if(s && s !== "Legacy" && s !== "All") {
-                pSelect.appendChild(createOption(s, s));
-                dSelect.appendChild(createOption(s, s));
+        seasonsSetCollection.forEach(seasonString => {
+            if(seasonString && seasonString !== "Legacy" && seasonString !== "All") {
+                previewSelectElement.appendChild(createOption(seasonString, seasonString));
+                downloadSelectElement.appendChild(createOption(seasonString, seasonString));
             }
         });
 
-        if ([...seasonsSet, "All", globalSeasonCache].includes(pVal)) pSelect.value = pVal;
-        if ([...seasonsSet, "All", globalSeasonCache].includes(dVal)) dSelect.value = dVal;
+        if ([...seasonsSetCollection, "All", globalSeasonCache].includes(previewValue)) previewSelectElement.value = previewValue;
+        if ([...seasonsSetCollection, "All", globalSeasonCache].includes(downloadValue)) downloadSelectElement.value = downloadValue;
     }
 
     function clearDailyUpdatesUI() {
@@ -3263,15 +3270,15 @@
     function renderMasterStoryList() {
         document.getElementById('backToStoriesListBtn').classList.add('hidden');
         document.getElementById('downloadStoryReviewsBtn').classList.add('hidden');
-        const thead = document.getElementById('submissionsTableHead');
-        thead.innerHTML = '';
-        const headTr = document.createElement('tr');
-        const thDate = document.createElement('th');
-        const bDate = document.createElement('b'); setSafeText(bDate, "Published Date"); thDate.appendChild(bDate);
-        const thStory = document.createElement('th');
-        const bStory = document.createElement('b'); setSafeText(bStory, "Story Name"); thStory.appendChild(bStory);
-        headTr.appendChild(thDate); headTr.appendChild(thStory);
-        thead.appendChild(headTr);
+        const tableHeadElement = document.getElementById('submissionsTableHead');
+        tableHeadElement.innerHTML = '';
+        const headTableRowElement = document.createElement('tr');
+        const tableHeaderDate = document.createElement('th');
+        const boldDateText = document.createElement('b'); setSafeText(boldDateText, "Published Date"); tableHeaderDate.appendChild(boldDateText);
+        const tableHeaderStory = document.createElement('th');
+        const boldStoryText = document.createElement('b'); setSafeText(boldStoryText, "Story Name"); tableHeaderStory.appendChild(boldStoryText);
+        headTableRowElement.appendChild(tableHeaderDate); headTableRowElement.appendChild(tableHeaderStory);
+        tableHeadElement.appendChild(headTableRowElement);
 
         dailyReviewsTableBody.innerHTML = '';
         clearDailyUpdatesUI();
@@ -3281,44 +3288,44 @@
             return;
         }
 
-        arrayedStoriesList.forEach(storyObj => {
-            const tr = document.createElement('tr');
-            tr.className = "cursor-pointer hover-bg-alt";
-            tr.onclick = () => loadCurrentStoryNotes(storyObj.id);
+        arrayedStoriesList.forEach(storyObject => {
+            const tableRowElement = document.createElement('tr');
+            tableRowElement.className = "cursor-pointer hover-bg-alt";
+            tableRowElement.onclick = () => loadCurrentStoryNotes(storyObject.id);
 
-            const tdDate = document.createElement('td');
-            const d = new Date(storyObj.created);
-            setSafeText(tdDate, d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
+            const tableDataDate = document.createElement('td');
+            const dateObject = new Date(storyObject.created);
+            setSafeText(tableDataDate, dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
             
-            const tdName = document.createElement('td');
-            tdName.className = "font-bold text-admin";
-            setSafeText(tdName, storyObj.id);
+            const tableDataName = document.createElement('td');
+            tableDataName.className = "font-bold text-admin";
+            setSafeText(tableDataName, storyObject.id);
 
-            tr.appendChild(tdDate);
-            tr.appendChild(tdName);
-            dailyReviewsTableBody.appendChild(tr);
+            tableRowElement.appendChild(tableDataDate);
+            tableRowElement.appendChild(tableDataName);
+            dailyReviewsTableBody.appendChild(tableRowElement);
         });
     }
 
-    onSnapshot(collection(db, "competitions"), (snapshot) => {
+    onSnapshot(collection(db, "competitions"), (collectionSnapshot) => {
         arrayedStoriesList = [];
-        let uniqueSeasons = new Set();
+        let uniqueSeasonsSet = new Set();
 
-        snapshot.forEach(doc => {
-            const d = doc.data();
-            arrayedStoriesList.push({ id: doc.id, created: d.created || 0, season: d.season || "Legacy" });
-            if (d.season) uniqueSeasons.add(d.season);
+        collectionSnapshot.forEach(documentItem => {
+            const dataObject = documentItem.data();
+            arrayedStoriesList.push({ id: documentItem.id, created: dataObject.created || 0, season: dataObject.season || "Legacy" });
+            if (dataObject.season) uniqueSeasonsSet.add(dataObject.season);
         });
 
-        updateSeasonDropdowns(uniqueSeasons);
-        arrayedStoriesList.sort((a, b) => b.created - a.created);
+        updateSeasonDropdowns(uniqueSeasonsSet);
+        arrayedStoriesList.sort((elementA, elementB) => elementB.created - elementA.created);
 
         storyDropdown.innerHTML = '';
         deleteStorySelect.innerHTML = '';
         
-        arrayedStoriesList.forEach(storyObj => {
-            storyDropdown.appendChild(createOption(storyObj.id, storyObj.id));
-            deleteStorySelect.appendChild(createOption(storyObj.id, storyObj.id));
+        arrayedStoriesList.forEach(storyObject => {
+            storyDropdown.appendChild(createOption(storyObject.id, storyObject.id));
+            deleteStorySelect.appendChild(createOption(storyObject.id, storyObject.id));
         });
 
         if(arrayedStoriesList.length > 0) {
@@ -3332,14 +3339,14 @@
         evaluateLocalStorageRestrictions();
     });
 
-    dailyReviewsTableBody.addEventListener('click', (e) => {
-        const btn = e.target.closest('.btn-copy-row');
-        if (btn && !btn.disabled) {
-            const reviewer = btn.getAttribute('data-reviewer');
-            const title = btn.getAttribute('data-title');
-            const copyStr = `${reviewer}, ${title}`;
-            navigator.clipboard.writeText(copyStr)
-                .then(() => customAlert(`📋 Copied:\n${copyStr}`))
+    dailyReviewsTableBody.addEventListener('click', (event) => {
+        const buttonElement = event.target.closest('.btn-copy-row');
+        if (buttonElement && !buttonElement.disabled) {
+            const reviewerString = buttonElement.getAttribute('data-reviewer');
+            const titleString = buttonElement.getAttribute('data-title');
+            const copyStringValue = `${reviewerString}, ${titleString}`;
+            navigator.clipboard.writeText(copyStringValue)
+                .then(() => customAlert(`📋 Copied:\n${copyStringValue}`))
                 .catch(() => customAlert("Clipboard write blocked by browser."));
         }
     });
@@ -3348,15 +3355,15 @@
         const targetStory = storyDropdown.value;
         if (!targetStory) return;
 
-        const storedUserData = localStorage.getItem(`userdata_${targetStory}`);
-        if (storedUserData) {
+        const storedUserDataString = localStorage.getItem(`userdata_${targetStory}`);
+        if (storedUserDataString) {
             try {
-                const parsedData = JSON.parse(storedUserData);
-                friendNameInput.value = parsedData.name || "";
-                ratingValueInput.value = parsedData.score || "";
-                authorGuessInput.value = parsedData.authorGuess !== "None" ? parsedData.authorGuess : "";
-                titleSuggestionInput.value = parsedData.suggestedTitle !== "None" ? parsedData.suggestedTitle : "";
-            } catch (e) {}
+                const parsedDataObject = JSON.parse(storedUserDataString);
+                friendNameInput.value = parsedDataObject.name || "";
+                ratingValueInput.value = parsedDataObject.score || "";
+                authorGuessInput.value = parsedDataObject.authorGuess !== "None" ? parsedDataObject.authorGuess : "";
+                titleSuggestionInput.value = parsedDataObject.suggestedTitle !== "None" ? parsedDataObject.suggestedTitle : "";
+            } catch (error) {}
         } else {
             friendNameInput.value = "";
             ratingValueInput.value = "";
@@ -3375,19 +3382,19 @@
     });
     
     readerSuggestions.addEventListener('change', () => {
-        const selectedHeading = readerSuggestions.value;
-        if (selectedHeading && headingToReviewerMap[selectedHeading]) {
-            headingSuggesterInput.value = headingToReviewerMap[selectedHeading];
+        const selectedHeadingValue = readerSuggestions.value;
+        if (selectedHeadingValue && headingToReviewerMap[selectedHeadingValue]) {
+            headingSuggesterInput.value = headingToReviewerMap[selectedHeadingValue];
         } else {
             headingSuggesterInput.value = "";
         }
     });
 
     submitLoginBtn.addEventListener('click', async () => {
-        const email = localEmailInput.value.trim();
-        const password = localPassInput.value.trim();
+        const emailString = localEmailInput.value.trim();
+        const passwordString = localPassInput.value.trim();
 
-        if (!email || !password) {
+        if (!emailString || !passwordString) {
             customAlert("Please enter both email and password.");
             return;
         }
@@ -3396,18 +3403,18 @@
         setSafeText(submitLoginBtn, "Authenticating...");
 
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+            const userCredentialObject = await signInWithEmailAndPassword(auth, emailString, passwordString);
+            const userObject = userCredentialObject.user;
 
             isModeratorAuthenticated = true;
             
-            if (user.email === "dev@admin.com" || user.email === "dev@kathasagaram.com") {
+            if (userObject.email === "dev@admin.com" || userObject.email === "dev@kathasagaram.com") {
                 isDeveloperModeUnlocked = true;
-                try { sessionStorage.setItem('authMode', 'developer'); } catch(e) {}
+                try { sessionStorage.setItem('authMode', 'developer'); } catch(error) {}
                 customAlert("Authentication Successful (Dev)");
             } else {
                 isDeveloperModeUnlocked = false;
-                try { sessionStorage.setItem('authMode', 'moderator'); } catch(e) {}
+                try { sessionStorage.setItem('authMode', 'moderator'); } catch(error) {}
                 customAlert("Authentication Successful (Mod)");
             }
 
@@ -3433,21 +3440,21 @@
 
     function renderAccumulatedWinnersChips() {
         winnersChipsContainer.innerHTML = '';
-        accumulatedWinnersStateArray.forEach(name => {
-            const div = document.createElement('div');
-            div.className = "winner-chip";
-            setSafeText(div, name);
-            winnersChipsContainer.appendChild(div);
+        accumulatedWinnersStateArray.forEach(nameString => {
+            const divElement = document.createElement('div');
+            divElement.className = "winner-chip";
+            setSafeText(divElement, nameString);
+            winnersChipsContainer.appendChild(divElement);
         });
         correctGuesses.value = "";
     }
 
     correctGuesses.addEventListener('change', () => {
-        const selectedValue = correctGuesses.value;
-        if (!selectedValue) return;
+        const selectedWinnerValue = correctGuesses.value;
+        if (!selectedWinnerValue) return;
 
-        if (!accumulatedWinnersStateArray.includes(selectedValue)) {
-            accumulatedWinnersStateArray.push(selectedValue);
+        if (!accumulatedWinnersStateArray.includes(selectedWinnerValue)) {
+            accumulatedWinnersStateArray.push(selectedWinnerValue);
             renderAccumulatedWinnersChips();
         }
     });
@@ -3458,39 +3465,39 @@
         renderAccumulatedWinnersChips();
     });
 
-    async function loadCurrentStoryNotes(targetSelected) {
+    async function loadCurrentStoryNotes(targetSelectedStory) {
         document.getElementById('backToStoriesListBtn').classList.remove('hidden');
         document.getElementById('downloadStoryReviewsBtn').classList.remove('hidden');
-        const thead = document.getElementById('submissionsTableHead');
-        thead.innerHTML = '';
-        const headTr = document.createElement('tr');
-        const headers = ["Reviewer", "Rating", "Author Guess", "Suggested Title"];
-        headers.forEach(hText => {
-            const th = document.createElement('th');
-            const b = document.createElement('b');
-            setSafeText(b, hText);
-            th.appendChild(b);
-            headTr.appendChild(th);
+        const tableHeadElement = document.getElementById('submissionsTableHead');
+        tableHeadElement.innerHTML = '';
+        const headTableRowElement = document.createElement('tr');
+        const headersArray = ["Reviewer", "Rating", "Author Guess", "Suggested Title"];
+        headersArray.forEach(headerText => {
+            const tableHeaderElement = document.createElement('th');
+            const boldTextElement = document.createElement('b');
+            setSafeText(boldTextElement, headerText);
+            tableHeaderElement.appendChild(boldTextElement);
+            headTableRowElement.appendChild(tableHeaderElement);
         });
-        thead.appendChild(headTr);
+        tableHeadElement.appendChild(headTableRowElement);
 
         dailyReviewsTableBody.innerHTML = '';
         appendEmptyRow(dailyReviewsTableBody, 4, "Loading reviews...");
 
-        if (!targetSelected) {
+        if (!targetSelectedStory) {
             appendEmptyRow(dailyReviewsTableBody, 4, "Select a story to load submissions");
             return;
         }
 
-        if(storyDropdown.value !== targetSelected) {
-            storyDropdown.value = targetSelected;
+        if(storyDropdown.value !== targetSelectedStory) {
+            storyDropdown.value = targetSelectedStory;
         }
-        if(deleteStorySelect.value !== targetSelected) {
-            deleteStorySelect.value = targetSelected;
+        if(deleteStorySelect.value !== targetSelectedStory) {
+            deleteStorySelect.value = targetSelectedStory;
         }
 
         try {
-            const docSnap = await getDoc(doc(db, "competitions", targetSelected));
+            const documentSnapshot = await getDoc(doc(db, "competitions", targetSelectedStory));
 
             readerSuggestions.innerHTML = '';
             readerSuggestions.appendChild(createOption("", "-- Title --"));
@@ -3501,108 +3508,105 @@
 
             accumulatedWinnersStateArray = [];
             headingToReviewerMap = {};
-            let hasSuggestions = false;
-            let reviewCount = 0;
+            let hasSuggestionsBoolean = false;
+            let reviewCountInteger = 0;
             
             dailyReviewsTableBody.innerHTML = '';
 
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                activeStorySnapshotDataCache = data;
+            if (documentSnapshot.exists()) {
+                const dataObject = documentSnapshot.data();
+                activeStorySnapshotDataCache = dataObject;
 
-                let rawSavedHeadingMatchValue = data._suggestions || "";
-                let rawSavedSuggesterMatchValue = data._suggesterName || "";
-                let rawSavedAuthorGivenHeading = data._authorGivenHeading || "";
+                let rawSavedHeadingMatchValue = dataObject._suggestions || "";
+                let rawSavedSuggesterMatchValue = dataObject._suggesterName || "";
+                let rawSavedAuthorGivenHeading = dataObject._authorGivenHeading || "";
 
                 authorGivenHeadingInput.value = rawSavedAuthorGivenHeading !== "*****" ? rawSavedAuthorGivenHeading : "";
 
-                if (data._guesses && data._guesses !== "*****") {
-                    accumulatedWinnersStateArray = data._guesses.split(',').map(s => s.trim()).filter(s => s.length > 0);
+                if (dataObject._guesses && dataObject._guesses !== "*****") {
+                    accumulatedWinnersStateArray = dataObject._guesses.split(',').map(stringElement => stringElement.trim()).filter(stringElement => stringElement.length > 0);
                 }
 
-                Object.keys(data).forEach(reviewerKey => {
-                    if (reviewerKey !== 'created' && reviewerKey !== '_suggestions' && reviewerKey !== '_suggesterName' && reviewerKey !== '_guesses' && reviewerKey !== '_authorGivenHeading' && reviewerKey !== 'season') {
-                        reviewCount++;
-                        let score = "N/A";
-                        let title = "None";
-                        let guess = "None";
-                        let reviewDate = "N/A";
+                Object.keys(dataObject).forEach(reviewerKeyString => {
+                    if (reviewerKeyString !== 'created' && reviewerKeyString !== '_suggestions' && reviewerKeyString !== '_suggesterName' && reviewerKeyString !== '_guesses' && reviewerKeyString !== '_authorGivenHeading' && reviewerKeyString !== 'season') {
+                        reviewCountInteger++;
+                        let scoreValue = "N/A";
+                        let titleValue = "None";
+                        let guessValue = "None";
+                        let reviewDateValue = "N/A";
 
-                        if (typeof data[reviewerKey] === 'object' && data[reviewerKey] !== null) {
-                            score = data[reviewerKey].score ?? "N/A";
-                            title = data[reviewerKey].suggestedTitle || "None";
-                            guess = data[reviewerKey].authorGuess || "None";
-                            reviewDate = data[reviewerKey].date ?? "N/A";
+                        if (typeof dataObject[reviewerKeyString] === 'object' && dataObject[reviewerKeyString] !== null) {
+                            scoreValue = dataObject[reviewerKeyString].score ?? "N/A";
+                            titleValue = dataObject[reviewerKeyString].suggestedTitle || "None";
+                            guessValue = dataObject[reviewerKeyString].authorGuess || "None";
+                            reviewDateValue = dataObject[reviewerKeyString].date ?? "N/A";
                             
-                            const currentSuggestedTitle = data[reviewerKey].suggestedTitle ?? "";
-                            const currentAuthorGuess = data[reviewerKey].authorGuess ?? "";
+                            const currentSuggestedTitle = dataObject[reviewerKeyString].suggestedTitle ?? "";
+                            const currentAuthorGuess = dataObject[reviewerKeyString].authorGuess ?? "";
 
                             if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
-                                hasSuggestions = true;
-                                headingToReviewerMap[currentSuggestedTitle] = reviewerKey;
+                                hasSuggestionsBoolean = true;
+                                headingToReviewerMap[currentSuggestedTitle] = reviewerKeyString;
                                 
                                 readerSuggestions.appendChild(createOption(currentSuggestedTitle, currentSuggestedTitle));
-                                headingSuggesterInput.appendChild(createOption(reviewerKey, reviewerKey));
+                                headingSuggesterInput.appendChild(createOption(reviewerKeyString, reviewerKeyString));
                             }
 
                             if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
-                                correctGuesses.appendChild(createOption(reviewerKey, reviewerKey));
+                                correctGuesses.appendChild(createOption(reviewerKeyString, reviewerKeyString));
                             }
                         } else {
-                            score = data[reviewerKey];
-                            title = "Legacy";
+                            scoreValue = dataObject[reviewerKeyString];
+                            titleValue = "Legacy";
                         }
                         
-                        const tr = document.createElement('tr');
-                        const tdName = document.createElement('td'); 
-                        tdName.className = "font-bold cursor-pointer text-admin hover-text-primary";
-                        tdName.style.textDecoration = "underline";
-                        setSafeText(tdName, reviewerKey);
-                        tdName.onclick = (e) => {
-                            e.stopPropagation();
-                            openDetailedReviewModal(reviewerKey, score, guess, title, reviewDate);
+                        const tableRowElement = document.createElement('tr');
+                        const tableDataName = document.createElement('td'); 
+                        tableDataName.className = "font-bold cursor-pointer text-admin hover-text-primary";
+                        tableDataName.style.textDecoration = "underline";
+                        setSafeText(tableDataName, reviewerKeyString);
+                        tableDataName.onclick = (event) => {
+                            event.stopPropagation();
+                            openDetailedReviewModal(reviewerKeyString, scoreValue, guessValue, titleValue, reviewDateValue);
                         };
                         
-                        const tdScore = document.createElement('td'); setSafeText(tdScore, score);
-                        const tdGuess = document.createElement('td'); setSafeText(tdGuess, guess);
+                        const tableDataScore = document.createElement('td'); setSafeText(tableDataScore, scoreValue);
+                        const tableDataGuess = document.createElement('td'); setSafeText(tableDataGuess, guessValue);
                         
-                        const tdTitleBox = document.createElement('td');
-                        const titleWrapper = document.createElement('div');
-                        titleWrapper.className = "d-flex justify-center align-center gap-3";
+                        const tableDataTitleBox = document.createElement('td');
+                        const titleWrapperElement = document.createElement('div');
+                        titleWrapperElement.className = "d-flex justify-center align-center gap-3";
                         
-                        const titleText = document.createElement('span');
-                        titleText.className = "word-break";
-                        setSafeText(titleText, title);
-                        titleWrapper.appendChild(titleText);
+                        const titleTextElement = document.createElement('span');
+                        titleTextElement.className = "word-break";
+                        setSafeText(titleTextElement, titleValue);
+                        titleWrapperElement.appendChild(titleTextElement);
                         
-                        const btnCopy = document.createElement('button');
-                        btnCopy.type = "button";
-                        btnCopy.className = "btn-copy-small btn-copy-row";
-                        btnCopy.setAttribute('data-reviewer', reviewerKey);
-                        btnCopy.setAttribute('data-title', title);
-                        btnCopy.title = "Copy Reviewer & Title";
+                        const buttonCopyElement = document.createElement('button');
+                        buttonCopyElement.type = "button";
+                        buttonCopyElement.className = "btn-copy-small btn-copy-row";
+                        buttonCopyElement.setAttribute('data-reviewer', reviewerKeyString);
+                        buttonCopyElement.setAttribute('data-title', titleValue);
+                        buttonCopyElement.title = "Copy Reviewer & Title";
                         
-                        if(title === "None" || title === "Legacy" || !title) {
-                            btnCopy.style.opacity = "0.3";
-                            btnCopy.style.cursor = "not-allowed";
-                            btnCopy.disabled = true;
+                        if(titleValue === "None" || titleValue === "Legacy" || !titleValue) {
+                            buttonCopyElement.style.opacity = "0.3";
+                            buttonCopyElement.style.cursor = "not-allowed";
+                            buttonCopyElement.disabled = true;
                         } else {
-                            btnCopy.style.flexShrink = "0";
+                            buttonCopyElement.style.flexShrink = "0";
                         }
                         
-                        btnCopy.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                            </svg>`;
-                        titleWrapper.appendChild(btnCopy);
-                        tdTitleBox.appendChild(titleWrapper);
+                        buttonCopyElement.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+                        titleWrapperElement.appendChild(buttonCopyElement);
+                        tableDataTitleBox.appendChild(titleWrapperElement);
                         
-                        tr.appendChild(tdName);
-                        tr.appendChild(tdScore);
-                        tr.appendChild(tdGuess);
-                        tr.appendChild(tdTitleBox);
+                        tableRowElement.appendChild(tableDataName);
+                        tableRowElement.appendChild(tableDataScore);
+                        tableRowElement.appendChild(tableDataGuess);
+                        tableRowElement.appendChild(tableDataTitleBox);
                         
-                        dailyReviewsTableBody.appendChild(tr);
+                        dailyReviewsTableBody.appendChild(tableRowElement);
                     }
                 });
 
@@ -3611,7 +3615,7 @@
 
                 renderAccumulatedWinnersChips();
                 
-                if(reviewCount === 0) {
+                if(reviewCountInteger === 0) {
                     appendEmptyRow(dailyReviewsTableBody, 4, "No reviews submitted for this story yet.");
                 }
             } else {
@@ -3620,25 +3624,25 @@
                 authorGivenHeadingInput.value = "";
                 appendEmptyRow(dailyReviewsTableBody, 4, "Story data is empty or missing.");
             }
-        } catch(err) {
+        } catch(error) {
             appendEmptyRow(dailyReviewsTableBody, 4, "Error loading reviews.");
         }
     }
 
     saveModNameBtn.addEventListener('click', async () => {
         if((isSystemPaused && !isDeveloperModeUnlocked) || isNameLockedByMod) return;
-        const targetName = inputModName.value.trim();
-        if(!targetName || targetName === "Mod") { customAlert("Enter a valid custom signature identifier handle."); return; }
-        if(!(await customConfirm(`Are you sure you want to change the moderator name to "${targetName}"? This option cannot be modified again by a moderator once applied.`))) return;
+        const targetNameString = inputModName.value.trim();
+        if(!targetNameString || targetNameString === "Mod") { customAlert("Enter a valid custom signature identifier handle."); return; }
+        if(!(await customConfirm(`Are you sure you want to change the moderator name to "${targetNameString}"? This option cannot be modified again by a moderator once applied.`))) return;
 
         try {
             saveModNameBtn.disabled = true;
             await setDoc(doc(db, "app_state", "global_config"), {
-                modName: targetName,
+                modName: targetNameString,
                 isNameLocked: true
             }, { merge: true });
             customAlert("Moderator name locked and compiled successfully.");
-        } catch(e) {
+        } catch(error) {
             customAlert("Error processing profile modifications.");
             saveModNameBtn.disabled = false;
         }
@@ -3647,42 +3651,42 @@
     startSeasonBtn.addEventListener('click', async () => {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
         
-        const monthVal = inputMonth.value;
-        if(!monthVal) { customAlert("Please select a month to generate the season string."); return; }
+        const monthValueString = inputMonth.value;
+        if(!monthValueString) { customAlert("Please select a month to generate the season string."); return; }
         
-        const shortMonth = monthVal.substring(0, 3);
-        const yearSuffix = new Date().getFullYear().toString().slice(-2);
-        const generatedSeasonName = shortMonth + yearSuffix;
+        const shortMonthString = monthValueString.substring(0, 3);
+        const yearSuffixString = new Date().getFullYear().toString().slice(-2);
+        const generatedSeasonNameString = shortMonthString + yearSuffixString;
 
-        const guessTime = authorGuessLockTime.value.trim() || "23:59";
-        const titleTime = titleSuggestionLockTime.value.trim() || "23:59";
+        const guessTimeString = authorGuessLockTime.value.trim() || "23:59";
+        const titleTimeString = titleSuggestionLockTime.value.trim() || "23:59";
         
         try {
             await setDoc(doc(db, "app_state", "global_config"), {
-                month: monthVal,
+                month: monthValueString,
                 topic: inputTopic.value.trim() || "*****",
-                seasonName: generatedSeasonName,
+                seasonName: generatedSeasonNameString,
                 seasonStarted: true,
-                authorGuessLockTime: guessTime,
-                titleSuggestionLockTime: titleTime
+                authorGuessLockTime: guessTimeString,
+                titleSuggestionLockTime: titleTimeString
             }, { merge: true });
-            customAlert(`Season Configuration Saved.\nCurrent Season: ${generatedSeasonName}`);
-        } catch(e) { customAlert("Database error saving variables."); }
+            customAlert(`Season Configuration Saved.\nCurrent Season: ${generatedSeasonNameString}`);
+        } catch(error) { customAlert("Database error saving variables."); }
     });
 
-    async function handleStoryAddition(inputElement, actionButton) {
+    async function handleStoryAddition(inputElement, actionButtonElement) {
         if(isSystemPaused && !isDeveloperModeUnlocked) return;
-        const title = inputElement.value.trim();
-        if (!title) { customAlert("Enter a valid story title."); return; }
+        const titleString = inputElement.value.trim();
+        if (!titleString) { customAlert("Enter a valid story title."); return; }
         try {
-            actionButton.disabled = true;
-            await setDoc(doc(db, "competitions", title), { created: Date.now(), season: globalSeasonCache }, { merge: true });
+            actionButtonElement.disabled = true;
+            await setDoc(doc(db, "competitions", titleString), { created: Date.now(), season: globalSeasonCache }, { merge: true });
             dashboardNewStoryInput.value = '';
-            actionButton.disabled = false;
-            customAlert(`Added: "${title}"`);
-        } catch (err) {
+            actionButtonElement.disabled = false;
+            customAlert(`Added: "${titleString}"`);
+        } catch (error) {
             customAlert("Error writing story.");
-            actionButton.disabled = false;
+            actionButtonElement.disabled = false;
         }
     }
 
@@ -3690,10 +3694,10 @@
 
     if(btnPublishReleaseNotes) {
         btnPublishReleaseNotes.addEventListener('click', async () => {
-            const notes = devReleaseNotesInput.value.trim();
-            if (!notes) { customAlert("Please enter release notes before publishing this update."); return; }
+            const notesString = devReleaseNotesInput.value.trim();
+            if (!notesString) { customAlert("Please enter release notes before publishing this update."); return; }
             
-            const logEntry = `${GIT_BUILD_NUMBER} | ${notes}`;
+            const logEntryString = `${GIT_BUILD_NUMBER} | ${notesString}`;
             
             btnPublishReleaseNotes.disabled = true;
             setSafeText(btnPublishReleaseNotes, "Publishing...");
@@ -3703,127 +3707,121 @@
                     buildNumber: GIT_BUILD_NUMBER,
                     publishedDate: GIT_BUILD_DATE,
                     publishedTime: GIT_BUILD_TIME,
-                    changesMade: arrayUnion(logEntry)
+                    changesMade: arrayUnion(logEntryString)
                 }, { merge: true });
                 
                 devReleaseNotesInput.value = "";
                 customAlert(`Release notes published successfully.\nVersion updated to Build ${GIT_BUILD_NUMBER}.`);
-            } catch (err) {
+            } catch (error) {
                 customAlert("Error syncing version deployment metrics to Firestore storage collections.");
             } finally {
                 btnPublishReleaseNotes.disabled = false;
-                btnPublishReleaseNotes.innerHTML = `
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="17 8 12 3 7 8"></polyline>
-                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                    </svg>
-                    Publish Update Info`;
+                btnPublishReleaseNotes.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Publish Update Info`;
             }
         });
     }
 
     if(devVersionHistoryBtn) {
         devVersionHistoryBtn.addEventListener('click', () => {
-            const wrapperDiv = document.createElement('div');
-            wrapperDiv.style.maxHeight = "400px";
-            wrapperDiv.style.overflowY = "auto";
+            const wrapperDivElement = document.createElement('div');
+            wrapperDivElement.style.maxHeight = "400px";
+            wrapperDivElement.style.overflowY = "auto";
             
-            const table = document.createElement('table');
-            table.style.width = "100%"; table.style.borderCollapse = "collapse"; table.style.fontSize = "13px";
+            const tableElement = document.createElement('table');
+            tableElement.style.width = "100%"; tableElement.style.borderCollapse = "collapse"; tableElement.style.fontSize = "13px";
             
-            const thead = document.createElement('thead');
-            const thr = document.createElement('tr');
-            const th1 = document.createElement('th');
-            th1.className = "bg-admin text-white p-3 border-none"; th1.style.border = "1px solid #ccc"; setSafeText(th1, "Build Version");
-            const th2 = document.createElement('th');
-            th2.className = "bg-admin text-white p-3 border-none"; th2.style.border = "1px solid #ccc"; setSafeText(th2, "Updates");
-            thr.appendChild(th1); thr.appendChild(th2); thead.appendChild(thr); table.appendChild(thead);
+            const tableHeadElement = document.createElement('thead');
+            const tableRowElement = document.createElement('tr');
+            const tableHeaderOne = document.createElement('th');
+            tableHeaderOne.className = "bg-admin text-white p-3 border-none"; tableHeaderOne.style.border = "1px solid #ccc"; setSafeText(tableHeaderOne, "Build Version");
+            const tableHeaderTwo = document.createElement('th');
+            tableHeaderTwo.className = "bg-admin text-white p-3 border-none"; tableHeaderTwo.style.border = "1px solid #ccc"; setSafeText(tableHeaderTwo, "Updates");
+            tableRowElement.appendChild(tableHeaderOne); tableRowElement.appendChild(tableHeaderTwo); tableHeadElement.appendChild(tableRowElement); tableElement.appendChild(tableHeadElement);
             
-            const tbody = document.createElement('tbody');
+            const tableBodyElement = document.createElement('tbody');
             if (currentVersionState.changesMade.length === 0) {
-                const btr = document.createElement('tr');
-                const btd = document.createElement('td');
-                btd.colSpan = 2; btd.className = "text-center p-3 text-muted";
-                setSafeText(btd, "No version history available.");
-                btr.appendChild(btd); tbody.appendChild(btr);
+                const bodyRowElement = document.createElement('tr');
+                const bodyDataElement = document.createElement('td');
+                bodyDataElement.colSpan = 2; bodyDataElement.className = "text-center p-3 text-muted";
+                setSafeText(bodyDataElement, "No version history available.");
+                bodyRowElement.appendChild(bodyDataElement); tableBodyElement.appendChild(bodyRowElement);
             } else {
-                const reversedLogs = [...currentVersionState.changesMade].reverse();
-                reversedLogs.forEach(log => {
-                    let version = "Legacy";
-                    let updateTxt = log;
-                    if (log.includes(" | ")) {
-                        const parts = log.split(" | ");
-                        version = parts[0];
-                        updateTxt = parts.slice(1).join(" | ");
+                const reversedLogsArray = [...currentVersionState.changesMade].reverse();
+                reversedLogsArray.forEach(logString => {
+                    let versionString = "Legacy";
+                    let updateTextString = logString;
+                    if (logString.includes(" | ")) {
+                        const stringPartsArray = logString.split(" | ");
+                        versionString = stringPartsArray[0];
+                        updateTextString = stringPartsArray.slice(1).join(" | ");
                     }
-                    const btr = document.createElement('tr');
-                    const tdV = document.createElement('td');
-                    tdV.className = "p-3 font-bold white-space-nowrap text-center"; tdV.style.border = "1px solid #ccc";
-                    tdV.style.color = "var(--modal-text)"; setSafeText(tdV, version);
-                    const tdU = document.createElement('td');
-                    tdU.className = "p-3 text-left"; tdU.style.border = "1px solid #ccc";
-                    tdU.style.color = "var(--modal-text)"; setSafeText(tdU, updateTxt);
-                    btr.appendChild(tdV); btr.appendChild(tdU); tbody.appendChild(btr);
+                    const bodyRowElement = document.createElement('tr');
+                    const tableDataVersion = document.createElement('td');
+                    tableDataVersion.className = "p-3 font-bold white-space-nowrap text-center"; tableDataVersion.style.border = "1px solid #ccc";
+                    tableDataVersion.style.color = "var(--modal-text)"; setSafeText(tableDataVersion, versionString);
+                    const tableDataUpdate = document.createElement('td');
+                    tableDataUpdate.className = "p-3 text-left"; tableDataUpdate.style.border = "1px solid #ccc";
+                    tableDataUpdate.style.color = "var(--modal-text)"; setSafeText(tableDataUpdate, updateTextString);
+                    bodyRowElement.appendChild(tableDataVersion); bodyRowElement.appendChild(tableDataUpdate); tableBodyElement.appendChild(bodyRowElement);
                 });
             }
-            table.appendChild(tbody);
-            wrapperDiv.appendChild(table);
+            tableElement.appendChild(tableBodyElement);
+            wrapperDivElement.appendChild(tableElement);
             
-            showCustomModal('alert', wrapperDiv.outerHTML);
+            showCustomModal('alert', wrapperDivElement.outerHTML);
         });
     }
 
     sidebarAboutBtn.addEventListener('click', () => {
-        const wrapDiv = document.createElement('div');
-        wrapDiv.className = "text-left";
+        const wrapDivElement = document.createElement('div');
+        wrapDivElement.className = "text-left";
         
-        const titleSpan = document.createElement('span');
-        titleSpan.className = "text-md font-bold text-muted"; titleSpan.style.textTransform = "uppercase";
-        setSafeText(titleSpan, "Git Build Information");
-        wrapDiv.appendChild(titleSpan);
+        const titleSpanElement = document.createElement('span');
+        titleSpanElement.className = "text-md font-bold text-muted"; titleSpanElement.style.textTransform = "uppercase";
+        setSafeText(titleSpanElement, "Git Build Information");
+        wrapDivElement.appendChild(titleSpanElement);
 
-        const buildVersion = currentVersionState.buildNumber || GIT_BUILD_NUMBER;
-        const buildDate = currentVersionState.publishedDate || GIT_BUILD_DATE;
-        const buildTime = currentVersionState.publishedTime || GIT_BUILD_TIME;
+        const buildVersionString = currentVersionState.buildNumber || GIT_BUILD_NUMBER;
+        const buildDateString = currentVersionState.publishedDate || GIT_BUILD_DATE;
+        const buildTimeString = currentVersionState.publishedTime || GIT_BUILD_TIME;
 
-        const vDiv = document.createElement('div');
-        vDiv.className = "text-xxl font-bold mt-1"; vDiv.style.color = "var(--primary);";
-        setSafeText(vDiv, `Build Version: ${buildVersion}`);
-        wrapDiv.appendChild(vDiv);
+        const versionDivElement = document.createElement('div');
+        versionDivElement.className = "text-xxl font-bold mt-1"; versionDivElement.style.color = "var(--primary);";
+        setSafeText(versionDivElement, `Build Version: ${buildVersionString}`);
+        wrapDivElement.appendChild(versionDivElement);
         
-        const dDiv = document.createElement('div');
-        dDiv.className = "text-sm text-muted mb-4 mt-1";
-        setSafeText(dDiv, `Published: ${buildDate} at ${buildTime}`);
-        wrapDiv.appendChild(dDiv);
+        const dateDivElement = document.createElement('div');
+        dateDivElement.className = "text-sm text-muted mb-4 mt-1";
+        setSafeText(dateDivElement, `Published: ${buildDateString} at ${buildTimeString}`);
+        wrapDivElement.appendChild(dateDivElement);
         
-        const hr = document.createElement('hr');
-        hr.className = "border-none border-dashed mb-3 mt-3 m-0"; hr.style.borderTop = "1px dashed var(--border-color)";
-        wrapDiv.appendChild(hr);
+        const horizontalRuleElement = document.createElement('hr');
+        horizontalRuleElement.className = "border-none border-dashed mb-3 mt-3 m-0"; horizontalRuleElement.style.borderTop = "1px dashed var(--border-color)";
+        wrapDivElement.appendChild(horizontalRuleElement);
         
-        const updatesLbl = document.createElement('label');
-        updatesLbl.className = "text-lg font-bold mb-1 block"; updatesLbl.style.color = "var(--h3-color)";
-        setSafeText(updatesLbl, "Latest Developer Updates:");
-        wrapDiv.appendChild(updatesLbl);
+        const updatesLabelElement = document.createElement('label');
+        updatesLabelElement.className = "text-lg font-bold mb-1 block"; updatesLabelElement.style.color = "var(--h3-color)";
+        setSafeText(updatesLabelElement, "Latest Developer Updates:");
+        wrapDivElement.appendChild(updatesLabelElement);
         
-        const ul = document.createElement('ul');
-        ul.className = "about-list";
+        const unorderedListElement = document.createElement('ul');
+        unorderedListElement.className = "about-list";
         if (currentVersionState.changesMade.length > 0) {
-            const mirroredArray = [...currentVersionState.changesMade].reverse();
-            mirroredArray.forEach(log => {
-                let text = log;
-                if (log.includes(" | ")) {
-                    text = log.split(" | ").slice(1).join(" | ");
+            const mirroredArrayCollection = [...currentVersionState.changesMade].reverse();
+            mirroredArrayCollection.forEach(logString => {
+                let textString = logString;
+                if (logString.includes(" | ")) {
+                    textString = logString.split(" | ").slice(1).join(" | ");
                 }
-                const li = document.createElement('li'); setSafeText(li, text); ul.appendChild(li);
+                const listItemElement = document.createElement('li'); setSafeText(listItemElement, textString); unorderedListElement.appendChild(listItemElement);
             });
         } else {
-            const li = document.createElement('li'); setSafeText(li, "Initial base system framework architecture initialized."); ul.appendChild(li);
+            const listItemElement = document.createElement('li'); setSafeText(listItemElement, "Initial base system framework architecture initialized."); unorderedListElement.appendChild(listItemElement);
         }
-        wrapDiv.appendChild(ul);
+        wrapDivElement.appendChild(unorderedListElement);
         
         toggleMenu(false);
-        showCustomModal('alert', wrapDiv.outerHTML);
+        showCustomModal('alert', wrapDivElement.outerHTML);
     });
 
     sidebarManualBtn.addEventListener('click', () => {
@@ -3832,106 +3830,10 @@
 
         if (isModeratorAuthenticated) {
             manualHeadingTarget.innerHTML = "🛠️ Moderator & Developer Manual";
-            manualContentContainer.innerHTML = `
-                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Administrative workflow mapping guide for moderators and system developers:</p>
-                <table class="manual-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 45%; text-align: center;">Control Representation</th>
-                            <th style="text-align: center;">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>🎨 Theme</option></select></td>
-                            <td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><div class="d-flex justify-center align-center gap-1 text-sm font-bold text-white">Guess Author <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--primary);"></span></label></div></td>
-                            <td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><div class="d-flex justify-center align-center gap-1 text-sm font-bold text-white">Title Sugg. <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--primary);"></span></label></div></td>
-                            <td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Start Season</button></td>
-                            <td class="one-sentence-def">Commits the active subject text properties, automatically generates the season name (e.g. May26), and unlocks all other advanced moderator tools.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Update</button></td>
-                            <td class="one-sentence-def">Synchronizes manual time lock updates globally across databases after edits.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><div class="d-flex align-center justify-center gap-1"><input type="text" placeholder="Handle" class="text-xs p-1 w-auto radius-1"><button class="bg-admin text-white border-none p-1 radius-1">💾</button></div></td>
-                            <td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Preview</button></td>
-                            <td class="one-sentence-def">Compiles filtered seasonal competition submissions into a responsive, scrollable fullscreen preview canvas.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><button style="background:var(--primary);" class="text-white text-xs p-1 px-2 border-none radius-1">⬇ Download</button></td>
-                            <td class="one-sentence-def">Compresses filtered live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><button class="bg-admin text-white text-xs p-1 px-4 border-none radius-1">Save</button></td>
-                            <td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><div class="inline-block align-center gap-2 bg-dark p-1 border-gold radius-1"><span class="color-gold-alt text-sm">♛ Exc. Mode</span> <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--danger);"></span></label></div></td>
-                            <td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><button style="background:#FFD700; color:black;" class="font-bold text-xs p-1 px-2 border-none radius-1">Season Reset</button></td>
-                            <td class="one-sentence-def">Restores baseline identity names, sets season to Jan00, and hides moderator features back to initial setup environments.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
+            manualContentContainer.innerHTML = `<p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Administrative workflow mapping guide for moderators and system developers:</p><table class="manual-table"><thead><tr><th style="width: 45%; text-align: center;">Control Representation</th><th style="text-align: center;">Description</th></tr></thead><tbody><tr><td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>🎨 Theme</option></select></td><td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td></tr><tr><td class="text-center"><div class="d-flex justify-center align-center gap-1 text-sm font-bold text-white">Guess Author <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--primary);"></span></label></div></td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td></tr><tr><td class="text-center"><div class="d-flex justify-center align-center gap-1 text-sm font-bold text-white">Title Sugg. <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--primary);"></span></label></div></td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td></tr><tr><td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Start Season</button></td><td class="one-sentence-def">Commits the active subject text properties, automatically generates the season name (e.g. May26), and unlocks all other advanced moderator tools.</td></tr><tr><td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Update</button></td><td class="one-sentence-def">Synchronizes manual time lock updates globally across databases after edits.</td></tr><tr><td class="text-center"><div class="d-flex align-center justify-center gap-1"><input type="text" placeholder="Handle" class="text-xs p-1 w-auto radius-1"><button class="bg-admin text-white border-none p-1 radius-1">💾</button></div></td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout.</td></tr><tr><td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Preview</button></td><td class="one-sentence-def">Compiles filtered seasonal competition submissions into a responsive, scrollable fullscreen preview canvas.</td></tr><tr><td class="text-center"><button style="background:var(--primary);" class="text-white text-xs p-1 px-2 border-none radius-1">⬇ Download</button></td><td class="one-sentence-def">Compresses filtered live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr><tr><td class="text-center"><button class="bg-admin text-white text-xs p-1 px-4 border-none radius-1">Save</button></td><td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td></tr><tr><td class="text-center"><div class="inline-block align-center gap-2 bg-dark p-1 border-gold radius-1"><span class="color-gold-alt text-sm">♛ Exc. Mode</span> <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--danger);"></span></label></div></td><td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td></tr><tr><td class="text-center"><button style="background:#FFD700; color:black;" class="font-bold text-xs p-1 px-2 border-none radius-1">Season Reset</button></td><td class="one-sentence-def">Restores baseline identity names, sets season to Jan00, and hides moderator features back to initial setup environments.</td></tr></tbody></table>`;
         } else {
             manualHeadingTarget.innerHTML = "📖 Reviewer User Manual";
-            manualContentContainer.innerHTML = `
-                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Operational guidelines for evaluating contemporary writing selections:</p>
-                <table class="manual-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 45%; text-align: center;">Control Representation</th>
-                            <th style="text-align: center;">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>🎨 Classic Light</option></select></td>
-                            <td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>📖 Select Story...</option></select></td>
-                            <td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.<span class="manual-condition-text">Condition: Choosing a previously reviewed story automatically repopulates all inputs with your past evaluations.</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="text" placeholder="Enter your Name" class="text-xs p-1 w-auto radius-1 bg-admin text-white border-none"></td>
-                            <td class="one-sentence-def">Identifies your submitted grading entries securely so that scores compile properly on metrics ledgers.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><input type="text" placeholder="Rating" class="text-xs p-1 w-auto radius-1 bg-admin text-white border-none"></td>
-                            <td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.<span class="manual-condition-text">Condition: Must be an integer from 1-10. Rating is single-vote locked, cannot be altered after 18:00 IST for current-day entries, and cannot be changed for previous days' stories.</span></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><button style="background:var(--primary);" class="text-white text-xs p-1 px-2 border-none radius-1">Submit Review</button></td>
-                            <td class="one-sentence-def">Dispatches your scores, title choices, and writer speculations directly onto cloud servers.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><button style="background:var(--accent);" class="text-white text-xs p-1 px-2 border-none radius-1">Give App Feedback</button></td>
-                            <td class="one-sentence-def">Opens an encrypted submission page to route development requests directly to programming teams.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><div class="d-flex justify-center"><button class="text-xs p-1 px-2 bg-admin text-white border-none">Reviewer</button></div></td>
-                            <td class="one-sentence-def">Navigates between public entry scoring blocks and secured dashboard user login configurations.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
+            manualContentContainer.innerHTML = `<p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Operational guidelines for evaluating contemporary writing selections:</p><table class="manual-table"><thead><tr><th style="width: 45%; text-align: center;">Control Representation</th><th style="text-align: center;">Description</th></tr></thead><tbody><tr><td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>🎨 Classic Light</option></select></td><td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td></tr><tr><td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>📖 Select Story...</option></select></td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.<span class="manual-condition-text">Condition: Choosing a previously reviewed story automatically repopulates all inputs with your past evaluations.</span></td></tr><tr><td class="text-center"><input type="text" placeholder="Enter your Name" class="text-xs p-1 w-auto radius-1 bg-admin text-white border-none"></td><td class="one-sentence-def">Identifies your submitted grading entries securely so that scores compile properly on metrics ledgers.</td></tr><tr><td class="text-center"><input type="text" placeholder="Rating" class="text-xs p-1 w-auto radius-1 bg-admin text-white border-none"></td><td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.<span class="manual-condition-text">Condition: Must be an integer from 1-10. Rating is single-vote locked, cannot be altered after 18:00 IST for current-day entries, and cannot be changed for previous days' stories.</span></td></tr><tr><td class="text-center"><button style="background:var(--primary);" class="text-white text-xs p-1 px-2 border-none radius-1">Submit Review</button></td><td class="one-sentence-def">Dispatches your scores, title choices, and writer speculations directly onto cloud servers.</td></tr><tr><td class="text-center"><button style="background:var(--accent);" class="text-white text-xs p-1 px-2 border-none radius-1">Give App Feedback</button></td><td class="one-sentence-def">Opens an encrypted submission page to route development requests directly to programming teams.</td></tr><tr><td class="text-center"><div class="d-flex justify-center"><button class="text-xs p-1 px-2 bg-admin text-white border-none">Reviewer</button></div></td><td class="one-sentence-def">Navigates between public entry scoring blocks and secured dashboard user login configurations.</td></tr></tbody></table>`;
         }
 
         fullscreenManualOverlay.classList.remove('hidden');
@@ -3943,72 +3845,53 @@
         document.body.style.overflow = "";
     });
 
-    async function compileMasterDataMatrix(seasonFilter = "All") {
-        const querySnapshot = await getDocs(collection(db, "competitions"));
-        const currentDateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    async function compileMasterDataMatrix(seasonFilterString = "All") {
+        const querySnapshotObject = await getDocs(collection(db, "competitions"));
+        const currentDateFormattedString = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
-        let spreadsheetStringTemplate = `
-            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-            <head>
-                <meta charset="UTF-8">
-                <style>
-                    table { border-collapse: collapse; width: 100%; font-family: sans-serif; }
-                    th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }
-                    td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }
-                    .story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }
-                </style>
-            </head>
-            <body>
-                <table>
-        `;
+        let spreadsheetStringTemplate = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }</style></head><body><table>`;
 
-        let tempTableBodyContent = "";
-        let stories = [];
+        let tempTableBodyContentString = "";
+        let storiesArray = [];
         
-        querySnapshot.forEach(doc => {
-            const data = doc.data();
-            const storedSeason = data.season || "Legacy";
+        querySnapshotObject.forEach(documentItem => {
+            const dataObject = documentItem.data();
+            const storedSeasonString = dataObject.season || "Legacy";
             
-            if (seasonFilter === "All" || seasonFilter === storedSeason) {
-                stories.push({ id: doc.id, data: data });
+            if (seasonFilterString === "All" || seasonFilterString === storedSeasonString) {
+                storiesArray.push({ id: documentItem.id, data: dataObject });
             }
         });
         
-        stories.sort((a, b) => (b.data.created || 0) - (a.data.created || 0));
+        storiesArray.sort((elementA, elementB) => (elementB.data.created || 0) - (elementA.data.created || 0));
 
-        if (stories.length === 0) {
-            const emptyMsg = `<tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilter}</td></tr>`;
-            return { rawHtmlTemplate: spreadsheetStringTemplate + `</table></body></html>`, tableBodyRows: emptyMsg };
+        if (storiesArray.length === 0) {
+            const emptyMessageString = `<tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilterString}</td></tr>`;
+            return { rawHtmlTemplate: spreadsheetStringTemplate + `</table></body></html>`, tableBodyRows: emptyMessageString };
         }
 
-        stories.forEach((story) => {
-            const data = story.data;
-            const storyTitle = sanitizeText(story.id);
+        storiesArray.forEach((storyObject) => {
+            const dataObject = storyObject.data;
+            const storyTitleString = sanitizeText(storyObject.id);
 
-            spreadsheetStringTemplate += `
-                <tr><th colspan="5" class="story-heading">📖 Story: ${storyTitle}</th></tr>
-                <tr><th><b>Date</b></th><th><b>Reviewer Name</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>
-            `;
+            spreadsheetStringTemplate += `<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer Name</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>`;
 
-            tempTableBodyContent += `
-                <tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitle}</th></tr>
-                <tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer Name</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>
-            `;
+            tempTableBodyContentString += `<tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitleString}</th></tr><tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer Name</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>`;
 
-            let reviewRows = [];
-            Object.keys(data).forEach(key => {
-                if (key !== 'created' && key !== '_suggestions' && key !== '_suggesterName' && key !== '_guesses' && key !== '_authorGivenHeading' && key !== 'season') {
-                    if (typeof data[key] === 'object' && data[key] !== null) {
-                        reviewRows.push({
-                            reviewer: sanitizeText(key),
-                            score: sanitizeText(data[key].score ?? "N/A"),
-                            title: sanitizeText(data[key].suggestedTitle ?? "None"),
-                            guess: sanitizeText(data[key].authorGuess ?? "None")
+            let reviewRowsArray = [];
+            Object.keys(dataObject).forEach(keyString => {
+                if (keyString !== 'created' && keyString !== '_suggestions' && keyString !== '_suggesterName' && keyString !== '_guesses' && keyString !== '_authorGivenHeading' && keyString !== 'season') {
+                    if (typeof dataObject[keyString] === 'object' && dataObject[keyString] !== null) {
+                        reviewRowsArray.push({
+                            reviewer: sanitizeText(keyString),
+                            score: sanitizeText(dataObject[keyString].score ?? "N/A"),
+                            title: sanitizeText(dataObject[keyString].suggestedTitle ?? "None"),
+                            guess: sanitizeText(dataObject[keyString].authorGuess ?? "None")
                         });
                     } else {
-                        reviewRows.push({
-                            reviewer: sanitizeText(key),
-                            score: sanitizeText(data[key]),
+                        reviewRowsArray.push({
+                            reviewer: sanitizeText(keyString),
+                            score: sanitizeText(dataObject[keyString]),
                             title: "Legacy",
                             guess: "None"
                         });
@@ -4016,37 +3899,37 @@
                 }
             });
 
-            if (reviewRows.length === 0) {
-                const emptyRow = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">No reviews submitted yet</td></tr>`;
-                spreadsheetStringTemplate += emptyRow;
-                tempTableBodyContent += emptyRow;
+            if (reviewRowsArray.length === 0) {
+                const emptyRowString = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">No reviews submitted yet</td></tr>`;
+                spreadsheetStringTemplate += emptyRowString;
+                tempTableBodyContentString += emptyRowString;
             } else {
-                reviewRows.forEach(review => {
-                    const rowHtml = `<tr><td>${currentDateStr}</td><td>${review.reviewer}</td><td>${review.score}</td><td>${review.guess}</td><td>${review.title}</td></tr>`;
-                    spreadsheetStringTemplate += rowHtml;
-                    tempTableBodyContent += rowHtml;
+                reviewRowsArray.forEach(reviewObject => {
+                    const rowHtmlString = `<tr><td>${currentDateFormattedString}</td><td>${reviewObject.reviewer}</td><td>${reviewObject.score}</td><td>${reviewObject.guess}</td><td>${reviewObject.title}</td></tr>`;
+                    spreadsheetStringTemplate += rowHtmlString;
+                    tempTableBodyContentString += rowHtmlString;
                 });
             }
         });
 
         spreadsheetStringTemplate += `</table></body></html>`;
 
-        return { rawHtmlTemplate: spreadsheetStringTemplate, tableBodyRows: tempTableBodyContent };
+        return { rawHtmlTemplate: spreadsheetStringTemplate, tableBodyRows: tempTableBodyContentString };
     }
 
     async function loadPreviewTable() {
-        const badge = document.getElementById('previewLoadingBadge');
-        const tbody = document.getElementById('previewTableBody');
-        badge.style.display = "inline";
+        const badgeElement = document.getElementById('previewLoadingBadge');
+        const tableBodyElement = document.getElementById('previewTableBody');
+        badgeElement.style.display = "inline";
         
         try {
-            const tgtSeason = document.getElementById('previewSeasonSelect').value;
-            const matrixData = await compileMasterDataMatrix(tgtSeason);
-            tbody.innerHTML = matrixData.tableBodyRows;
-        } catch (e) {
-            appendEmptyRow(tbody, 5, "Error compiling data.");
+            const targetSeasonString = document.getElementById('previewSeasonSelect').value;
+            const matrixDataObject = await compileMasterDataMatrix(targetSeasonString);
+            tableBodyElement.innerHTML = matrixDataObject.tableBodyRows;
+        } catch (error) {
+            appendEmptyRow(tableBodyElement, 5, "Error compiling data.");
         } finally {
-            badge.style.display = "none";
+            badgeElement.style.display = "none";
         }
     }
 
@@ -4076,32 +3959,32 @@
     });
 
     document.getElementById('confirmDownloadBtn').addEventListener('click', async () => {
-        const btn = document.getElementById('confirmDownloadBtn');
-        btn.disabled = true;
-        setSafeText(btn, "Processing...");
+        const buttonElement = document.getElementById('confirmDownloadBtn');
+        buttonElement.disabled = true;
+        setSafeText(buttonElement, "Processing...");
 
         try {
-            const tgtSeason = document.getElementById('downloadSeasonSelect').value;
-            const matrixData = await compileMasterDataMatrix(tgtSeason);
+            const targetSeasonString = document.getElementById('downloadSeasonSelect').value;
+            const matrixDataObject = await compileMasterDataMatrix(targetSeasonString);
 
-            const blob = new Blob([matrixData.rawHtmlTemplate], { type: "text/html;charset=utf-8" });
-            const downloadUrl = URL.createObjectURL(blob);
+            const blobObject = new Blob([matrixDataObject.rawHtmlTemplate], { type: "text/html;charset=utf-8" });
+            const downloadUrlPath = URL.createObjectURL(blobObject);
 
-            const clientLink = document.createElement("a");
-            clientLink.href = downloadUrl;
-            clientLink.download = `Competition_Master_Data_${tgtSeason}_${new Date().toISOString().split('T')[0]}.html`;
+            const clientLinkElement = document.createElement("a");
+            clientLinkElement.href = downloadUrlPath;
+            clientLinkElement.download = `Competition_Master_Data_${targetSeasonString}_${new Date().toISOString().split('T')[0]}.html`;
 
-            document.body.appendChild(clientLink);
-            clientLink.click();
-            document.body.removeChild(clientLink);
+            document.body.appendChild(clientLinkElement);
+            clientLinkElement.click();
+            document.body.removeChild(clientLinkElement);
 
             document.getElementById('downloadSeasonModal').classList.add('hidden');
             customAlert("📊 Data payload compressed and exported securely.");
-        } catch (err) {
+        } catch (error) {
             customAlert("Error exporting document file streams.");
         } finally {
-            btn.disabled = false;
-            setSafeText(btn, "Download");
+            buttonElement.disabled = false;
+            setSafeText(buttonElement, "Download");
         }
     });
 
@@ -4117,7 +4000,7 @@
                     seasonStarted: false
                 }, { merge: true });
                 customAlert("Season reset successfully.");
-            } catch(e) {
+            } catch(error) {
                 customAlert("Error resetting season.");
             }
         }
@@ -4125,20 +4008,20 @@
 
     function checkAndRestoreSession() {
         try {
-            const savedAuth = sessionStorage.getItem('authMode');
+            const savedAuthString = sessionStorage.getItem('authMode');
 
-            if (savedAuth === 'developer') {
+            if (savedAuthString === 'developer') {
                 isModeratorAuthenticated = true;
                 isDeveloperModeUnlocked = true;
                 sidebarModOptions.classList.remove('hidden');
                 navBtnModerator.click();
-            } else if (savedAuth === 'moderator') {
+            } else if (savedAuthString === 'moderator') {
                 isModeratorAuthenticated = true;
                 isDeveloperModeUnlocked = false;
                 sidebarModOptions.classList.remove('hidden');
                 navBtnModerator.click(); 
             }
-        } catch (e) {}
+        } catch (error) {}
     }
 
     checkAndRestoreSession();
@@ -4150,7 +4033,7 @@
             try {
                 await signOut(auth);
                 sessionStorage.removeItem('authMode'); 
-            } catch(e) {}
+            } catch(error) {}
 
             isModeratorAuthenticated = false;
             isDeveloperModeUnlocked = false;
