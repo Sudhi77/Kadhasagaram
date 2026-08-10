@@ -202,17 +202,17 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            height: 44px;
-            padding: 0 12px !important;
+            padding: 10px 14px;
             background-color: var(--input-bg);
             color: var(--input-text);
             border: var(--border);
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
             user-select: none;
             box-sizing: border-box;
+            min-height: 42px;
         }
 
         .custom-select-trigger:hover {
@@ -592,28 +592,15 @@
             color: var(--h3-color);
         }
 
-        input[type="text"], input[type="password"], input[type="number"], select {
+        input[type="text"], input[type="password"], input[type="number"], textarea, select {
             width: 100%;
-            height: 44px;
-            padding: 0 12px;
+            padding: 10px;
             border: var(--border);
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 16px;
             background-color: var(--input-bg);
             color: var(--input-text);
-        }
-        
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: var(--border);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-            background-color: var(--input-bg);
-            color: var(--input-text);
-            resize: vertical;
         }
         
         input::placeholder, textarea::placeholder {
@@ -1132,7 +1119,6 @@
             width: 75px !important;
             padding: 4px !important;
             font-size: 13px !important;
-            height: auto !important;
             border-radius: 4px !important;
             border: var(--border) !important;
             background: var(--input-bg) !important;
@@ -1322,7 +1308,7 @@
                 <label for="inputModName">Moderator Name</label>
                 <div class="d-flex gap-3 align-center">
                     <input type="text" id="inputModName" placeholder="Handle" class="m-0 flex-1">
-                    <button type="button" id="saveModNameBtn" class="btn-mod-action d-flex align-center justify-center w-auto" style="padding: 10px 20px; width: max-content;" title="Save Profile">
+                    <button type="button" id="saveModNameBtn" class="btn-mod-action padding-10-15 d-flex align-center justify-center w-auto" title="Save Profile">
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 16v-9"></path>
                             <path d="M8 11l4-4 4 4"></path>
@@ -1353,7 +1339,7 @@
                         <option value="December">December</option>
                     </select>
                     
-                    <button type="button" id="startSeasonBtn" class="btn-mod-action w-max m-0" style="padding: 10px 20px; width: max-content;">Start Season</button>
+                    <button type="button" id="startSeasonBtn" class="btn-mod-action w-max m-0 padding-10-15">Start Season</button>
                 </div>
             </div>
 
@@ -1388,7 +1374,7 @@
                 </div>
 
                 <div class="d-flex justify-end w-100 mb-4 mt-neg-5" style="margin-top:-5px;">
-                    <button type="button" id="updateLockTimesBtn" class="btn-mod-action text-md" style="padding: 10px 20px; width: max-content;">Update</button>
+                    <button type="button" id="updateLockTimesBtn" class="btn-mod-action w-max padding-6-12 text-md">Update</button>
                 </div>
 
                 <div class="form-group mt-5">
@@ -1495,13 +1481,13 @@
                     <label for="titleSuggestion">Suggest a Title <span class="font-normal text-placeholder">(Optional)</span></label>
                     <input type="text" id="titleSuggestion" placeholder="Title suggestion">
                 </div>
-                <button type="submit" id="submitRatingBtn" style="padding: 10px 20px; width: max-content;">Submit Review</button>
+                <button type="submit" id="submitRatingBtn">Submit Review</button>
             </form>
         </div>
 
         <div class="plain-section mt-5 text-center border-dashed pt-3">
             <p class="text-lg text-muted mt-0">Have suggestions to improve this web app?</p>
-            <button type="button" id="goToFeedbackBtn" class="btn-accent w-auto" style="padding: 10px 20px; width: max-content;">Give App Feedback</button>
+            <button type="button" id="goToFeedbackBtn" class="btn-accent w-auto">Give App Feedback</button>
         </div>
     </div>
 
@@ -1517,8 +1503,8 @@
             <textarea id="feedbackTextInput" rows="5" placeholder="Tell us what you think or what features can be added..." required></textarea>
         </div>
         <div class="form-group">
-            <button type="button" id="submitFeedbackBtn" class="btn-accent" style="padding: 10px 20px; width: max-content;">Submit Feedback</button>
-            <button type="button" id="cancelFeedbackBtn" class="shadow-none" style="background-color: var(--input-bg); color: var(--h3-color); padding: 10px 20px; width: max-content;">Cancel / Back</button>
+            <button type="button" id="submitFeedbackBtn" class="btn-accent">Submit Feedback</button>
+            <button type="button" id="cancelFeedbackBtn" class="shadow-none" style="background-color: var(--input-bg); color: var(--h3-color);">Cancel / Back</button>
         </div>
     </div>
 
@@ -1533,7 +1519,7 @@
             <label for="localPassInput">Enter Password</label>
             <input type="password" id="localPassInput" placeholder="••••••••">
         </div>
-        <button type="button" id="submitLoginBtn" class="btn-mod-action" style="padding: 10px 20px; width: max-content;">Unlock Control Panels</button>
+        <button type="button" id="submitLoginBtn" class="btn-mod-action">Unlock Control Panels</button>
     </div>
 
     <div id="modInterface" class="hidden">
@@ -1571,7 +1557,7 @@
                 <h3 class="m-0 text-xl text-admin">Add New Story</h3>
                 <div class="d-flex gap-4 align-center">
                     <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." class="flex-1 m-0">
-                    <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action m-0 d-flex align-center justify-center" style="padding: 10px 20px; width: max-content;" title="Upload Story">
+                    <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action padding-10-15 m-0 d-flex align-center justify-center" title="Upload Story">
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 16.5A5.5 5.5 0 0 0 17.5 6h-1.26A8 8 0 1 0 4 15.25"></path>
                             <polyline points="16 11 12 7 8 11"></polyline>
@@ -1581,7 +1567,7 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-col gap-4 mb-4 mt-5">
+            <div class="d-flex flex-col gap-4 mb-4 mt-5 border-dashed pt-3">
                 <label for="deleteStorySelect" class="text-xl text-admin m-0 font-bold">📖 Select Story</label>
                 <div class="d-flex gap-4 align-center">
                     <select id="deleteStorySelect" class="flex-1 m-0 p-3 text-lg border-admin"></select>
@@ -1596,14 +1582,14 @@
             <div class="d-flex justify-between align-center mb-2">
                 <label class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
                 <div class="d-flex gap-3 align-center">
-                    <button type="button" id="downloadStoryReviewsBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 6px 12px; display: flex; align-items: center; justify-content: center; width: max-content; height: max-content;" title="Download Reviews">
+                    <button type="button" id="downloadStoryReviewsBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 4px 8px; display: flex; align-items: center; justify-content: center;" title="Download Reviews">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="7 10 12 15 17 10"></polyline>
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
                     </button>
-                    <button type="button" id="backToStoriesListBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer font-bold text-sm" style="padding: 6px 12px; width: max-content; height: max-content;">Back</button>
+                    <button type="button" id="backToStoriesListBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer font-bold text-sm" style="padding: 4px 12px; width: max-content;">Back</button>
                 </div>
             </div>
             <div class="webview-scroll-frame mb-5 radius-2" style="border: var(--border);">
@@ -1657,7 +1643,7 @@
                 </div>
                 <div id="winnersChipsContainer" class="winners-tags-container"></div>
             </div>
-            <button type="button" id="saveNotesBtn" class="btn-mod-action" style="padding: 10px 20px; width: max-content;">Save</button>
+            <button type="button" id="saveNotesBtn" class="btn-mod-action w-max padding-10-40">Save</button>
         </div>
     </div>
 
@@ -1854,10 +1840,6 @@
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, deleteDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
     class CustomDropdown {
         constructor(nativeSelect) {
             this.select = nativeSelect;
@@ -2144,6 +2126,10 @@
             return result;
         };
     });
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
     const dateModified = new Date(document.lastModified);
     const utcTime = dateModified.getTime() + (dateModified.getTimezoneOffset() * 60000);
@@ -2533,7 +2519,7 @@
 
     const currentDateDisplayElement = document.getElementById('currentDateDisplay');
     const currentDayDisplayElement = document.getElementById('currentDayDisplay');
-    if(currentDateDisplayElement) setSafeText(currentDateDisplayElement, `${initialDayString}/${initialMonthName.substring(0, 3)}/${initialYearString}`);
+    if(currentDateDisplayElement) setSafeText(currentDateDisplayElement, `${initialDayString} ${initialMonthName} ${initialYearString}`);
     if(currentDayDisplayElement) setSafeText(currentDayDisplayElement, initialDayName);
 
     function createOption(value, text) {
@@ -3394,20 +3380,6 @@
     deleteStorySelect.addEventListener('change', () => {
         loadCurrentStoryNotes(deleteStorySelect.value);
     });
-
-    const deleteStoryBtn = document.getElementById('deleteStoryBtn');
-    deleteStoryBtn.addEventListener('click', async () => {
-        const storyToDelete = deleteStorySelect.value;
-        if (!storyToDelete) return;
-        if (await customConfirm(`Are you sure you want to delete "${storyToDelete}" and all its data?`)) {
-            try {
-                await deleteDoc(doc(db, "competitions", storyToDelete));
-                customAlert(`Story "${storyToDelete}" deleted successfully.`);
-            } catch(error) {
-                customAlert("Error deleting story.");
-            }
-        }
-    });
     
     readerSuggestions.addEventListener('change', () => {
         const selectedHeadingValue = readerSuggestions.value;
@@ -3438,11 +3410,11 @@
             
             if (userObject.email === "dev@admin.com" || userObject.email === "dev@kathasagaram.com") {
                 isDeveloperModeUnlocked = true;
-                try { localStorage.setItem('authMode', 'developer'); } catch(error) {}
+                try { sessionStorage.setItem('authMode', 'developer'); } catch(error) {}
                 customAlert("Authentication Successful (Dev)");
             } else {
                 isDeveloperModeUnlocked = false;
-                try { localStorage.setItem('authMode', 'moderator'); } catch(error) {}
+                try { sessionStorage.setItem('authMode', 'moderator'); } catch(error) {}
                 customAlert("Authentication Successful (Mod)");
             }
 
@@ -3499,7 +3471,7 @@
         const tableHeadElement = document.getElementById('submissionsTableHead');
         tableHeadElement.innerHTML = '';
         const headTableRowElement = document.createElement('tr');
-        const headersArray = ["Reviewer Name", "Date"];
+        const headersArray = ["Reviewer", "Rating", "Author Guess", "Suggested Title"];
         headersArray.forEach(headerText => {
             const tableHeaderElement = document.createElement('th');
             const boldTextElement = document.createElement('b');
@@ -3510,10 +3482,10 @@
         tableHeadElement.appendChild(headTableRowElement);
 
         dailyReviewsTableBody.innerHTML = '';
-        appendEmptyRow(dailyReviewsTableBody, 2, "Loading reviews...");
+        appendEmptyRow(dailyReviewsTableBody, 4, "Loading reviews...");
 
         if (!targetSelectedStory) {
-            appendEmptyRow(dailyReviewsTableBody, 2, "Select a story to load submissions");
+            appendEmptyRow(dailyReviewsTableBody, 4, "Select a story to load submissions");
             return;
         }
 
@@ -3589,7 +3561,6 @@
                         }
                         
                         const tableRowElement = document.createElement('tr');
-                        
                         const tableDataName = document.createElement('td'); 
                         tableDataName.className = "font-bold cursor-pointer text-admin hover-text-primary";
                         tableDataName.style.textDecoration = "underline";
@@ -3599,21 +3570,41 @@
                             openDetailedReviewModal(reviewerKeyString, scoreValue, guessValue, titleValue, reviewDateValue);
                         };
                         
-                        const tableDataDate = document.createElement('td');
-                        let formattedReviewDate = reviewDateValue;
-                        if (reviewDateValue !== "N/A" && reviewDateValue) {
-                            try {
-                                const dateObj = new Date(reviewDateValue);
-                                const dDay = String(dateObj.getDate()).padStart(2, '0');
-                                const dMonth = monthNamesArray[dateObj.getMonth()].substring(0,3);
-                                const dYear = String(dateObj.getFullYear()).slice(-2);
-                                formattedReviewDate = `${dDay}/${dMonth}/${dYear}`;
-                            } catch(error) {}
+                        const tableDataScore = document.createElement('td'); setSafeText(tableDataScore, scoreValue);
+                        const tableDataGuess = document.createElement('td'); setSafeText(tableDataGuess, guessValue);
+                        
+                        const tableDataTitleBox = document.createElement('td');
+                        const titleWrapperElement = document.createElement('div');
+                        titleWrapperElement.className = "d-flex justify-center align-center gap-3";
+                        
+                        const titleTextElement = document.createElement('span');
+                        titleTextElement.className = "word-break";
+                        setSafeText(titleTextElement, titleValue);
+                        titleWrapperElement.appendChild(titleTextElement);
+                        
+                        const buttonCopyElement = document.createElement('button');
+                        buttonCopyElement.type = "button";
+                        buttonCopyElement.className = "btn-copy-small btn-copy-row";
+                        buttonCopyElement.setAttribute('data-reviewer', reviewerKeyString);
+                        buttonCopyElement.setAttribute('data-title', titleValue);
+                        buttonCopyElement.title = "Copy Reviewer & Title";
+                        
+                        if(titleValue === "None" || titleValue === "Legacy" || !titleValue) {
+                            buttonCopyElement.style.opacity = "0.3";
+                            buttonCopyElement.style.cursor = "not-allowed";
+                            buttonCopyElement.disabled = true;
+                        } else {
+                            buttonCopyElement.style.flexShrink = "0";
                         }
-                        setSafeText(tableDataDate, formattedReviewDate);
+                        
+                        buttonCopyElement.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+                        titleWrapperElement.appendChild(buttonCopyElement);
+                        tableDataTitleBox.appendChild(titleWrapperElement);
                         
                         tableRowElement.appendChild(tableDataName);
-                        tableRowElement.appendChild(tableDataDate);
+                        tableRowElement.appendChild(tableDataScore);
+                        tableRowElement.appendChild(tableDataGuess);
+                        tableRowElement.appendChild(tableDataTitleBox);
                         
                         dailyReviewsTableBody.appendChild(tableRowElement);
                     }
@@ -3625,16 +3616,16 @@
                 renderAccumulatedWinnersChips();
                 
                 if(reviewCountInteger === 0) {
-                    appendEmptyRow(dailyReviewsTableBody, 2, "No reviews submitted for this story yet.");
+                    appendEmptyRow(dailyReviewsTableBody, 4, "No reviews submitted for this story yet.");
                 }
             } else {
                 activeStorySnapshotDataCache = null;
                 renderAccumulatedWinnersChips();
                 authorGivenHeadingInput.value = "";
-                appendEmptyRow(dailyReviewsTableBody, 2, "Story data is empty or missing.");
+                appendEmptyRow(dailyReviewsTableBody, 4, "Story data is empty or missing.");
             }
         } catch(error) {
-            appendEmptyRow(dailyReviewsTableBody, 2, "Error loading reviews.");
+            appendEmptyRow(dailyReviewsTableBody, 4, "Error loading reviews.");
         }
     }
 
@@ -4017,7 +4008,7 @@
 
     function checkAndRestoreSession() {
         try {
-            const savedAuthString = localStorage.getItem('authMode');
+            const savedAuthString = sessionStorage.getItem('authMode');
 
             if (savedAuthString === 'developer') {
                 isModeratorAuthenticated = true;
@@ -4041,7 +4032,7 @@
 
             try {
                 await signOut(auth);
-                localStorage.removeItem('authMode'); 
+                sessionStorage.removeItem('authMode'); 
             } catch(error) {}
 
             isModeratorAuthenticated = false;
