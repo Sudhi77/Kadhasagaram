@@ -1853,7 +1853,12 @@
     let cachedFeedbackData = null;
     let cachedMaxCols = 0;
 
-    let currentVersionState = { buildNumber: "4.1.7", changesMade: [] };
+    let currentVersionState = { 
+        buildNumber: GIT_BUILD_NUMBER, 
+        publishedDate: GIT_BUILD_DATE,
+        publishedTime: GIT_BUILD_TIME,
+        changesMade: [] 
+    };
     
     const initToday = new Date();
     const initDd = String(initToday.getDate()).padStart(2, '0');
@@ -2229,7 +2234,7 @@
             </html>
         `;
 
-        const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
+        const blob = new Blob([htmlString], { type: "application/vnd.ms-excel" });
         const downloadUrl = URL.createObjectURL(blob);
 
         const clientLink = document.createElement("a");
@@ -2344,10 +2349,17 @@
     onSnapshot(doc(db, "app_state", "version_control"), (docSnap) => {
         if (docSnap.exists()) {
             const data = docSnap.data();
-            currentVersionState.buildNumber = data.buildNumber || "4.1.7";
+            currentVersionState.buildNumber = data.buildNumber || GIT_BUILD_NUMBER;
+            currentVersionState.publishedDate = data.publishedDate || GIT_BUILD_DATE;
+            currentVersionState.publishedTime = data.publishedTime || GIT_BUILD_TIME;
             currentVersionState.changesMade = Array.isArray(data.changesMade) ? data.changesMade : [];
         } else {
-            currentVersionState = { buildNumber: "4.1.7", changesMade: [] };
+            currentVersionState = { 
+                buildNumber: GIT_BUILD_NUMBER, 
+                publishedDate: GIT_BUILD_DATE,
+                publishedTime: GIT_BUILD_TIME,
+                changesMade: [] 
+            };
         }
         
         if(devVersionDisplay) setSafeText(devVersionDisplay, currentVersionState.buildNumber);
@@ -2920,13 +2932,19 @@
             const notes = devReleaseNotesInput.value.trim();
             if (!notes) { customAlert("Please enter release notes before publishing this update."); return; }
             
+            const now = new Date();
+            const pubDate = now.toISOString().split('T')[0];
+            const pubTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " IST";
             const logEntry = `${GIT_BUILD_NUMBER} | ${notes}`;
+            
             btnPublishReleaseNotes.disabled = true;
             setSafeText(btnPublishReleaseNotes, "Publishing...");
             
             try {
                 await setDoc(doc(db, "app_state", "version_control"), {
                     buildNumber: GIT_BUILD_NUMBER,
+                    publishedDate: pubDate,
+                    publishedTime: pubTime,
                     changesMade: arrayUnion(logEntry)
                 }, { merge: true });
                 
@@ -3007,14 +3025,18 @@
         setSafeText(titleSpan, "Git Build Information");
         wrapDiv.appendChild(titleSpan);
         
+        const buildVersion = currentVersionState.buildNumber || GIT_BUILD_NUMBER;
+        const buildDate = currentVersionState.publishedDate || GIT_BUILD_DATE;
+        const buildTime = currentVersionState.publishedTime || GIT_BUILD_TIME;
+
         const vDiv = document.createElement('div');
         vDiv.className = "text-xxl font-bold mt-1"; vDiv.style.color = "var(--primary);";
-        setSafeText(vDiv, `Build Version: ${GIT_BUILD_NUMBER}`);
+        setSafeText(vDiv, `Build Version: ${buildVersion}`);
         wrapDiv.appendChild(vDiv);
         
         const dDiv = document.createElement('div');
         dDiv.className = "text-sm text-muted mb-4 mt-1";
-        setSafeText(dDiv, `Published: ${GIT_BUILD_DATE} at ${GIT_BUILD_TIME}`);
+        setSafeText(dDiv, `Published: ${buildDate} at ${buildTime}`);
         wrapDiv.appendChild(dDiv);
         
         const hr = document.createElement('hr');
