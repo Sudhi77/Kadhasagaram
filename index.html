@@ -963,6 +963,37 @@ border-radius: 6px;
 cursor: pointer;
 box-shadow: none;
 }
+.manual-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 15px;
+}
+.manual-table th {
+background-color: var(--nav-btn-hover-bg);
+color: var(--text-color);
+text-align: left;
+padding: 10px;
+font-size: 14px;
+border: var(--border);
+}
+.manual-table td {
+padding: 12px 10px;
+font-size: 13.5px;
+border: var(--border);
+vertical-align: middle;
+}
+.one-sentence-def {
+font-size: 13px;
+line-height: 1.4;
+color: var(--text-color);
+}
+.manual-condition-text {
+font-size: 12px;
+color: var(--danger);
+font-style: italic;
+margin-top: 4px;
+display: block;
+}
 .time-lock-input {
 width: 75px !important;
 padding: 4px !important;
@@ -1642,6 +1673,7 @@ Download
 <div id="manualContentContainer"></div>
 </div>
 </div>
+<script src="manualData.js"></script>
 <script type="module">
 const $ = id => document.getElementById(id);
 function createEl(tag, attributes = {}, text = "") {
@@ -3065,23 +3097,11 @@ wrapDivElement.appendChild(unorderedListElement);
 toggleMenu(false);
 showCustomModal('alert', wrapDivElement.outerHTML);
 });
-let manualDataCache = null;
-async function fetchManualData() {
-if (manualDataCache) return manualDataCache;
-try {
-const response = await fetch('manual.json');
-manualDataCache = await response.json();
-return manualDataCache;
-} catch (error) {
-customAlert("Failed to load manual data.");
-return null;
-}
-}
 function buildManualData() {
 let combinedData = {};
-if (manualDataCache.reviewer) Object.assign(combinedData, manualDataCache.reviewer);
-if (isModeratorAuthenticated && manualDataCache.moderator) Object.assign(combinedData, manualDataCache.moderator);
-if (isDeveloperModeUnlocked && manualDataCache.developer) Object.assign(combinedData, manualDataCache.developer);
+if (window.appManualData.reviewer) Object.assign(combinedData, window.appManualData.reviewer);
+if (isModeratorAuthenticated && window.appManualData.moderator) Object.assign(combinedData, window.appManualData.moderator);
+if (isDeveloperModeUnlocked && window.appManualData.developer) Object.assign(combinedData, window.appManualData.developer);
 return combinedData;
 }
 function renderManualCategories() {
@@ -3118,14 +3138,15 @@ manualContentContainer.appendChild(backBtn);
 manualContentContainer.appendChild(createEl('div', { className: 'manual-desc-box' }, description));
 manualHeadingTarget.innerHTML = feature;
 }
-sidebarManualBtn.addEventListener('click', async () => {
+sidebarManualBtn.addEventListener('click', () => {
 toggleMenu(false);
-const data = await fetchManualData();
-if (data) {
+if (!window.appManualData) {
+customAlert("Failed to load manual data. Make sure manualData.js is linked correctly.");
+return;
+}
 renderManualCategories();
 $('fullscreenManualOverlay').classList.remove('hidden');
 document.body.style.overflow = "hidden";
-}
 });
 async function compileMasterDataMatrix(seasonFilterString = "All") {
 const querySnapshotObject = await getDocs(collection(db, "competitions"));
