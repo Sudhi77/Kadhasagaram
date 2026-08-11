@@ -1689,6 +1689,15 @@ document.body.style.overflow = "";
 if (closeBtn.id === 'fdModalCloseBtn') currentFeedbackUser = null;
 }
 });
+const toggleInputLock = (el, isLocked) => {
+el.readOnly = isLocked;
+el.style.opacity = isLocked ? "0.5" : "1";
+el.style.cursor = isLocked ? "not-allowed" : "text";
+};
+const resetSelect = (el, placeholder) => {
+el.innerHTML = '';
+el.appendChild(createEl('option', { value: "" }, placeholder));
+};
 class CustomDropdown {
 constructor(nativeSelect) {
 this.select = nativeSelect;
@@ -2163,9 +2172,7 @@ setSafeText(drModalGuess, guess);
 setSafeText(drModalSuggTitle, suggTitle);
 detailedReviewOverlay.classList.remove('hidden');
 }
-$('backToStoriesListBtn').addEventListener('click', () => {
-renderMasterStoryList();
-});
+$('backToStoriesListBtn').addEventListener('click', () => renderMasterStoryList());
 downloadStoryReviewsBtn.addEventListener('click', () => {
 if (!activeStorySnapshotDataCache) {
 customAlert("No data available to download.");
@@ -2263,30 +2270,22 @@ const currentDateDisplayElement = $('currentDateDisplay');
 const currentDayDisplayElement = $('currentDayDisplay');
 if(currentDateDisplayElement) setSafeText(currentDateDisplayElement, `${initialDayString} ${initialMonthName} ${initialYearString}`);
 if(currentDayDisplayElement) setSafeText(currentDayDisplayElement, initialDayName);
-function createOption(value, text) {
-return createEl('option', { value }, text);
-}
 function appendEmptyRow(tableBody, columnsSpan, text) {
 tableBody.innerHTML = '';
 const tableRow = createEl('tr');
-const tableData = createEl('td', { colSpan: columnsSpan, className: "text-center p-5 text-italic text-muted" }, text);
-tableRow.appendChild(tableData);
+tableRow.appendChild(createEl('td', { colSpan: columnsSpan, className: "text-center p-5 text-italic text-muted" }, text));
 tableBody.appendChild(tableRow);
 }
 function handleLockedSuggestionInteraction(inputElement, lockTime, featureName) {
 if (inputElement.readOnly && !isDeveloperModeUnlocked) {
 inputElement.blur(); 
 const timeNow = new Date();
-const currentHourString = String(timeNow.getHours()).padStart(2, '0');
-const currentMinuteString = String(timeNow.getMinutes()).padStart(2, '0');
-const timeStringFormatted = `${currentHourString}:${currentMinuteString}`;
+const timeStringFormatted = `${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')}`;
 const targetStory = storyDropdown.value;
 const activeStoryObject = arrayedStoriesList.find(story => story.id === targetStory);
 let isPreviousDay = false;
 if (activeStoryObject) {
-const createdDateString = new Date(activeStoryObject.created).toDateString();
-const currentDateString = new Date().toDateString();
-isPreviousDay = createdDateString !== currentDateString;
+isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date().toDateString();
 }
 if (isPreviousDay || timeStringFormatted > lockTime) {
 customAlert("Submission time exceeded for the story.");
@@ -2295,46 +2294,21 @@ customAlert(`The ${featureName} feature is currently disabled by the moderator.`
 }
 }
 }
-authorGuessInput.addEventListener('click', () => {
-handleLockedSuggestionInteraction(authorGuessInput, cachedAuthorGuessLockTime, "Author Guess");
+['click', 'focus'].forEach(evt => {
+authorGuessInput.addEventListener(evt, () => handleLockedSuggestionInteraction(authorGuessInput, cachedAuthorGuessLockTime, "Author Guess"));
+titleSuggestionInput.addEventListener(evt, () => handleLockedSuggestionInteraction(titleSuggestionInput, cachedTitleSuggestionLockTime, "Title Suggestion"));
 });
-authorGuessInput.addEventListener('focus', () => {
-handleLockedSuggestionInteraction(authorGuessInput, cachedAuthorGuessLockTime, "Author Guess");
-});
-titleSuggestionInput.addEventListener('click', () => {
-handleLockedSuggestionInteraction(titleSuggestionInput, cachedTitleSuggestionLockTime, "Title Suggestion");
-});
-titleSuggestionInput.addEventListener('focus', () => {
-handleLockedSuggestionInteraction(titleSuggestionInput, cachedTitleSuggestionLockTime, "Title Suggestion");
-});
-navBtnReviewer.addEventListener('click', () => {
-try {
-navBtnReviewer.classList.add('active-panel-indicator');
-navBtnModerator.classList.remove('active-panel-indicator');
-userInterface.classList.remove('hidden');
-feedbackInterface.classList.add('hidden'); 
-loginInterface.classList.add('hidden');
-modInterface.classList.add('hidden');
-devInterface.classList.add('hidden');
-} catch (error) {}
-});
-navBtnModerator.addEventListener('click', () => {
-try {
-navBtnModerator.classList.add('active-panel-indicator');
-navBtnReviewer.classList.remove('active-panel-indicator');
-userInterface.classList.add('hidden');
+const switchTab = (isReviewer) => {
+navBtnReviewer.classList.toggle('active-panel-indicator', isReviewer);
+navBtnModerator.classList.toggle('active-panel-indicator', !isReviewer);
+userInterface.classList.toggle('hidden', !isReviewer);
 feedbackInterface.classList.add('hidden');
-if (isModeratorAuthenticated) {
-modInterface.classList.remove('hidden');
-if (isDeveloperModeUnlocked) devInterface.classList.remove('hidden');
-loginInterface.classList.add('hidden');
-} else {
-loginInterface.classList.remove('hidden');
-modInterface.classList.add('hidden');
-devInterface.classList.add('hidden');
-}
-} catch (error) {}
-});
+loginInterface.classList.toggle('hidden', isReviewer || isModeratorAuthenticated);
+modInterface.classList.toggle('hidden', isReviewer || !isModeratorAuthenticated);
+devInterface.classList.toggle('hidden', isReviewer || !isDeveloperModeUnlocked);
+};
+navBtnReviewer.addEventListener('click', () => switchTab(true));
+navBtnModerator.addEventListener('click', () => switchTab(false));
 ratingForm.addEventListener('submit', async (event) => {
 event.preventDefault(); 
 if (isSystemPaused && !isDeveloperModeUnlocked) {
@@ -2348,27 +2322,19 @@ return;
 }
 const friendName = friendNameInput.value.trim();
 let ratingRaw = ratingValueInput.value.trim();
-let authorGuess = authorGuessInput.value.trim();
-let titleSuggestion = titleSuggestionInput.value.trim();
-if (authorGuess === "") authorGuess = "None";
-if (titleSuggestion === "") titleSuggestion = "None";
+let authorGuess = authorGuessInput.value.trim() || "None";
+let titleSuggestion = titleSuggestionInput.value.trim() || "None";
 if (!friendName) {
 customAlert("Please enter your name.");
 return;
 }
 if (!isDeveloperModeUnlocked && localStorage.getItem(`rated_${targetStory}`) === "true") {
 try {
-const storedUserData = JSON.parse(localStorage.getItem(`userdata_${targetStory}`));
-ratingRaw = storedUserData.score; 
+ratingRaw = JSON.parse(localStorage.getItem(`userdata_${targetStory}`)).score; 
 } catch (error) {}
 } else {
 if (isDeveloperModeUnlocked) {
-if (ratingRaw === "") {
-ratingRaw = "N/A"; 
-} else {
-let parsedRating = parseInt(ratingRaw, 10);
-if (!isNaN(parsedRating)) ratingRaw = parsedRating;
-}
+ratingRaw = ratingRaw === "" ? "N/A" : (parseInt(ratingRaw, 10) || ratingRaw);
 } else {
 const rating = parseInt(ratingRaw, 10);
 if (isNaN(rating) || rating < 1 || rating > 10) {
@@ -2383,22 +2349,11 @@ setSafeText(submitRatingBtn, "Submitting...");
 const currentISODate = new Date().toISOString();
 try {
 await setDoc(doc(db, "competitions", targetStory), {
-[friendName]: {
-score: ratingRaw,
-authorGuess: authorGuess,
-suggestedTitle: titleSuggestion,
-date: currentISODate
-}
+[friendName]: { score: ratingRaw, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }
 }, { merge: true });
 if (!isDeveloperModeUnlocked) {
 localStorage.setItem(`rated_${targetStory}`, "true");
-localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({
-name: friendName,
-score: ratingRaw,
-authorGuess: authorGuess,
-suggestedTitle: titleSuggestion,
-date: currentISODate
-}));
+localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({ name: friendName, score: ratingRaw, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }));
 }
 customAlert("Review submitted successfully! Thank you.");
 evaluateLocalStorageRestrictions(); 
@@ -2712,71 +2667,38 @@ evaluateLocalStorageRestrictions();
 }
 }
 function evaluateLocalStorageRestrictions() {
-try {
 if (isSystemPaused && !isDeveloperModeUnlocked) return;
 const targetStory = storyDropdown.value;
 if (!targetStory) return;
 if (isDeveloperModeUnlocked) {
 friendNameInput.disabled = false;
 ratingValueInput.disabled = false;
-authorGuessInput.readOnly = false;
-authorGuessInput.style.opacity = "1";
-authorGuessInput.style.cursor = "text";
-titleSuggestionInput.readOnly = false;
-titleSuggestionInput.style.opacity = "1";
-titleSuggestionInput.style.cursor = "text";
+toggleInputLock(authorGuessInput, false);
+toggleInputLock(titleSuggestionInput, false);
 submitRatingBtn.disabled = false;
 setSafeText(submitRatingBtn, "Submit Review (Dev Bypass)");
 return;
 }
 const activeStoryObject = arrayedStoriesList.find(story => story.id === targetStory);
 if (!activeStoryObject) return;
-const createdDateString = new Date(activeStoryObject.created).toDateString();
-const currentDateString = new Date().toDateString();
-const isPreviousDay = createdDateString !== currentDateString;
+const isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date().toDateString();
 const timeNow = new Date();
-const currentHourString = String(timeNow.getHours()).padStart(2, '0');
-const currentMinuteString = String(timeNow.getMinutes()).padStart(2, '0');
-const timeStringFormatted = `${currentHourString}:${currentMinuteString}`;
+const timeStringFormatted = `${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')}`;
 const pastAuthorGuessTime = timeStringFormatted > cachedAuthorGuessLockTime;
 const pastTitleSuggestionTime = timeStringFormatted > cachedTitleSuggestionLockTime;
-const storageMarkerKey = `rated_${targetStory}`;
-const hasRated = localStorage.getItem(storageMarkerKey) === "true";
-if (hasRated) {
-friendNameInput.disabled = true;
-ratingValueInput.disabled = true;
+const hasRated = localStorage.getItem(`rated_${targetStory}`) === "true";
+friendNameInput.disabled = hasRated;
+ratingValueInput.disabled = hasRated;
 const authorGuessLocked = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
 const titleSuggestionLocked = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
-authorGuessInput.readOnly = authorGuessLocked;
-authorGuessInput.style.opacity = authorGuessLocked ? "0.5" : "1";
-authorGuessInput.style.cursor = authorGuessLocked ? "not-allowed" : "text";
-titleSuggestionInput.readOnly = titleSuggestionLocked;
-titleSuggestionInput.style.opacity = titleSuggestionLocked ? "0.5" : "1";
-titleSuggestionInput.style.cursor = titleSuggestionLocked ? "not-allowed" : "text";
-if (authorGuessLocked && titleSuggestionLocked) {
+toggleInputLock(authorGuessInput, authorGuessLocked);
+toggleInputLock(titleSuggestionInput, titleSuggestionLocked);
+if (hasRated && authorGuessLocked && titleSuggestionLocked) {
 submitRatingBtn.disabled = true;
 setSafeText(submitRatingBtn, "Ratings & Options Locked");
 } else {
 submitRatingBtn.disabled = false;
-setSafeText(submitRatingBtn, "Update Suggestions");
-}
-} else {
-friendNameInput.disabled = false;
-ratingValueInput.disabled = false;
-const authorGuessLocked = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
-const titleSuggestionLocked = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
-authorGuessInput.readOnly = authorGuessLocked;
-authorGuessInput.style.opacity = authorGuessLocked ? "0.5" : "1";
-authorGuessInput.style.cursor = authorGuessLocked ? "not-allowed" : "text";
-titleSuggestionInput.readOnly = titleSuggestionLocked;
-titleSuggestionInput.style.opacity = titleSuggestionLocked ? "0.5" : "1";
-titleSuggestionInput.style.cursor = titleSuggestionLocked ? "not-allowed" : "text";
-submitRatingBtn.disabled = false;
-setSafeText(submitRatingBtn, "Submit Review");
-}
-} catch (error) {
-submitRatingBtn.disabled = false;
-setSafeText(submitRatingBtn, "Submit Review");
+setSafeText(submitRatingBtn, hasRated ? "Update Suggestions" : "Submit Review");
 }
 }
 function updateSeasonDropdowns(seasonsSetCollection) {
@@ -2786,16 +2708,16 @@ const previewValue = previewSelectElement.value;
 const downloadValue = downloadSelectElement.value;
 previewSelectElement.innerHTML = '';
 downloadSelectElement.innerHTML = '';
-previewSelectElement.appendChild(createOption("All", "All Seasons"));
-downloadSelectElement.appendChild(createOption("All", "All Seasons"));
+previewSelectElement.appendChild(createEl('option', { value: "All" }, "All Seasons"));
+downloadSelectElement.appendChild(createEl('option', { value: "All" }, "All Seasons"));
 if (globalSeasonCache && globalSeasonCache !== "---" && !seasonsSetCollection.has(globalSeasonCache)) {
-previewSelectElement.appendChild(createOption(globalSeasonCache, globalSeasonCache));
-downloadSelectElement.appendChild(createOption(globalSeasonCache, globalSeasonCache));
+previewSelectElement.appendChild(createEl('option', { value: globalSeasonCache }, globalSeasonCache));
+downloadSelectElement.appendChild(createEl('option', { value: globalSeasonCache }, globalSeasonCache));
 }
 seasonsSetCollection.forEach(seasonString => {
 if(seasonString && seasonString !== "Legacy" && seasonString !== "All") {
-previewSelectElement.appendChild(createOption(seasonString, seasonString));
-downloadSelectElement.appendChild(createOption(seasonString, seasonString));
+previewSelectElement.appendChild(createEl('option', { value: seasonString }, seasonString));
+downloadSelectElement.appendChild(createEl('option', { value: seasonString }, seasonString));
 }
 });
 if ([...seasonsSetCollection, "All", globalSeasonCache].includes(previewValue)) previewSelectElement.value = previewValue;
@@ -2803,18 +2725,9 @@ if ([...seasonsSetCollection, "All", globalSeasonCache].includes(downloadValue))
 }
 function clearDailyUpdatesUI() {
 if (authorGivenHeadingInput) authorGivenHeadingInput.value = "";
-if (readerSuggestions) {
-readerSuggestions.innerHTML = '';
-readerSuggestions.appendChild(createOption("", "-- Title --"));
-}
-if (headingSuggesterInput) {
-headingSuggesterInput.innerHTML = '';
-headingSuggesterInput.appendChild(createOption("", "-- Name --"));
-}
-if (correctGuesses) {
-correctGuesses.innerHTML = '';
-correctGuesses.appendChild(createOption("", "-- Select Winner --"));
-}
+if (readerSuggestions) resetSelect(readerSuggestions, "-- Title --");
+if (headingSuggesterInput) resetSelect(headingSuggesterInput, "-- Name --");
+if (correctGuesses) resetSelect(correctGuesses, "-- Select Winner --");
 accumulatedWinnersStateArray = [];
 renderAccumulatedWinnersChips();
 }
@@ -2861,8 +2774,8 @@ arrayedStoriesList.sort((elementA, elementB) => elementB.created - elementA.crea
 storyDropdown.innerHTML = '';
 deleteStorySelect.innerHTML = '';
 arrayedStoriesList.forEach(storyObject => {
-storyDropdown.appendChild(createOption(storyObject.id, storyObject.id));
-deleteStorySelect.appendChild(createOption(storyObject.id, storyObject.id));
+storyDropdown.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
+deleteStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 });
 if(arrayedStoriesList.length > 0) {
 if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
@@ -2877,12 +2790,8 @@ evaluateLocalStorageRestrictions();
 dailyReviewsTableBody.addEventListener('click', (event) => {
 const buttonElement = event.target.closest('.btn-copy-row');
 if (buttonElement && !buttonElement.disabled) {
-const reviewerString = buttonElement.getAttribute('data-reviewer');
-const titleString = buttonElement.getAttribute('data-title');
-const copyStringValue = `${reviewerString}, ${titleString}`;
-navigator.clipboard.writeText(copyStringValue)
-.then(() => customAlert(`📋 Copied:\n${copyStringValue}`))
-.catch(() => customAlert("Clipboard write blocked by browser."));
+const text = `${buttonElement.dataset.reviewer}, ${buttonElement.dataset.title}`;
+navigator.clipboard.writeText(text).then(() => customAlert(`📋 Copied:\n${text}`)).catch(() => customAlert("Clipboard write blocked by browser."));
 }
 });
 function autoFillPreviousUserInputs() {
@@ -2930,17 +2839,11 @@ submitLoginBtn.disabled = true;
 setSafeText(submitLoginBtn, "Authenticating...");
 try {
 const userCredentialObject = await signInWithEmailAndPassword(auth, emailString, passwordString);
-const userObject = userCredentialObject.user;
+const isDev = ["dev@admin.com", "dev@kathasagaram.com"].includes(userCredentialObject.user.email);
 isModeratorAuthenticated = true;
-if (userObject.email === "dev@admin.com" || userObject.email === "dev@kathasagaram.com") {
-isDeveloperModeUnlocked = true;
-try { sessionStorage.setItem('authMode', 'developer'); } catch(error) {}
-customAlert("Authentication Successful (Dev)");
-} else {
-isDeveloperModeUnlocked = false;
-try { sessionStorage.setItem('authMode', 'moderator'); } catch(error) {}
-customAlert("Authentication Successful (Mod)");
-}
+isDeveloperModeUnlocked = isDev;
+try { sessionStorage.setItem('authMode', isDev ? 'developer' : 'moderator'); } catch(error) {}
+customAlert(`Authentication Successful (${isDev ? 'Dev' : 'Mod'})`);
 loginInterface.classList.add('hidden');
 modInterface.classList.remove('hidden');
 sidebarModOptions.classList.remove('hidden'); 
@@ -2995,23 +2898,15 @@ if (!targetSelectedStory) {
 appendEmptyRow(dailyReviewsTableBody, 4, "Select a story to load submissions");
 return;
 }
-if(storyDropdown.value !== targetSelectedStory) {
-storyDropdown.value = targetSelectedStory;
-}
-if(deleteStorySelect.value !== targetSelectedStory) {
-deleteStorySelect.value = targetSelectedStory;
-}
+if(storyDropdown.value !== targetSelectedStory) storyDropdown.value = targetSelectedStory;
+if(deleteStorySelect.value !== targetSelectedStory) deleteStorySelect.value = targetSelectedStory;
 try {
 const documentSnapshot = await getDoc(doc(db, "competitions", targetSelectedStory));
-readerSuggestions.innerHTML = '';
-readerSuggestions.appendChild(createOption("", "-- Title --"));
-headingSuggesterInput.innerHTML = '';
-headingSuggesterInput.appendChild(createOption("", "-- Name --"));
-correctGuesses.innerHTML = '';
-correctGuesses.appendChild(createOption("", "-- Select Winner --"));
+resetSelect(readerSuggestions, "-- Title --");
+resetSelect(headingSuggesterInput, "-- Name --");
+resetSelect(correctGuesses, "-- Select Winner --");
 accumulatedWinnersStateArray = [];
 headingToReviewerMap = {};
-let hasSuggestionsBoolean = false;
 let reviewCountInteger = 0;
 dailyReviewsTableBody.innerHTML = '';
 if (documentSnapshot.exists()) {
@@ -3039,13 +2934,12 @@ reviewDateValue = dataObject[reviewerKeyString].date ?? "N/A";
 const currentSuggestedTitle = dataObject[reviewerKeyString].suggestedTitle ?? "";
 const currentAuthorGuess = dataObject[reviewerKeyString].authorGuess ?? "";
 if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
-hasSuggestionsBoolean = true;
 headingToReviewerMap[currentSuggestedTitle] = reviewerKeyString;
-readerSuggestions.appendChild(createOption(currentSuggestedTitle, currentSuggestedTitle));
-headingSuggesterInput.appendChild(createOption(reviewerKeyString, reviewerKeyString));
+readerSuggestions.appendChild(createEl('option', { value: currentSuggestedTitle }, currentSuggestedTitle));
+headingSuggesterInput.appendChild(createEl('option', { value: reviewerKeyString }, reviewerKeyString));
 }
 if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
-correctGuesses.appendChild(createOption(reviewerKeyString, reviewerKeyString));
+correctGuesses.appendChild(createEl('option', { value: reviewerKeyString }, reviewerKeyString));
 }
 } else {
 scoreValue = dataObject[reviewerKeyString];
@@ -3057,26 +2951,19 @@ tableDataName.onclick = (event) => {
 event.stopPropagation();
 openDetailedReviewModal(reviewerKeyString, scoreValue, guessValue, titleValue, reviewDateValue);
 };
-const tableDataScore = createEl('td', {}, scoreValue);
-const tableDataGuess = createEl('td', {}, guessValue);
-const tableDataTitleBox = createEl('td');
+tableRowElement.appendChild(tableDataName);
+tableRowElement.appendChild(createEl('td', {}, scoreValue));
+tableRowElement.appendChild(createEl('td', {}, guessValue));
+const titleTd = createEl('td');
 const titleWrapperElement = createEl('div', { className: "d-flex justify-center align-center gap-3" });
 titleWrapperElement.appendChild(createEl('span', { className: "word-break" }, titleValue));
-const buttonCopyElement = createEl('button', { type: "button", className: "btn-copy-small btn-copy-row", 'data-reviewer': reviewerKeyString, 'data-title': titleValue, title: "Copy Reviewer & Title" });
-if(titleValue === "None" || titleValue === "Legacy" || !titleValue) {
-buttonCopyElement.style.opacity = "0.3";
-buttonCopyElement.style.cursor = "not-allowed";
-buttonCopyElement.disabled = true;
-} else {
-buttonCopyElement.style.flexShrink = "0";
-}
+const btnOpacity = (titleValue === "None" || titleValue === "Legacy" || !titleValue) ? "0.3" : "1";
+const btnCursor = (titleValue === "None" || titleValue === "Legacy" || !titleValue) ? "not-allowed" : "pointer";
+const buttonCopyElement = createEl('button', { type: "button", className: "btn-copy-small btn-copy-row", 'data-reviewer': reviewerKeyString, 'data-title': titleValue, title: "Copy Reviewer & Title", disabled: btnOpacity === "0.3", style: { opacity: btnOpacity, cursor: btnCursor, flexShrink: "0" } });
 buttonCopyElement.innerHTML = '<svg width="14" height="14"><use href="#icon-copy"></use></svg>';
 titleWrapperElement.appendChild(buttonCopyElement);
-tableDataTitleBox.appendChild(titleWrapperElement);
-tableRowElement.appendChild(tableDataName);
-tableRowElement.appendChild(tableDataScore);
-tableRowElement.appendChild(tableDataGuess);
-tableRowElement.appendChild(tableDataTitleBox);
+titleTd.appendChild(titleWrapperElement);
+tableRowElement.appendChild(titleTd);
 dailyReviewsTableBody.appendChild(tableRowElement);
 }
 });
@@ -3109,12 +2996,8 @@ startSeasonBtn.addEventListener('click', () => {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
 const monthValueString = inputMonth.value;
 if(!monthValueString) { customAlert("Please select a month to generate the season string."); return; }
-const shortMonthString = monthValueString.substring(0, 3);
-const yearSuffixString = new Date().getFullYear().toString().slice(-2);
-const generatedSeasonNameString = shortMonthString + yearSuffixString;
-const guessTimeString = authorGuessLockTime.value.trim() || "23:59";
-const titleTimeString = titleSuggestionLockTime.value.trim() || "23:59";
-updateGlobalConfig({ month: monthValueString, topic: inputTopic.value.trim() || "*****", seasonName: generatedSeasonNameString, seasonStarted: true, authorGuessLockTime: guessTimeString, titleSuggestionLockTime: titleTimeString }, `Season Configuration Saved.\nCurrent Season: ${generatedSeasonNameString}`, "Database error saving variables.");
+const generatedSeasonNameString = monthValueString.substring(0, 3) + new Date().getFullYear().toString().slice(-2);
+updateGlobalConfig({ month: monthValueString, topic: inputTopic.value.trim() || "*****", seasonName: generatedSeasonNameString, seasonStarted: true, authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59", titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59" }, `Season Configuration Saved.\nCurrent Season: ${generatedSeasonNameString}`, "Database error saving variables.");
 });
 async function handleStoryAddition(inputElement, actionButtonElement) {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
@@ -3136,7 +3019,6 @@ if(btnPublishReleaseNotes) {
 btnPublishReleaseNotes.addEventListener('click', async () => {
 const notesString = devReleaseNotesInput.value.trim();
 if (!notesString) { customAlert("Please enter release notes before publishing this update."); return; }
-const logEntryString = `${GIT_BUILD_NUMBER} | ${notesString}`;
 btnPublishReleaseNotes.disabled = true;
 setSafeText(btnPublishReleaseNotes, "Publishing...");
 try {
@@ -3144,7 +3026,7 @@ await setDoc(doc(db, "app_state", "version_control"), {
 buildNumber: GIT_BUILD_NUMBER,
 publishedDate: GIT_BUILD_DATE,
 publishedTime: GIT_BUILD_TIME,
-changesMade: arrayUnion(logEntryString)
+changesMade: arrayUnion(`${GIT_BUILD_NUMBER} | ${notesString}`)
 }, { merge: true });
 devReleaseNotesInput.value = "";
 customAlert(`Release notes published successfully.\nVersion updated to Build ${GIT_BUILD_NUMBER}.`);
