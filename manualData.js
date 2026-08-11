@@ -1,4 +1,4 @@
-{
+window.appManualData = {
   "reviewer": {
     "Side Menu (Basic)": {
       "Theme Selector": "Switches visual style sheets across light, matte, and high-saturation contrast options globally.",
@@ -46,4 +46,4 @@
       "Export Feedback": "Downloads the entire raw feedback database into an Excel file for offline tracking and project management."
     }
   }
-}
+};
