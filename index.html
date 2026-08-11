@@ -1170,6 +1170,10 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .manual-list-item { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.2); padding: 16px 8px; margin-bottom: 0; border-radius: 0; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; transition: color 0.2s; }
 .manual-list-item:hover { color: var(--primary); }
 .manual-back-btn { background: transparent; color: var(--primary); border: none; font-weight: bold; cursor: pointer; padding: 0 0 15px 0; display: flex; align-items: center; gap: 5px; box-shadow: none; }
+.input-reduced { height: 35px !important; min-height: 35px !important; padding: 4px 10px !important; font-size: 14px !important; }
+.btn-reduced { height: 35px !important; padding: 4px 12px !important; font-size: 14px !important; display: inline-flex; align-items: center; justify-content: center; }
+.btn-icon-reduced { width: 35px !important; height: 35px !important; padding: 0 !important; display: inline-flex; align-items: center; justify-content: center; }
+.table-condensed th, .table-condensed td { padding: 8px 10px !important; }
 </style>
 </head>
 <body>
@@ -1206,7 +1210,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <label class="d-flex align-center gap-2 mb-2 font-bold text-lg">
 <span class="text-xl line-height-1">🖌️</span> Theme
 </label>
-<select id="themeSelect" class="cursor-pointer p-4 radius-3">
+<select id="themeSelect" class="cursor-pointer radius-3 input-reduced">
 <option value="light">Classic Light</option>
 <option value="cyan">Deep Cyan</option>
 <option value="purple">Matte Purple</option>
@@ -1214,12 +1218,12 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <option value="mono">Black & Gray</option>
 </select>
 </div>
-<div id="sidebarModOptions" class="hidden mt-3 border-dashed pt-3">
+<div id="sidebarModOptions" class="hidden mt-3 pt-3">
 <div class="form-group" id="modNameSetupGroup">
 <label for="inputModName">Moderator Name</label>
 <div class="d-flex gap-3 align-center">
-<input type="text" id="inputModName" placeholder="Handle" class="m-0 flex-1 sys-lockable">
-<button type="button" id="saveModNameBtn" class="btn-mod-action padding-10-15 d-flex align-center justify-center w-auto sys-lockable" title="Save Profile">
+<input type="text" id="inputModName" placeholder="Handle" class="m-0 flex-1 sys-lockable input-reduced">
+<button type="button" id="saveModNameBtn" class="btn-mod-action d-flex align-center justify-center w-auto sys-lockable btn-reduced" title="Save Profile">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
 <path d="M12 16v-9"></path>
 <path d="M8 11l4-4 4 4"></path>
@@ -1230,9 +1234,9 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </div>
 <div class="form-group mt-3" id="seasonSetupGroup">
 <label for="inputTopic">Subject</label>
-<input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" class="mb-2 sys-lockable">
+<input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" class="mb-2 sys-lockable input-reduced">
 <div class="d-flex gap-3 align-center justify-end mb-4">
-<select id="inputMonth" class="cursor-pointer radius-2 m-0 w-max padding-10-2ch flex-none sys-lockable">
+<select id="inputMonth" class="cursor-pointer radius-2 m-0 w-max flex-none sys-lockable input-reduced">
 <option value="">-- Select Month --</option>
 <option value="January">January</option>
 <option value="February">February</option>
@@ -1247,10 +1251,10 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <option value="November">November</option>
 <option value="December">December</option>
 </select>
-<button type="button" id="startSeasonBtn" class="btn-mod-action w-max m-0 padding-10-15 sys-lockable">Start Season</button>
+<button type="button" id="startSeasonBtn" class="btn-mod-action w-max m-0 sys-lockable btn-reduced">Start Season</button>
 </div>
 </div>
-<div id="advancedModOptions" class="hidden border-dashed pt-2">
+<div id="advancedModOptions" class="hidden pt-2">
 <div class="switch-container p-3 mb-3 flex-wrap gap-2">
 <div class="d-flex align-center justify-between w-100">
 <div><strong class="text-md">Guess Author</strong></div>
@@ -1261,7 +1265,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </div>
 <div class="d-flex align-center w-100 mt-1 justify-end">
 <span class="text-xs opacity-80">Lock Time:</span>
-<input type="text" id="authorGuessLockTime" class="time-lock-input sys-lockable" placeholder="23:59">
+<input type="text" id="authorGuessLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
 </div>
 </div>
 <div class="switch-container p-3 mb-3 flex-wrap gap-2">
@@ -1274,7 +1278,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </div>
 <div class="d-flex align-center w-100 mt-1 justify-end">
 <span class="text-xs opacity-80">Lock Time:</span>
-<input type="text" id="titleSuggestionLockTime" class="time-lock-input sys-lockable" placeholder="23:59">
+<input type="text" id="titleSuggestionLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
 </div>
 </div>
 <div class="d-flex justify-end w-100 mb-4 mt-neg-5" style="margin-top:-5px;">
@@ -1292,7 +1296,7 @@ Download
 </div>
 </div>
 </div>
-<div class="form-group mt-auto border-dashed pt-3 d-flex flex-row justify-end gap-4">
+<div class="form-group mt-auto pt-3 d-flex flex-row justify-end gap-4">
 <button type="button" id="sidebarManualBtn" class="btn-accent bg-admin text-white w-max padding-11-15 d-flex align-center justify-center gap-3">
 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="block">
 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -1442,8 +1446,8 @@ Logout
 <div class="form-group d-flex flex-col gap-3 mb-5">
 <h3 class="m-0 text-xl text-admin">Add New Story</h3>
 <div class="d-flex gap-4 align-center">
-<input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." class="flex-1 m-0 sys-lockable">
-<button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action padding-10-15 m-0 d-flex align-center justify-center sys-lockable" title="Upload Story">
+<input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." class="flex-1 m-0 sys-lockable input-reduced">
+<button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action m-0 d-flex align-center justify-center sys-lockable btn-reduced" title="Upload Story">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
 <path d="M21 16.5A5.5 5.5 0 0 0 17.5 6h-1.26A8 8 0 1 0 4 15.25"></path>
 <polyline points="16 11 12 7 8 11"></polyline>
@@ -1455,8 +1459,8 @@ Logout
 <div class="d-flex flex-col gap-4 mb-4 mt-5">
 <label for="deleteStorySelect" class="text-xl text-admin m-0 font-bold">📖 Select Story</label>
 <div class="d-flex gap-4 align-center">
-<select id="deleteStorySelect" class="flex-1 m-0 p-3 text-lg border-admin sys-lockable"></select>
-<button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only text-white bg-admin sys-lockable" style="background-color: var(--danger);" title="Delete Selected Story">
+<select id="deleteStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
+<button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only text-white bg-admin sys-lockable btn-icon-reduced" style="background-color: var(--danger);" title="Delete Selected Story">
 <svg viewBox="0 0 24 24">
 <path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/>
 </svg>
@@ -1473,7 +1477,7 @@ Logout
 </div>
 </div>
 <div class="webview-scroll-frame mb-5 radius-2" style="border: var(--border);">
-<table class="webview-table m-0">
+<table class="webview-table m-0 table-condensed">
 <thead id="submissionsTableHead">
 <tr>
 <th><b>Published Date</b></th>
@@ -1488,30 +1492,30 @@ Logout
 <div class="plain-section admin-header">
 <div class="d-flex justify-between align-center border-bottom pb-1 mb-4">
 <h2 class="border-none pb-0 m-0">📆 Daily Updates</h2>
-<div class="d-flex flex-col align-center bg-admin radius-2 w-max" style="border: var(--border); padding: 8px 12px; min-width: auto; margin-left: auto;">
+<div class="d-flex flex-col align-center bg-admin p-6 radius-2 w-max" style="border: var(--border); padding: 8px 12px; min-width: auto; margin-left: auto;">
 <div id="currentDateDisplay" class="text-xl font-bold text-white text-center line-height-1">--/--/--</div>
 <div id="currentDayDisplay" class="text-md text-white font-bold mt-1 text-center line-height-1 opacity-90">---</div>
 </div>
 </div>
 <div class="form-group">
 <label for="authorGivenHeadingInput">Author given Heading</label>
-<input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading" class="sys-lockable">
+<input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading" class="sys-lockable input-reduced">
 </div>
 <div class="form-group d-flex gap-4">
 <div style="flex: 1.5;">
 <label for="readerSuggestions">Title Suggested</label>
-<select id="readerSuggestions" class="sys-lockable"></select>
+<select id="readerSuggestions" class="sys-lockable input-reduced"></select>
 </div>
 <div class="flex-1">
 <label for="headingSuggesterInput">Reviewer</label>
-<select id="headingSuggesterInput" class="sys-lockable"></select>
+<select id="headingSuggesterInput" class="sys-lockable input-reduced"></select>
 </div>
 </div>
 <div class="form-group">
 <label for="correctGuesses">Guess the Author</label>
 <div class="d-flex gap-4 align-center">
-<select id="correctGuesses" class="flex-1 m-0 sys-lockable"></select>
-<button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable" title="Clear All Selections">
+<select id="correctGuesses" class="flex-1 m-0 sys-lockable input-reduced"></select>
+<button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable btn-icon-reduced" title="Clear All Selections">
 <svg viewBox="0 0 24 24">
 <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
 </svg>
@@ -1617,7 +1621,7 @@ Exclusive Mode
 </div>
 <div class="webview-container m-0 mt-0">
 <div class="webview-scroll-frame max-h-70vh">
-<table class="webview-table">
+<table class="webview-table m-0 table-condensed">
 <tbody id="previewTableBody"></tbody>
 </table>
 </div>
@@ -1638,7 +1642,7 @@ Download
 </div>
 <div class="m-0 mt-0">
 <div class="webview-scroll-frame max-h-70vh" style="border: none; background: transparent; overflow-x: auto;">
-<table class="webview-table white-space-nowrap w-100" style="background: transparent;">
+<table class="webview-table white-space-nowrap w-100 table-condensed" style="background: transparent;">
 <thead id="feedbackTableHead"></thead>
 <tbody id="feedbackTableBody"></tbody>
 </table>
@@ -2760,11 +2764,12 @@ $('downloadStoryReviewsBtn').classList.add('hidden');
 const tableHeadElement = $('submissionsTableHead');
 tableHeadElement.innerHTML = '';
 const headTableRowElement = createEl('tr');
-["Reviewer Name", "Date"].forEach(headerText => {
-const tableHeaderElement = createEl('th');
-tableHeaderElement.appendChild(createEl('b', {}, headerText));
-headTableRowElement.appendChild(tableHeaderElement);
-});
+const tableHeaderDate = createEl('th');
+tableHeaderDate.appendChild(createEl('b', {}, "Published Date"));
+const tableHeaderStory = createEl('th');
+tableHeaderStory.appendChild(createEl('b', {}, "Story Name"));
+headTableRowElement.appendChild(tableHeaderDate);
+headTableRowElement.appendChild(tableHeaderStory);
 tableHeadElement.appendChild(headTableRowElement);
 dailyReviewsTableBody.innerHTML = '';
 clearDailyUpdatesUI();
@@ -2776,10 +2781,10 @@ arrayedStoriesList.forEach(storyObject => {
 const tableRowElement = createEl('tr', { className: "cursor-pointer hover-bg-alt" });
 tableRowElement.onclick = () => loadCurrentStoryNotes(storyObject.id);
 const dateObject = new Date(storyObject.created);
-const tableDataName = createEl('td', { className: "font-bold text-admin" }, storyObject.id);
 const tableDataDate = createEl('td', {}, `${String(dateObject.getDate()).padStart(2, '0')}/${monthNamesArray[dateObject.getMonth()].substring(0,3)}/${String(dateObject.getFullYear()).slice(-2)}`);
-tableRowElement.appendChild(tableDataName);
+const tableDataName = createEl('td', { className: "font-bold text-admin" }, storyObject.id);
 tableRowElement.appendChild(tableDataDate);
+tableRowElement.appendChild(tableDataName);
 dailyReviewsTableBody.appendChild(tableRowElement);
 });
 }
@@ -2986,10 +2991,9 @@ correctGuesses.appendChild(createEl('option', { value: reviewerKeyString }, revi
 scoreValue = dataObject[reviewerKeyString];
 titleValue = "Legacy";
 }
-const tableRowElement = createEl('tr');
-const tableDataName = createEl('td', { className: "font-bold cursor-pointer text-admin hover-text-primary", style: { textDecoration: "underline" } }, reviewerKeyString);
-tableDataName.onclick = (event) => {
-event.stopPropagation();
+const tableRowElement = createEl('tr', { className: "hover-bg-alt", style: { cursor: "pointer" } });
+const tableDataName = createEl('td', { className: "font-bold text-admin hover-text-primary", style: { textDecoration: "underline" } }, reviewerKeyString);
+tableRowElement.onclick = () => {
 openDetailedReviewModal(reviewerKeyString, scoreValue, guessValue, titleValue, reviewDateValue);
 };
 tableRowElement.appendChild(tableDataName);
