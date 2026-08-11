@@ -814,7 +814,7 @@ top: 0; left: 0;
 width: 100vw; height: 100vh;
 background: var(--modal-overlay);
 backdrop-filter: blur(4px);
-z-index: 999999;
+z-index: 1000010;
 display: flex; 
 align-items: center; justify-content: center;
 }
@@ -3122,7 +3122,7 @@ manualHeadingTarget.innerHTML = "📚 Usermanual";
 }
 function renderManualFeatures(category, features) {
 manualContentContainer.innerHTML = "";
-const backBtn = createEl('button', { className: 'manual-back-btn' }, "← Back to Categories");
+const backBtn = createEl('button', { className: 'manual-back-btn' }, "← Back");
 backBtn.onclick = () => renderManualCategories();
 manualContentContainer.appendChild(backBtn);
 Object.keys(features).forEach(feature => {
