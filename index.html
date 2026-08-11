@@ -963,37 +963,6 @@ border-radius: 6px;
 cursor: pointer;
 box-shadow: none;
 }
-.manual-table {
-width: 100%;
-border-collapse: collapse;
-margin-top: 15px;
-}
-.manual-table th {
-background-color: var(--nav-btn-hover-bg);
-color: var(--text-color);
-text-align: left;
-padding: 10px;
-font-size: 14px;
-border: var(--border);
-}
-.manual-table td {
-padding: 12px 10px;
-font-size: 13.5px;
-border: var(--border);
-vertical-align: middle;
-}
-.one-sentence-def {
-font-size: 13px;
-line-height: 1.4;
-color: var(--text-color);
-}
-.manual-condition-text {
-font-size: 12px;
-color: var(--danger);
-font-style: italic;
-margin-top: 4px;
-display: block;
-}
 .time-lock-input {
 width: 75px !important;
 padding: 4px !important;
@@ -1148,6 +1117,10 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .white-space-nowrap { white-space: nowrap; }
 .hover-bg-alt:hover td { background-color: var(--nav-btn-hover-bg); cursor: pointer; }
 .hover-text-primary:hover { color: var(--primary) !important; }
+.manual-list-item { background: var(--input-bg); border: var(--border); padding: 16px; margin-bottom: 10px; border-radius: var(--card-radius); cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s; }
+.manual-list-item:hover { border-color: var(--primary); }
+.manual-back-btn { background: transparent; color: var(--primary); border: none; font-weight: bold; cursor: pointer; padding: 0 0 15px 0; display: flex; align-items: center; gap: 5px; box-shadow: none; }
+.manual-desc-box { background: var(--input-bg); border: var(--border); padding: 20px; border-radius: var(--card-radius); line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -3092,18 +3065,67 @@ wrapDivElement.appendChild(unorderedListElement);
 toggleMenu(false);
 showCustomModal('alert', wrapDivElement.outerHTML);
 });
-sidebarManualBtn.addEventListener('click', () => {
-toggleMenu(false);
-manualContentContainer.innerHTML = "";
-if (isModeratorAuthenticated) {
-manualHeadingTarget.innerHTML = "🛠️ Moderator & Developer Manual";
-manualContentContainer.innerHTML = `<p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Administrative workflow mapping guide for moderators and system developers:</p><table class="manual-table"><thead><tr><th style="width: 45%; text-align: center;">Control Representation</th><th style="text-align: center;">Description</th></tr></thead><tbody><tr><td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>🎨 Theme</option></select></td><td class="one-sentence-def">Switches visual style sheets across light, matte, and high-saturation contrast options globally.</td></tr><tr><td class="text-center"><div class="d-flex justify-center align-center gap-1 text-sm font-bold text-white">Guess Author <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--primary);"></span></label></div></td><td class="one-sentence-def">Displays or completely removes the optional writer selection text parameters from user forms.<span class="manual-condition-text">Condition: Submission entries given after the moderator's specified lock timestamp layout will be blocked.</span></td></tr><tr><td class="text-center"><div class="d-flex justify-center align-center gap-1 text-sm font-bold text-white">Title Sugg. <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--primary);"></span></label></div></td><td class="one-sentence-def">Controls the dynamic display criteria for user custom heading forms across active reviewer panels.<span class="manual-condition-text">Condition: Inputs logged after the moderator's designated timeframe variable will not be saved.</span></td></tr><tr><td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Start Season</button></td><td class="one-sentence-def">Commits the active subject text properties, automatically generates the season name (e.g. May26), and unlocks all other advanced moderator tools.</td></tr><tr><td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Update</button></td><td class="one-sentence-def">Synchronizes manual time lock updates globally across databases after edits.</td></tr><tr><td class="text-center"><div class="d-flex align-center justify-center gap-1"><input type="text" placeholder="Handle" class="text-xs p-1 w-auto radius-1"><button class="bg-admin text-white border-none p-1 radius-1">💾</button></div></td><td class="one-sentence-def">Locks an immutable signature identity handle onto the active evaluation sheet summary window layout.</td></tr><tr><td class="text-center"><button class="bg-admin text-white text-xs p-1 px-2 border-none radius-1">Preview</button></td><td class="one-sentence-def">Compiles filtered seasonal competition submissions into a responsive, scrollable fullscreen preview canvas.</td></tr><tr><td class="text-center"><button style="background:var(--primary);" class="text-white text-xs p-1 px-2 border-none radius-1">⬇ Download</button></td><td class="one-sentence-def">Compresses filtered live dataset paths into a secure, cross-platform spreadsheet document for local storage.</td></tr><tr><td class="text-center"><button class="bg-admin text-white text-xs p-1 px-4 border-none radius-1">Save</button></td><td class="one-sentence-def">Commits winning tags, selected titles, and official headings securely onto the targeted database reference.</td></tr><tr><td class="text-center"><div class="inline-block align-center gap-2 bg-dark p-1 border-gold radius-1"><span class="color-gold-alt text-sm">♛ Exc. Mode</span> <label class="switch scale-80 margin-neg-10-0"><input type="checkbox" checked><span class="slider" style="background:var(--danger);"></span></label></div></td><td class="one-sentence-def">Freezes standard reviewer voting forms entirely to carry out administrative platform updates safely.</td></tr><tr><td class="text-center"><button style="background:#FFD700; color:black;" class="font-bold text-xs p-1 px-2 border-none radius-1">Season Reset</button></td><td class="one-sentence-def">Restores baseline identity names, sets season to Jan00, and hides moderator features back to initial setup environments.</td></tr></tbody></table>`;
-} else {
-manualHeadingTarget.innerHTML = "📖 Reviewer User Manual";
-manualContentContainer.innerHTML = `<p style="font-size: 14px; margin-bottom: 20px; opacity: 0.85;">Operational guidelines for evaluating contemporary writing selections:</p><table class="manual-table"><thead><tr><th style="width: 45%; text-align: center;">Control Representation</th><th style="text-align: center;">Description</th></tr></thead><tbody><tr><td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>🎨 Classic Light</option></select></td><td class="one-sentence-def">Alters color layouts across light and matte modes to match user visibility preferences.</td></tr><tr><td class="text-center"><select class="text-xs p-1 radius-1 border-none bg-admin text-white"><option>📖 Select Story...</option></select></td><td class="one-sentence-def">Selects the active narrative entry that you want to evaluate from live database logs.<span class="manual-condition-text">Condition: Choosing a previously reviewed story automatically repopulates all inputs with your past evaluations.</span></td></tr><tr><td class="text-center"><input type="text" placeholder="Enter your Name" class="text-xs p-1 w-auto radius-1 bg-admin text-white border-none"></td><td class="one-sentence-def">Identifies your submitted grading entries securely so that scores compile properly on metrics ledgers.</td></tr><tr><td class="text-center"><input type="text" placeholder="Rating" class="text-xs p-1 w-auto radius-1 bg-admin text-white border-none"></td><td class="one-sentence-def">Saves your numerical score evaluation for the selected composition entry inside database logs.<span class="manual-condition-text">Condition: Must be an integer from 1-10. Rating is single-vote locked, cannot be altered after 18:00 IST for current-day entries, and cannot be changed for previous days' stories.</span></td></tr><tr><td class="text-center"><button style="background:var(--primary);" class="text-white text-xs p-1 px-2 border-none radius-1">Submit Review</button></td><td class="one-sentence-def">Dispatches your scores, title choices, and writer speculations directly onto cloud servers.</td></tr><tr><td class="text-center"><button style="background:var(--accent);" class="text-white text-xs p-1 px-2 border-none radius-1">Give App Feedback</button></td><td class="one-sentence-def">Opens an encrypted submission page to route development requests directly to programming teams.</td></tr><tr><td class="text-center"><div class="d-flex justify-center"><button class="text-xs p-1 px-2 bg-admin text-white border-none">Reviewer</button></div></td><td class="one-sentence-def">Navigates between public entry scoring blocks and secured dashboard user login configurations.</td></tr></tbody></table>`;
+let manualDataCache = null;
+async function fetchManualData() {
+if (manualDataCache) return manualDataCache;
+try {
+const response = await fetch('manual.json');
+manualDataCache = await response.json();
+return manualDataCache;
+} catch (error) {
+customAlert("Failed to load manual data.");
+return null;
 }
+}
+function buildManualData() {
+let combinedData = {};
+if (manualDataCache.reviewer) Object.assign(combinedData, manualDataCache.reviewer);
+if (isModeratorAuthenticated && manualDataCache.moderator) Object.assign(combinedData, manualDataCache.moderator);
+if (isDeveloperModeUnlocked && manualDataCache.developer) Object.assign(combinedData, manualDataCache.developer);
+return combinedData;
+}
+function renderManualCategories() {
+manualContentContainer.innerHTML = "";
+const data = buildManualData();
+Object.keys(data).forEach(category => {
+const item = createEl('div', { className: 'manual-list-item' });
+item.appendChild(createEl('span', {}, category));
+item.appendChild(createEl('span', {}, '→'));
+item.onclick = () => renderManualFeatures(category, data[category]);
+manualContentContainer.appendChild(item);
+});
+manualHeadingTarget.innerHTML = "📚 Documentation Canvas";
+}
+function renderManualFeatures(category, features) {
+manualContentContainer.innerHTML = "";
+const backBtn = createEl('button', { className: 'manual-back-btn' }, "← Back to Categories");
+backBtn.onclick = () => renderManualCategories();
+manualContentContainer.appendChild(backBtn);
+Object.keys(features).forEach(feature => {
+const item = createEl('div', { className: 'manual-list-item' });
+item.appendChild(createEl('span', {}, feature));
+item.appendChild(createEl('span', {}, '→'));
+item.onclick = () => renderManualDetails(category, feature, features[feature], features);
+manualContentContainer.appendChild(item);
+});
+manualHeadingTarget.innerHTML = category;
+}
+function renderManualDetails(category, feature, description, parentFeatures) {
+manualContentContainer.innerHTML = "";
+const backBtn = createEl('button', { className: 'manual-back-btn' }, `← Back to ${category}`);
+backBtn.onclick = () => renderManualFeatures(category, parentFeatures);
+manualContentContainer.appendChild(backBtn);
+manualContentContainer.appendChild(createEl('div', { className: 'manual-desc-box' }, description));
+manualHeadingTarget.innerHTML = feature;
+}
+sidebarManualBtn.addEventListener('click', async () => {
+toggleMenu(false);
+const data = await fetchManualData();
+if (data) {
+renderManualCategories();
 $('fullscreenManualOverlay').classList.remove('hidden');
-document.body.style.overflow = "hidden"; 
+document.body.style.overflow = "hidden";
+}
 });
 async function compileMasterDataMatrix(seasonFilterString = "All") {
 const querySnapshotObject = await getDocs(collection(db, "competitions"));
