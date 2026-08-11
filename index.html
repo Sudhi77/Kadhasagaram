@@ -1151,6 +1151,25 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </style>
 </head>
 <body>
+<svg style="display: none;">
+<defs>
+<symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+<polyline points="7 10 12 15 17 10"></polyline>
+<line x1="12" y1="15" x2="12" y2="3"></line>
+</symbol>
+<symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+</symbol>
+<symbol id="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<polyline points="6 9 12 15 18 9"></polyline>
+</symbol>
+<symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<polyline points="20 6 9 17 4 12"></polyline>
+</symbol>
+</defs>
+</svg>
 <div id="menuOverlay" class="menu-overlay"></div>
 <div id="sideMenu" class="side-menu">
 <div class="side-menu-header">
@@ -1244,11 +1263,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <div class="d-flex flex-row gap-4 mt-1 w-100">
 <button id="previewBtn" class="btn-preview flex-1 p-3 text-md d-flex align-center justify-center sys-lockable">Preview</button>
 <button id="downloadBtn" class="btn-download flex-1 p-3 text-md d-flex align-center justify-center gap-2 bg-admin text-white shadow-none text-shadow-none sys-lockable" style="text-shadow: none;">
-<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-<polyline points="7 10 12 15 17 10"></polyline>
-<line x1="12" y1="15" x2="12" y2="3"></line>
-</svg>
+<svg width="14" height="14"><use href="#icon-download"></use></svg>
 Download
 </button>
 </div>
@@ -1430,11 +1445,7 @@ Logout
 <label class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
 <div class="d-flex gap-3 align-center">
 <button type="button" id="downloadStoryReviewsBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 4px 8px; display: flex; align-items: center; justify-content: center;" title="Download Reviews">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-<polyline points="7 10 12 15 17 10"></polyline>
-<line x1="12" y1="15" x2="12" y2="3"></line>
-</svg>
+<svg width="16" height="16"><use href="#icon-download"></use></svg>
 </button>
 <button type="button" id="backToStoriesListBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer font-bold text-sm" style="padding: 4px 12px; width: max-content;">Back</button>
 </div>
@@ -1505,11 +1516,7 @@ Logout
 <div class="text-sm color-gold-alt mb-3" style="color: #ccc;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
 <textarea id="devReleaseNotesInput" rows="3" placeholder="Enter release notes / developer updates for this version..." class="w-100 box-border bg-black-alt text-white border-gold-alt p-2 radius-1 mb-3 text-md" style="font-family: inherit;"></textarea>
 <button type="button" id="btnPublishReleaseNotes" class="dev-btn-gold w-100 p-3 d-flex align-center justify-center gap-2 m-0" style="padding: 10px 0;">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-<polyline points="17 8 12 3 7 8"></polyline>
-<line x1="12" y1="3" x2="12" y2="15"></line>
-</svg>
+<svg width="16" height="16"><use href="#icon-download"></use></svg>
 Publish Update Info
 </button>
 </div>
@@ -1601,11 +1608,7 @@ Exclusive Mode
 <div class="d-flex align-center gap-4">
 <h2 class="manual-title border-none m-0 p-0 color-gold-alt shadow-text-gold">Platform Feedback</h2>
 <button type="button" id="devDownloadFeedbackBtn" class="dev-btn-gold hidden p-2 px-3 text-sm d-flex align-center gap-2">
-<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-<polyline points="7 10 12 15 17 10"></polyline>
-<line x1="12" y1="15" x2="12" y2="3"></line>
-</svg>
+<svg width="14" height="14"><use href="#icon-download"></use></svg>
 Download
 </button>
 </div>
@@ -1717,7 +1720,7 @@ this.valueDisplay.className = 'custom-select-value';
 this.trigger.appendChild(this.valueDisplay);
 this.chevron = document.createElement('div');
 this.chevron.className = 'custom-select-chevron';
-this.chevron.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+this.chevron.innerHTML = '<svg width="16" height="16"><use href="#icon-chevron"></use></svg>';
 this.trigger.appendChild(this.chevron);
 this.panel = document.createElement('div');
 this.panel.className = 'custom-select-panel';
@@ -1807,7 +1810,7 @@ optionElement.appendChild(textSpan);
 if (option.selected) {
 const checkMark = document.createElement('div');
 checkMark.className = 'custom-select-check';
-checkMark.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+checkMark.innerHTML = '<svg width="16" height="16"><use href="#icon-check"></use></svg>';
 optionElement.appendChild(checkMark);
 }
 optionElement.addEventListener('click', (event) => {
@@ -1936,20 +1939,19 @@ return result;
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-const dateModified = new Date(document.lastModified);
-const utcTime = dateModified.getTime() + (dateModified.getTimezoneOffset() * 60000);
-const istTime = new Date(utcTime + (3600000 * 5.5));
-const fullYear = istTime.getFullYear();
-const formattedMonth = String(istTime.getMonth() + 1).padStart(2, '0');
-const formattedDay = String(istTime.getDate()).padStart(2, '0');
-const GIT_BUILD_DATE = `${fullYear}-${formattedMonth}-${formattedDay}`;
-let hours = istTime.getHours();
-let minutes = String(istTime.getMinutes()).padStart(2, '0');
-const amPm = hours >= 12 ? 'PM' : 'AM';
-hours = hours % 12;
-hours = hours ? hours : 12;
-const GIT_BUILD_TIME = `${String(hours).padStart(2, '0')}:${minutes} ${amPm} IST`;
-const GIT_BUILD_NUMBER = `4.2.${formattedMonth}${formattedDay}.${String(istTime.getHours()).padStart(2,'0')}${minutes}`;
+const buildDate = new Date(document.lastModified);
+const opts = { timeZone: "Asia/Kolkata" };
+const YYYY = new Intl.DateTimeFormat("en-IN", { ...opts, year: "numeric" }).format(buildDate);
+const MM = new Intl.DateTimeFormat("en-IN", { ...opts, month: "2-digit" }).format(buildDate);
+const DD = new Intl.DateTimeFormat("en-IN", { ...opts, day: "2-digit" }).format(buildDate);
+const parts = new Intl.DateTimeFormat("en-IN", { ...opts, hour: "2-digit", minute: "2-digit", hour12: true }).formatToParts(buildDate);
+const hh12 = parts.find(p=>p.type==='hour').value.padStart(2, '0');
+const mm = parts.find(p=>p.type==='minute').value.padStart(2, '0');
+const ampm = parts.find(p=>p.type==='dayPeriod').value.toUpperCase();
+const hh24 = new Intl.DateTimeFormat("en-IN", { ...opts, hour: "2-digit", hour12: false }).format(buildDate).padStart(2, '0').replace('24', '00');
+const GIT_BUILD_DATE = `${YYYY}-${MM}-${DD}`;
+const GIT_BUILD_TIME = `${hh12}:${mm} ${ampm} IST`;
+const GIT_BUILD_NUMBER = `4.2.${MM}${DD}.${hh24}${mm}`;
 const menuOpenBtn = $('menuOpenBtn');
 const menuCloseBtn = $('menuCloseBtn');
 const sideMenu = $('sideMenu');
@@ -2059,6 +2061,16 @@ appId: "1:494031666393:web:27b2f4a51f1f7271c792c8"
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app); 
+async function updateGlobalConfig(payload, successMsg = null, errorMsg = "Error syncing configuration.") {
+try {
+await setDoc(doc(db, "app_state", "global_config"), payload, { merge: true });
+if (successMsg) customAlert(successMsg);
+return true;
+} catch(error) {
+customAlert(errorMsg);
+return false;
+}
+}
 const userInterface = $('userInterface');
 const feedbackInterface = $('feedbackInterface');
 const modInterface = $('modInterface');
@@ -2623,17 +2635,9 @@ evaluateSystemFreezeState();
 evaluateSetupFlow(); 
 } catch(error) {}
 });
-updateLockTimesBtn.addEventListener('click', async () => {
+updateLockTimesBtn.addEventListener('click', () => {
 if (isSystemPaused && !isDeveloperModeUnlocked) return;
-try {
-await setDoc(doc(db, "app_state", "global_config"), {
-authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59",
-titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59"
-}, { merge: true });
-customAlert("Lock times updated successfully.");
-} catch(error) { 
-customAlert("Error saving time locks.");
-}
+updateGlobalConfig({ authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59", titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59" }, "Lock times updated successfully.", "Error saving time locks.");
 });
 onSnapshot(doc(db, "app_state", "version_control"), (documentSnapshot) => {
 if (documentSnapshot.exists()) {
@@ -2674,31 +2678,15 @@ userTitleSuggestionGroup.classList.add('hidden');
 titleSuggestionInput.value = "";
 }
 }
-toggleAuthorGuessBtn.addEventListener('change', async () => {
-if (isSystemPaused && !isDeveloperModeUnlocked) return;
-try {
-await setDoc(doc(db, "app_state", "global_config"), {
-enableAuthorGuess: toggleAuthorGuessBtn.checked
-}, { merge: true });
-} catch(error) { customAlert("Error syncing configuration."); }
+toggleAuthorGuessBtn.addEventListener('change', () => {
+if (!isSystemPaused || isDeveloperModeUnlocked) updateGlobalConfig({ enableAuthorGuess: toggleAuthorGuessBtn.checked });
 });
-toggleTitleSuggestionBtn.addEventListener('change', async () => {
-if (isSystemPaused && !isDeveloperModeUnlocked) return;
-try {
-await setDoc(doc(db, "app_state", "global_config"), {
-enableTitleSuggestion: toggleTitleSuggestionBtn.checked
-}, { merge: true });
-} catch(error) { customAlert("Error syncing configuration."); }
+toggleTitleSuggestionBtn.addEventListener('change', () => {
+if (!isSystemPaused || isDeveloperModeUnlocked) updateGlobalConfig({ enableTitleSuggestion: toggleTitleSuggestionBtn.checked });
 });
 devPauseToggle.addEventListener('change', async () => {
-try {
-await setDoc(doc(db, "app_state", "global_config"), {
-systemPaused: devPauseToggle.checked
-}, { merge: true });
-} catch(error) {
-customAlert("Error syncing Exclusive Mode configuration.");
-devPauseToggle.checked = !devPauseToggle.checked;
-}
+const success = await updateGlobalConfig({ systemPaused: devPauseToggle.checked }, null, "Error syncing Exclusive Mode configuration.");
+if (!success) devPauseToggle.checked = !devPauseToggle.checked;
 });
 function evaluateSystemFreezeState() {
 if (isSystemPaused) {
@@ -3082,7 +3070,7 @@ buttonCopyElement.disabled = true;
 } else {
 buttonCopyElement.style.flexShrink = "0";
 }
-buttonCopyElement.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+buttonCopyElement.innerHTML = '<svg width="14" height="14"><use href="#icon-copy"></use></svg>';
 titleWrapperElement.appendChild(buttonCopyElement);
 tableDataTitleBox.appendChild(titleWrapperElement);
 tableRowElement.appendChild(tableDataName);
@@ -3113,19 +3101,11 @@ if((isSystemPaused && !isDeveloperModeUnlocked) || isNameLockedByMod) return;
 const targetNameString = inputModName.value.trim();
 if(!targetNameString || targetNameString === "Mod") { customAlert("Enter a valid custom signature identifier handle."); return; }
 if(!(await customConfirm(`Are you sure you want to change the moderator name to "${targetNameString}"? This option cannot be modified again by a moderator once applied.`))) return;
-try {
 saveModNameBtn.disabled = true;
-await setDoc(doc(db, "app_state", "global_config"), {
-modName: targetNameString,
-isNameLocked: true
-}, { merge: true });
-customAlert("Moderator name locked and compiled successfully.");
-} catch(error) {
-customAlert("Error processing profile modifications.");
-saveModNameBtn.disabled = false;
-}
+const success = await updateGlobalConfig({ modName: targetNameString, isNameLocked: true }, "Moderator name locked and compiled successfully.", "Error processing profile modifications.");
+if (!success) saveModNameBtn.disabled = false;
 });
-startSeasonBtn.addEventListener('click', async () => {
+startSeasonBtn.addEventListener('click', () => {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
 const monthValueString = inputMonth.value;
 if(!monthValueString) { customAlert("Please select a month to generate the season string."); return; }
@@ -3134,17 +3114,7 @@ const yearSuffixString = new Date().getFullYear().toString().slice(-2);
 const generatedSeasonNameString = shortMonthString + yearSuffixString;
 const guessTimeString = authorGuessLockTime.value.trim() || "23:59";
 const titleTimeString = titleSuggestionLockTime.value.trim() || "23:59";
-try {
-await setDoc(doc(db, "app_state", "global_config"), {
-month: monthValueString,
-topic: inputTopic.value.trim() || "*****",
-seasonName: generatedSeasonNameString,
-seasonStarted: true,
-authorGuessLockTime: guessTimeString,
-titleSuggestionLockTime: titleTimeString
-}, { merge: true });
-customAlert(`Season Configuration Saved.\nCurrent Season: ${generatedSeasonNameString}`);
-} catch(error) { customAlert("Database error saving variables."); }
+updateGlobalConfig({ month: monthValueString, topic: inputTopic.value.trim() || "*****", seasonName: generatedSeasonNameString, seasonStarted: true, authorGuessLockTime: guessTimeString, titleSuggestionLockTime: titleTimeString }, `Season Configuration Saved.\nCurrent Season: ${generatedSeasonNameString}`, "Database error saving variables.");
 });
 async function handleStoryAddition(inputElement, actionButtonElement) {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
@@ -3182,7 +3152,7 @@ customAlert(`Release notes published successfully.\nVersion updated to Build ${G
 customAlert("Error syncing version deployment metrics to Firestore storage collections.");
 } finally {
 btnPublishReleaseNotes.disabled = false;
-btnPublishReleaseNotes.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Publish Update Info`;
+btnPublishReleaseNotes.innerHTML = '<svg width="16" height="16"><use href="#icon-download"></use></svg> Publish Update Info';
 }
 });
 }
@@ -3361,19 +3331,7 @@ setSafeText(buttonElement, "Download");
 });
 devSeasonResetBtn.addEventListener('click', async () => {
 if(await customConfirm("Are you sure you want to perform a Season Reset? This will reset the Moderator Name, Month to January, clear the Subject, and set Season to Jan00.")) {
-try {
-await setDoc(doc(db, "app_state", "global_config"), { 
-modName: "Mod",
-isNameLocked: false,
-month: "January",
-topic: "",
-seasonName: "Jan00",
-seasonStarted: false
-}, { merge: true });
-customAlert("Season reset successfully.");
-} catch(error) {
-customAlert("Error resetting season.");
-}
+updateGlobalConfig({ modName: "Mod", isNameLocked: false, month: "January", topic: "", seasonName: "Jan00", seasonStarted: false }, "Season reset successfully.", "Error resetting season.");
 }
 });
 function checkAndRestoreSession() {
