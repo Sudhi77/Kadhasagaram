@@ -193,6 +193,7 @@ display: flex !important;
 align-items: center;
 justify-content: space-between;
 width: 100%;
+height: 44px;
 padding: 10px 14px;
 background-color: var(--input-bg);
 color: var(--input-text);
@@ -203,7 +204,6 @@ cursor: pointer;
 transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 user-select: none;
 box-sizing: border-box;
-min-height: 42px;
 }
 .custom-select-trigger:hover {
 border-color: var(--primary);
@@ -537,15 +537,28 @@ font-weight: 600;
 font-size: 14px;
 color: var(--h3-color);
 }
-input[type="text"], input[type="password"], input[type="number"], textarea, select {
+input[type="text"], input[type="password"], input[type="number"], select {
 width: 100%;
-padding: 10px;
+height: 44px;
+padding: 10px 14px;
 border: var(--border);
 border-radius: 6px;
 box-sizing: border-box;
-font-size: 16px;
+font-size: 15px;
 background-color: var(--input-bg);
 color: var(--input-text);
+}
+textarea {
+width: 100%;
+padding: 10px 14px;
+border: var(--border);
+border-radius: 6px;
+box-sizing: border-box;
+font-size: 15px;
+background-color: var(--input-bg);
+color: var(--input-text);
+min-height: 100px;
+resize: vertical;
 }
 input::placeholder, textarea::placeholder {
 color: var(--input-placeholder);
@@ -956,8 +969,8 @@ color: var(--primary);
 background-color: var(--danger);
 color: white;
 border: none;
-width: 36px;
-height: 36px;
+width: 32px;
+height: 32px;
 padding: 0;
 display: flex;
 align-items: center;
@@ -967,6 +980,7 @@ font-weight: bold;
 border-radius: 50%;
 cursor: pointer;
 box-shadow: none;
+flex-shrink: 0;
 }
 .manual-table {
 width: 100%;
@@ -1438,7 +1452,7 @@ Logout
 </button>
 </div>
 </div>
-<div class="d-flex flex-col gap-4 mb-4 mt-5 border-dashed pt-3">
+<div class="d-flex flex-col gap-4 mb-4 mt-5">
 <label for="deleteStorySelect" class="text-xl text-admin m-0 font-bold">📖 Select Story</label>
 <div class="d-flex gap-4 align-center">
 <select id="deleteStorySelect" class="flex-1 m-0 p-3 text-lg border-admin sys-lockable"></select>
@@ -1474,7 +1488,7 @@ Logout
 <div class="plain-section admin-header">
 <div class="d-flex justify-between align-center border-bottom pb-1 mb-4">
 <h2 class="border-none pb-0 m-0">📆 Daily Updates</h2>
-<div class="d-flex flex-col align-center bg-admin p-6 radius-2 w-max" style="border: var(--border); padding: 6px 16px;">
+<div class="d-flex flex-col align-center bg-admin radius-2 w-max" style="border: var(--border); padding: 8px 12px; min-width: auto; margin-left: auto;">
 <div id="currentDateDisplay" class="text-xl font-bold text-white text-center line-height-1">--/--/--</div>
 <div id="currentDayDisplay" class="text-md text-white font-bold mt-1 text-center line-height-1 opacity-90">---</div>
 </div>
@@ -1516,8 +1530,8 @@ Logout
 </div>
 <div class="form-group bg-dark p-6 radius-3 mb-5 border-gold-alt">
 <div class="d-flex justify-between align-center mb-3">
-<div class="text-xl font-bold text-white">Build: <span id="devVersionDisplay" class="color-gold-alt">Loading...</span></div>
-<button type="button" id="devVersionHistoryBtn" class="dev-btn-gold p-1 px-3 text-sm">Version History</button>
+<div class="text-xl font-bold text-white d-flex align-center" style="height:44px;">Build: <span id="devVersionDisplay" class="color-gold-alt ml-2">Loading...</span></div>
+<button type="button" id="devVersionHistoryBtn" class="dev-btn-gold px-3 text-sm" style="height:44px;">Version History</button>
 </div>
 <div id="newBuildAlertContainer" class="hidden mt-3 bg-darker-alt p-4 radius-2 border-none" style="border: 1px solid var(--danger);">
 <label class="text-danger text-lg font-bold block mb-1">⚠️ New Git Build Detected!</label>
@@ -1955,7 +1969,7 @@ return result;
 };
 });
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 const buildDate = new Date(document.lastModified);
 const opts = { timeZone: "Asia/Kolkata" };
@@ -2277,7 +2291,7 @@ const dayNamesArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "
 const initialDayName = dayNamesArray[initialTodayDate.getDay()];
 const currentDateDisplayElement = $('currentDateDisplay');
 const currentDayDisplayElement = $('currentDayDisplay');
-if(currentDateDisplayElement) setSafeText(currentDateDisplayElement, `${initialDayString} ${initialMonthName} ${initialYearString}`);
+if(currentDateDisplayElement) setSafeText(currentDateDisplayElement, `${initialDayString}/${initialMonthName.substring(0,3)}/${initialYearString}`);
 if(currentDayDisplayElement) setSafeText(currentDayDisplayElement, initialDayName);
 function appendEmptyRow(tableBody, columnsSpan, text) {
 tableBody.innerHTML = '';
@@ -2746,12 +2760,11 @@ $('downloadStoryReviewsBtn').classList.add('hidden');
 const tableHeadElement = $('submissionsTableHead');
 tableHeadElement.innerHTML = '';
 const headTableRowElement = createEl('tr');
-const tableHeaderDate = createEl('th');
-tableHeaderDate.appendChild(createEl('b', {}, "Published Date"));
-const tableHeaderStory = createEl('th');
-tableHeaderStory.appendChild(createEl('b', {}, "Story Name"));
-headTableRowElement.appendChild(tableHeaderDate);
-headTableRowElement.appendChild(tableHeaderStory);
+["Reviewer Name", "Date"].forEach(headerText => {
+const tableHeaderElement = createEl('th');
+tableHeaderElement.appendChild(createEl('b', {}, headerText));
+headTableRowElement.appendChild(tableHeaderElement);
+});
 tableHeadElement.appendChild(headTableRowElement);
 dailyReviewsTableBody.innerHTML = '';
 clearDailyUpdatesUI();
@@ -2763,10 +2776,10 @@ arrayedStoriesList.forEach(storyObject => {
 const tableRowElement = createEl('tr', { className: "cursor-pointer hover-bg-alt" });
 tableRowElement.onclick = () => loadCurrentStoryNotes(storyObject.id);
 const dateObject = new Date(storyObject.created);
-const tableDataDate = createEl('td', {}, dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
 const tableDataName = createEl('td', { className: "font-bold text-admin" }, storyObject.id);
-tableRowElement.appendChild(tableDataDate);
+const tableDataDate = createEl('td', {}, `${String(dateObject.getDate()).padStart(2, '0')}/${monthNamesArray[dateObject.getMonth()].substring(0,3)}/${String(dateObject.getFullYear()).slice(-2)}`);
 tableRowElement.appendChild(tableDataName);
+tableRowElement.appendChild(tableDataDate);
 dailyReviewsTableBody.appendChild(tableRowElement);
 });
 }
@@ -2889,22 +2902,41 @@ if(isSystemPaused && !isDeveloperModeUnlocked) return;
 accumulatedWinnersStateArray = [];
 renderAccumulatedWinnersChips();
 });
+$('deleteStoryBtn').addEventListener('click', async () => {
+if (isSystemPaused && !isDeveloperModeUnlocked) return;
+const targetStory = $('deleteStorySelect').value;
+if (!targetStory) {
+customAlert("No story selected to delete.");
+return;
+}
+if (await customConfirm(`Are you sure you want to completely delete "${targetStory}"? This action cannot be undone.`)) {
+$('deleteStoryBtn').disabled = true;
+try {
+await deleteDoc(doc(db, "competitions", targetStory));
+customAlert(`"${targetStory}" deleted successfully.`);
+} catch (error) {
+customAlert("Error deleting story.");
+} finally {
+$('deleteStoryBtn').disabled = false;
+}
+}
+});
 async function loadCurrentStoryNotes(targetSelectedStory) {
 $('backToStoriesListBtn').classList.remove('hidden');
 $('downloadStoryReviewsBtn').classList.remove('hidden');
 const tableHeadElement = $('submissionsTableHead');
 tableHeadElement.innerHTML = '';
 const headTableRowElement = createEl('tr');
-["Reviewer", "Rating", "Author Guess", "Suggested Title"].forEach(headerText => {
+["Reviewer Name", "Date"].forEach(headerText => {
 const tableHeaderElement = createEl('th');
 tableHeaderElement.appendChild(createEl('b', {}, headerText));
 headTableRowElement.appendChild(tableHeaderElement);
 });
 tableHeadElement.appendChild(headTableRowElement);
 dailyReviewsTableBody.innerHTML = '';
-appendEmptyRow(dailyReviewsTableBody, 4, "Loading reviews...");
+appendEmptyRow(dailyReviewsTableBody, 2, "Loading reviews...");
 if (!targetSelectedStory) {
-appendEmptyRow(dailyReviewsTableBody, 4, "Select a story to load submissions");
+appendEmptyRow(dailyReviewsTableBody, 2, "Select a story to load submissions");
 return;
 }
 if(storyDropdown.value !== targetSelectedStory) storyDropdown.value = targetSelectedStory;
@@ -2961,18 +2993,14 @@ event.stopPropagation();
 openDetailedReviewModal(reviewerKeyString, scoreValue, guessValue, titleValue, reviewDateValue);
 };
 tableRowElement.appendChild(tableDataName);
-tableRowElement.appendChild(createEl('td', {}, scoreValue));
-tableRowElement.appendChild(createEl('td', {}, guessValue));
-const titleTd = createEl('td');
-const titleWrapperElement = createEl('div', { className: "d-flex justify-center align-center gap-3" });
-titleWrapperElement.appendChild(createEl('span', { className: "word-break" }, titleValue));
-const btnOpacity = (titleValue === "None" || titleValue === "Legacy" || !titleValue) ? "0.3" : "1";
-const btnCursor = (titleValue === "None" || titleValue === "Legacy" || !titleValue) ? "not-allowed" : "pointer";
-const buttonCopyElement = createEl('button', { type: "button", className: "btn-copy-small btn-copy-row", 'data-reviewer': reviewerKeyString, 'data-title': titleValue, title: "Copy Reviewer & Title", disabled: btnOpacity === "0.3", style: { opacity: btnOpacity, cursor: btnCursor, flexShrink: "0" } });
-buttonCopyElement.innerHTML = '<svg width="14" height="14"><use href="#icon-copy"></use></svg>';
-titleWrapperElement.appendChild(buttonCopyElement);
-titleTd.appendChild(titleWrapperElement);
-tableRowElement.appendChild(titleTd);
+let displayDate = "N/A";
+if (reviewDateValue && reviewDateValue !== "N/A") {
+try {
+const dt = new Date(reviewDateValue);
+displayDate = `${String(dt.getDate()).padStart(2, '0')}/${monthNamesArray[dt.getMonth()].substring(0,3)}/${String(dt.getFullYear()).slice(-2)}`;
+} catch(e) {}
+}
+tableRowElement.appendChild(createEl('td', {}, displayDate));
 dailyReviewsTableBody.appendChild(tableRowElement);
 }
 });
@@ -2980,16 +3008,16 @@ if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValu
 if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
 renderAccumulatedWinnersChips();
 if(reviewCountInteger === 0) {
-appendEmptyRow(dailyReviewsTableBody, 4, "No reviews submitted for this story yet.");
+appendEmptyRow(dailyReviewsTableBody, 2, "No reviews submitted for this story yet.");
 }
 } else {
 activeStorySnapshotDataCache = null;
 renderAccumulatedWinnersChips();
 authorGivenHeadingInput.value = "";
-appendEmptyRow(dailyReviewsTableBody, 4, "Story data is empty or missing.");
+appendEmptyRow(dailyReviewsTableBody, 2, "Story data is empty or missing.");
 }
 } catch(error) {
-appendEmptyRow(dailyReviewsTableBody, 4, "Error loading reviews.");
+appendEmptyRow(dailyReviewsTableBody, 2, "Error loading reviews.");
 }
 }
 saveModNameBtn.addEventListener('click', async () => {
