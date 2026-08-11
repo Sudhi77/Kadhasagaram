@@ -956,10 +956,15 @@ color: var(--primary);
 background-color: var(--danger);
 color: white;
 border: none;
-padding: 8px 16px;
-font-size: 14px;
+width: 36px;
+height: 36px;
+padding: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 16px;
 font-weight: bold;
-border-radius: 6px;
+border-radius: 50%;
 cursor: pointer;
 box-shadow: none;
 }
@@ -1148,10 +1153,9 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .white-space-nowrap { white-space: nowrap; }
 .hover-bg-alt:hover td { background-color: var(--nav-btn-hover-bg); cursor: pointer; }
 .hover-text-primary:hover { color: var(--primary) !important; }
-.manual-list-item { background: var(--input-bg); border: var(--border); padding: 16px; margin-bottom: 10px; border-radius: var(--card-radius); cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s; }
-.manual-list-item:hover { border-color: var(--primary); }
+.manual-list-item { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.2); padding: 16px 8px; margin-bottom: 0; border-radius: 0; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; transition: color 0.2s; }
+.manual-list-item:hover { color: var(--primary); }
 .manual-back-btn { background: transparent; color: var(--primary); border: none; font-weight: bold; cursor: pointer; padding: 0 0 15px 0; display: flex; align-items: center; gap: 5px; box-shadow: none; }
-.manual-desc-box { background: var(--input-bg); border: var(--border); padding: 20px; border-radius: var(--card-radius); line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -1595,7 +1599,7 @@ Exclusive Mode
 </select>
 <span id="previewLoadingBadge" class="text-admin text-sm hidden" style="display: none;">⏳ Loading...</span>
 </div>
-<button type="button" id="previewCloseBtn" class="manual-close-trigger close-modal-btn" data-target="fullscreenPreviewOverlay">✕ Close</button>
+<button type="button" id="previewCloseBtn" class="manual-close-trigger close-modal-btn" data-target="fullscreenPreviewOverlay">✕</button>
 </div>
 <div class="webview-container m-0 mt-0">
 <div class="webview-scroll-frame max-h-70vh">
@@ -1616,7 +1620,7 @@ Exclusive Mode
 Download
 </button>
 </div>
-<button type="button" id="feedbackCloseBtn" class="manual-close-trigger close-modal-btn" data-target="fullscreenFeedbackOverlay" style="width: 36px; padding: 6px 0; display: flex; justify-content: center; align-items: center; font-size: 16px;">✕</button>
+<button type="button" id="feedbackCloseBtn" class="manual-close-trigger close-modal-btn" data-target="fullscreenFeedbackOverlay">✕</button>
 </div>
 <div class="m-0 mt-0">
 <div class="webview-scroll-frame max-h-70vh" style="border: none; background: transparent; overflow-x: auto;">
@@ -1667,8 +1671,8 @@ Download
 <div id="fullscreenManualOverlay" class="fullscreen-manual-view hidden">
 <div class="manual-wrapper-box">
 <div class="manual-header-row border-none pb-2 mb-4" style="border-bottom: 2px solid var(--primary);">
-<h2 id="manualHeadingTarget" class="manual-title border-none m-0 p-0">📚 Documentation Canvas</h2>
-<button type="button" id="manualCloseBtn" class="manual-close-trigger close-modal-btn" data-target="fullscreenManualOverlay">✕ Close</button>
+<h2 id="manualHeadingTarget" class="manual-title border-none m-0 p-0">📚 Usermanual</h2>
+<button type="button" id="manualCloseBtn" class="manual-close-trigger close-modal-btn" data-target="fullscreenManualOverlay">✕</button>
 </div>
 <div id="manualContentContainer"></div>
 </div>
@@ -3114,7 +3118,7 @@ item.appendChild(createEl('span', {}, '→'));
 item.onclick = () => renderManualFeatures(category, data[category]);
 manualContentContainer.appendChild(item);
 });
-manualHeadingTarget.innerHTML = "📚 Documentation Canvas";
+manualHeadingTarget.innerHTML = "📚 Usermanual";
 }
 function renderManualFeatures(category, features) {
 manualContentContainer.innerHTML = "";
@@ -3125,18 +3129,13 @@ Object.keys(features).forEach(feature => {
 const item = createEl('div', { className: 'manual-list-item' });
 item.appendChild(createEl('span', {}, feature));
 item.appendChild(createEl('span', {}, '→'));
-item.onclick = () => renderManualDetails(category, feature, features[feature], features);
+item.onclick = () => {
+const content = `<div class="text-left"><h3 class="mt-0" style="color:var(--primary);">${feature}</h3><p style="line-height:1.6; font-size:14px; font-weight:normal; margin-bottom:0; color:var(--text-color);">${features[feature]}</p></div>`;
+showCustomModal('alert', content);
+};
 manualContentContainer.appendChild(item);
 });
 manualHeadingTarget.innerHTML = category;
-}
-function renderManualDetails(category, feature, description, parentFeatures) {
-manualContentContainer.innerHTML = "";
-const backBtn = createEl('button', { className: 'manual-back-btn' }, `← Back to ${category}`);
-backBtn.onclick = () => renderManualFeatures(category, parentFeatures);
-manualContentContainer.appendChild(backBtn);
-manualContentContainer.appendChild(createEl('div', { className: 'manual-desc-box' }, description));
-manualHeadingTarget.innerHTML = feature;
 }
 sidebarManualBtn.addEventListener('click', () => {
 toggleMenu(false);
