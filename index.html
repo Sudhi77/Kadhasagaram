@@ -1234,8 +1234,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <div class="form-group mt-3" id="seasonSetupGroup">
 <label for="inputTopic">Subject</label>
 <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" class="mb-2 sys-lockable input-reduced">
-<div class="d-flex gap-3 align-center justify-end mb-4">
-<select id="inputMonth" class="cursor-pointer radius-2 m-0 w-max flex-none sys-lockable input-reduced">
+<select id="inputMonth" class="cursor-pointer radius-2 w-100 mb-3 sys-lockable input-reduced">
 <option value="">-- Select Month --</option>
 <option value="January">January</option>
 <option value="February">February</option>
@@ -1250,6 +1249,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <option value="November">November</option>
 <option value="December">December</option>
 </select>
+<div class="d-flex justify-end mb-4">
 <button type="button" id="startSeasonBtn" class="btn-mod-action w-max m-0 sys-lockable btn-reduced">Start Season</button>
 </div>
 </div>
@@ -1257,7 +1257,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <button type="button" id="openTimeRestrictionsBtn" class="btn-mod-action w-100 p-2 text-sm mt-2 mb-3">Custom Time Restrictions</button>
 <div class="form-group mt-3 mb-1">
 <label>Season Summary</label>
-<div class="d-flex flex-row gap-4 mt-1 w-100">
+<div class="d-flex flex-row gap-2 mt-1 w-100">
 <button id="previewBtn" class="btn-preview flex-1 p-3 text-md d-flex align-center justify-center sys-lockable">Preview</button>
 <button id="downloadBtn" class="btn-download flex-1 p-3 text-md d-flex align-center justify-center gap-2 bg-admin text-white shadow-none text-shadow-none sys-lockable" style="text-shadow: none;">
 <svg width="14" height="14"><use href="#icon-download"></use></svg>
@@ -1267,15 +1267,15 @@ Download
 </div>
 </div>
 </div>
-<div class="form-group pt-1 d-flex flex-row justify-end gap-4" style="margin-top: 25px;">
-<button type="button" id="sidebarManualBtn" class="btn-accent bg-admin text-white w-max padding-11-15 d-flex align-center justify-center gap-3">
+<div class="form-group pt-1 d-flex flex-row justify-end gap-2" style="margin-top: 25px;">
+<button type="button" id="sidebarManualBtn" class="btn-accent bg-admin text-white flex-1 d-flex align-center justify-center gap-2">
 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="block">
 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
 </svg>
 Manual
 </button>
-<button type="button" id="sidebarAboutBtn" class="btn-accent w-max padding-11-15 d-flex align-center justify-center gap-3">
+<button type="button" id="sidebarAboutBtn" class="btn-accent flex-1 d-flex align-center justify-center gap-2">
 <svg viewBox="0 0 24 24" width="16" height="16" class="block">
 <circle cx="12" cy="12" r="11" fill="#1d3557" />
 <circle cx="12" cy="7" r="1.5" fill="#ffffff" />
@@ -1415,13 +1415,7 @@ Logout
 </button>
 </div>
 <div class="form-group d-flex flex-col gap-3 mb-5">
-<div class="d-flex justify-between align-center">
 <h3 class="m-0 text-xl text-admin">Add New Story</h3>
-<button type="button" id="openSeasonEntriesBtn" class="btn-mod-action padding-6-12 radius-1 text-sm d-flex align-center gap-2">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
-Season Entries
-</button>
-</div>
 <div class="d-flex gap-4 align-center">
 <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." class="flex-1 m-0 sys-lockable input-reduced">
 <button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action m-0 d-flex align-center justify-center sys-lockable btn-reduced">
@@ -1434,31 +1428,26 @@ Season Entries
 </div>
 </div>
 <div class="d-flex flex-col gap-4 mb-4 mt-5">
-<label for="deleteStorySelect" class="text-xl text-admin m-0 font-bold">📖 Select Story</label>
+<label for="adminStorySelect" class="text-xl text-admin m-0 font-bold">📖 Select Story</label>
 <div class="d-flex gap-4 align-center">
-<select id="deleteStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
-<button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only text-white bg-admin sys-lockable btn-icon-reduced" style="background-color: var(--danger);">
-<svg viewBox="0 0 24 24">
-<path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/>
-</svg>
+<select id="adminStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
+<button type="button" id="editStoriesListBtn" class="btn-mod-action btn-icon-only text-white bg-admin sys-lockable btn-icon-reduced">
+<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
 </button>
 </div>
 </div>
 <div class="d-flex justify-between align-center mb-2">
 <label class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
-<div class="d-flex gap-3 align-center">
-<button type="button" id="downloadStoryReviewsBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 4px 8px; display: flex; align-items: center; justify-content: center;">
+<button type="button" id="downloadStoryReviewsBtn" class="bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 4px 8px; display: flex; align-items: center; justify-content: center;">
 <svg width="16" height="16"><use href="#icon-download"></use></svg>
 </button>
-<button type="button" id="backToStoriesListBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer font-bold text-sm" style="padding: 4px 12px; width: max-content;">Back</button>
-</div>
 </div>
 <div class="webview-scroll-frame mb-5 radius-2" style="border: var(--border);">
 <table class="webview-table m-0 table-condensed">
 <thead id="submissionsTableHead">
 <tr>
-<th><b>Published Date</b></th>
-<th><b>Story Name</b></th>
+<th><b>Reviewer Name</b></th>
+<th><b>Date</b></th>
 </tr>
 </thead>
 <tbody id="dailyReviewsTableBody">
@@ -1627,20 +1616,21 @@ Exclusive Mode
 <button type="button" class="bg-transparent border-none text-muted cursor-pointer font-bold mt-2 close-modal-btn w-100 text-center" data-target="timeRestrictionsOverlay">Close</button>
 </div>
 </div>
-<div id="seasonEntriesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000003; backdrop-filter: blur(4px);">
+<div id="editStoriesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000003; backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 80vh;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
-<h3 class="m-0" style="color: var(--primary);">Season Entries</h3>
-<div class="d-flex gap-2">
-<button type="button" id="seEditBtn" class="bg-transparent border-none cursor-pointer p-1">
-<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+<h3 class="m-0" style="color: var(--primary);">All Stories</h3>
+<div class="d-flex gap-2 align-center">
+<button type="button" id="esToggleEditBtn" class="bg-transparent border-none cursor-pointer p-1">
+<svg id="esPencilIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+<span id="esSaveText" class="hidden font-bold" style="color: var(--primary);">Save</span>
 </button>
-<button type="button" id="seCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="seasonEntriesOverlay">
+<button type="button" id="esCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="editStoriesOverlay">
 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
 </div>
-<div id="seasonEntriesList" style="overflow-y: auto; flex-grow: 1;"></div>
+<div id="editStoriesList" style="overflow-y: auto; flex-grow: 1;"></div>
 </div>
 </div>
 <div id="fullscreenPreviewOverlay" class="fullscreen-manual-view hidden">
@@ -2155,7 +2145,7 @@ const topicDisplay = $('topicDisplay');
 const monthDisplay = $('monthDisplay');
 const headerModNameDisplay = $('headerModNameDisplay');
 const storyDropdown = $('storyDropdown');
-const deleteStorySelect = $('deleteStorySelect');
+const adminStorySelect = $('adminStorySelect');
 const localEmailInput = $('localEmailInput');
 const localPassInput = $('localPassInput');
 const submitLoginBtn = $('submitLoginBtn');
@@ -2179,7 +2169,6 @@ const newBuildAlertContainer = $('newBuildAlertContainer');
 const newBuildTagDisplay = $('newBuildTagDisplay');
 const devReleaseNotesInput = $('devReleaseNotesInput');
 const btnPublishReleaseNotes = $('btnPublishReleaseNotes');
-const deleteStoryBtn = $('deleteStoryBtn');
 const ratingForm = $('ratingForm');
 const friendNameInput = $('friendName');
 const ratingValueInput = $('ratingValue');
@@ -2237,13 +2226,12 @@ setSafeText(drModalGuess, guess);
 setSafeText(drModalSuggTitle, suggTitle);
 detailedReviewOverlay.classList.remove('hidden');
 }
-$('backToStoriesListBtn').addEventListener('click', () => renderMasterStoryList());
 downloadStoryReviewsBtn.addEventListener('click', () => {
 if (!activeStorySnapshotDataCache) {
 customAlert("No data available to download.");
 return;
 }
-const currentStory = $('deleteStorySelect').value;
+const currentStory = $('adminStorySelect').value;
 const downloadDate = new Date().toLocaleString();
 const rowsHtml = Object.entries(activeStorySnapshotDataCache)
 .filter(([key]) => !['created', 'season', '_suggestions', '_suggesterName', '_guesses', '_authorGivenHeading'].includes(key))
@@ -2318,6 +2306,7 @@ let headingToReviewerMap = {};
 let cachedFeedbackData = null;
 let cachedMaxCols = 0;
 let feedbackDevState = {};
+let isEditingStoryList = false;
 let currentVersionState = { 
 buildNumber: GIT_BUILD_NUMBER, 
 publishedDate: GIT_BUILD_DATE,
@@ -2636,6 +2625,71 @@ updateGlobalConfig({ enableMasterTimeRestriction: masterTimeRestrictionToggle.ch
 $('openTimeRestrictionsBtn').addEventListener('click', () => {
 $('timeRestrictionsOverlay').classList.remove('hidden');
 });
+function renderEditStoriesList() {
+const listContainer = $('editStoriesList');
+listContainer.innerHTML = '';
+arrayedStoriesList.forEach(story => {
+const item = createEl('div', { className: 'p-3 border-bottom d-flex align-center gap-3', 'data-id': story.id });
+if (isEditingStoryList) {
+const input = createEl('input', { type: 'text', value: story.id, className: 'w-100 p-2 radius-1 border-admin', 'data-old-id': story.id });
+item.appendChild(input);
+} else {
+const textSpan = createEl('span', { className: 'text-md font-bold' }, story.id);
+item.appendChild(textSpan);
+}
+listContainer.appendChild(item);
+});
+}
+$('editStoriesListBtn').addEventListener('click', () => {
+if (isSystemPaused && !isDeveloperModeUnlocked) return;
+isEditingStoryList = false;
+$('esPencilIcon').classList.remove('hidden');
+$('esSaveText').classList.add('hidden');
+renderEditStoriesList();
+$('editStoriesOverlay').classList.remove('hidden');
+});
+$('esToggleEditBtn').addEventListener('click', async () => {
+if (isSystemPaused && !isDeveloperModeUnlocked) return;
+if (!isEditingStoryList) {
+isEditingStoryList = true;
+$('esPencilIcon').classList.add('hidden');
+$('esSaveText').classList.remove('hidden');
+renderEditStoriesList();
+} else {
+const inputs = $('editStoriesList').querySelectorAll('input');
+let updates = [];
+inputs.forEach(input => {
+const oldId = input.getAttribute('data-old-id');
+const newId = input.value.trim();
+if (newId && newId !== oldId) {
+updates.push({ oldId, newId });
+}
+});
+if (updates.length > 0) {
+$('esToggleEditBtn').disabled = true;
+setSafeText($('esSaveText'), "Saving...");
+try {
+for (const update of updates) {
+const oldDocRef = doc(db, "competitions", update.oldId);
+const oldDocSnap = await getDoc(oldDocRef);
+if (oldDocSnap.exists()) {
+await setDoc(doc(db, "competitions", update.newId), oldDocSnap.data());
+await deleteDoc(oldDocRef);
+}
+}
+customAlert("Stories updated successfully.");
+} catch (error) {
+customAlert("Error updating stories.");
+}
+$('esToggleEditBtn').disabled = false;
+setSafeText($('esSaveText'), "Save");
+}
+isEditingStoryList = false;
+$('esPencilIcon').classList.remove('hidden');
+$('esSaveText').classList.add('hidden');
+renderEditStoriesList();
+}
+});
 onSnapshot(doc(db, "app_state", "global_config"), (documentSnapshot) => {
 try {
 let data = {};
@@ -2813,56 +2867,6 @@ downloadSelectElement.appendChild(createEl('option', { value: seasonString }, se
 if ([...seasonsSetCollection, "All", globalSeasonCache].includes(previewValue)) previewSelectElement.value = previewValue;
 if ([...seasonsSetCollection, "All", globalSeasonCache].includes(downloadValue)) downloadSelectElement.value = downloadValue;
 }
-function clearDailyUpdatesUI() {
-if (authorGivenHeadingInput) authorGivenHeadingInput.value = "";
-if (readerSuggestions) resetSelect(readerSuggestions, "-- Title --");
-if (headingSuggesterInput) resetSelect(headingSuggesterInput, "-- Name --");
-if (correctGuesses) resetSelect(correctGuesses, "-- Select Winner --");
-accumulatedWinnersStateArray = [];
-renderAccumulatedWinnersChips();
-}
-function renderMasterStoryList() {
-$('backToStoriesListBtn').classList.add('hidden');
-$('downloadStoryReviewsBtn').classList.add('hidden');
-const tableHeadElement = $('submissionsTableHead');
-tableHeadElement.innerHTML = '';
-const headTableRowElement = createEl('tr');
-const tableHeaderDate = createEl('th');
-tableHeaderDate.appendChild(createEl('b', {}, "Published Date"));
-const tableHeaderStory = createEl('th');
-tableHeaderStory.appendChild(createEl('b', {}, "Story Name"));
-headTableRowElement.appendChild(tableHeaderDate);
-headTableRowElement.appendChild(tableHeaderStory);
-tableHeadElement.appendChild(headTableRowElement);
-dailyReviewsTableBody.innerHTML = '';
-clearDailyUpdatesUI();
-if (arrayedStoriesList.length === 0) {
-appendEmptyRow(dailyReviewsTableBody, 2, "No stories available.");
-return;
-}
-arrayedStoriesList.forEach(storyObject => {
-const tableRowElement = createEl('tr', { className: "cursor-pointer hover-bg-alt" });
-tableRowElement.onclick = () => loadCurrentStoryNotes(storyObject.id);
-const dateObject = new Date(storyObject.created);
-const tableDataDate = createEl('td', {}, `${String(dateObject.getDate()).padStart(2, '0')}/${monthNamesArray[dateObject.getMonth()].substring(0,3)}/${String(dateObject.getFullYear()).slice(-2)}`);
-const tableDataName = createEl('td', { className: "font-bold text-admin" }, storyObject.id);
-tableRowElement.appendChild(tableDataDate);
-tableRowElement.appendChild(tableDataName);
-dailyReviewsTableBody.appendChild(tableRowElement);
-});
-}
-function renderSeasonEntries() {
-const listContainer = $('seasonEntriesList');
-listContainer.innerHTML = '';
-arrayedStoriesList.forEach(story => {
-const item = createEl('div', { className: 'p-3 border-bottom text-md d-flex justify-between align-center text-bold' }, story.id);
-listContainer.appendChild(item);
-});
-}
-$('openSeasonEntriesBtn').addEventListener('click', () => {
-renderSeasonEntries();
-$('seasonEntriesOverlay').classList.remove('hidden');
-});
 onSnapshot(collection(db, "competitions"), (collectionSnapshot) => {
 arrayedStoriesList = [];
 let uniqueSeasonsSet = new Set();
@@ -2874,18 +2878,19 @@ if (dataObject.season) uniqueSeasonsSet.add(dataObject.season);
 updateSeasonDropdowns(uniqueSeasonsSet);
 arrayedStoriesList.sort((elementA, elementB) => elementB.created - elementA.created);
 storyDropdown.innerHTML = '';
-deleteStorySelect.innerHTML = '';
+adminStorySelect.innerHTML = '';
 arrayedStoriesList.forEach(storyObject => {
 storyDropdown.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
-deleteStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
+adminStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 });
 if(arrayedStoriesList.length > 0) {
 if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
-if(!deleteStorySelect.value) deleteStorySelect.selectedIndex = 0;
-renderMasterStoryList();
+if(!adminStorySelect.value) adminStorySelect.selectedIndex = 0;
+loadCurrentStoryNotes(adminStorySelect.value);
 autoFillPreviousUserInputs();
 } else {
-renderMasterStoryList();
+dailyReviewsTableBody.innerHTML = '';
+appendEmptyRow(dailyReviewsTableBody, 2, "No stories available.");
 }
 evaluateLocalStorageRestrictions();
 });
@@ -2919,8 +2924,8 @@ storyDropdown.addEventListener('change', () => {
 evaluateLocalStorageRestrictions();
 autoFillPreviousUserInputs();
 });
-deleteStorySelect.addEventListener('change', () => {
-loadCurrentStoryNotes(deleteStorySelect.value);
+adminStorySelect.addEventListener('change', () => {
+loadCurrentStoryNotes(adminStorySelect.value);
 });
 readerSuggestions.addEventListener('change', () => {
 const selectedHeadingValue = readerSuggestions.value;
@@ -2982,37 +2987,7 @@ if(isSystemPaused && !isDeveloperModeUnlocked) return;
 accumulatedWinnersStateArray = [];
 renderAccumulatedWinnersChips();
 });
-$('deleteStoryBtn').addEventListener('click', async () => {
-if (isSystemPaused && !isDeveloperModeUnlocked) return;
-const targetStory = $('deleteStorySelect').value;
-if (!targetStory) {
-customAlert("No story selected to delete.");
-return;
-}
-if (await customConfirm(`Are you sure you want to completely delete "${targetStory}"? This action cannot be undone.`)) {
-$('deleteStoryBtn').disabled = true;
-try {
-await deleteDoc(doc(db, "competitions", targetStory));
-customAlert(`"${targetStory}" deleted successfully.`);
-} catch (error) {
-customAlert("Error deleting story.");
-} finally {
-$('deleteStoryBtn').disabled = false;
-}
-}
-});
 async function loadCurrentStoryNotes(targetSelectedStory) {
-$('backToStoriesListBtn').classList.remove('hidden');
-$('downloadStoryReviewsBtn').classList.remove('hidden');
-const tableHeadElement = $('submissionsTableHead');
-tableHeadElement.innerHTML = '';
-const headTableRowElement = createEl('tr');
-["Reviewer Name", "Date"].forEach(headerText => {
-const tableHeaderElement = createEl('th');
-tableHeaderElement.appendChild(createEl('b', {}, headerText));
-headTableRowElement.appendChild(tableHeaderElement);
-});
-tableHeadElement.appendChild(headTableRowElement);
 dailyReviewsTableBody.innerHTML = '';
 appendEmptyRow(dailyReviewsTableBody, 2, "Loading reviews...");
 if (!targetSelectedStory) {
@@ -3020,7 +2995,7 @@ appendEmptyRow(dailyReviewsTableBody, 2, "Select a story to load submissions");
 return;
 }
 if(storyDropdown.value !== targetSelectedStory) storyDropdown.value = targetSelectedStory;
-if(deleteStorySelect.value !== targetSelectedStory) deleteStorySelect.value = targetSelectedStory;
+if(adminStorySelect.value !== targetSelectedStory) adminStorySelect.value = targetSelectedStory;
 try {
 const documentSnapshot = await getDoc(doc(db, "competitions", targetSelectedStory));
 resetSelect(readerSuggestions, "-- Title --");
