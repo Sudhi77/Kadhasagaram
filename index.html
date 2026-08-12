@@ -2000,7 +2000,7 @@ return result;
 });
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, arrayUnion, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 const buildDate = new Date(document.lastModified);
 const opts = { timeZone: "Asia/Kolkata" };
 const YYYY = new Intl.DateTimeFormat("en-IN", { ...opts, year: "numeric" }).format(buildDate);
@@ -2867,6 +2867,14 @@ downloadSelectElement.appendChild(createEl('option', { value: seasonString }, se
 if ([...seasonsSetCollection, "All", globalSeasonCache].includes(previewValue)) previewSelectElement.value = previewValue;
 if ([...seasonsSetCollection, "All", globalSeasonCache].includes(downloadValue)) downloadSelectElement.value = downloadValue;
 }
+function clearDailyUpdatesUI() {
+if (authorGivenHeadingInput) authorGivenHeadingInput.value = "";
+if (readerSuggestions) resetSelect(readerSuggestions, "-- Title --");
+if (headingSuggesterInput) resetSelect(headingSuggesterInput, "-- Name --");
+if (correctGuesses) resetSelect(correctGuesses, "-- Select Winner --");
+accumulatedWinnersStateArray = [];
+renderAccumulatedWinnersChips();
+}
 onSnapshot(collection(db, "competitions"), (collectionSnapshot) => {
 arrayedStoriesList = [];
 let uniqueSeasonsSet = new Set();
@@ -2945,18 +2953,8 @@ return;
 submitLoginBtn.disabled = true;
 setSafeText(submitLoginBtn, "Authenticating...");
 try {
-const userCredentialObject = await signInWithEmailAndPassword(auth, emailString, passwordString);
-const isDev = ["dev@admin.com", "dev@kathasagaram.com"].includes(userCredentialObject.user.email);
-isModeratorAuthenticated = true;
-isDeveloperModeUnlocked = isDev;
-try { sessionStorage.setItem('authMode', isDev ? 'developer' : 'moderator'); } catch(error) {}
-customAlert(`Authentication Successful (${isDev ? 'Dev' : 'Mod'})`);
-loginInterface.classList.add('hidden');
-modInterface.classList.remove('hidden');
-sidebarModOptions.classList.remove('hidden'); 
-if (isDeveloperModeUnlocked) devInterface.classList.remove('hidden');
-evaluateLocalStorageRestrictions();
-evaluateSystemFreezeState();
+await signInWithEmailAndPassword(auth, emailString, passwordString);
+customAlert("Authentication Successful");
 localEmailInput.value = "";
 localPassInput.value = "";
 } catch (error) {
@@ -2965,6 +2963,23 @@ localPassInput.value = "";
 } finally {
 submitLoginBtn.disabled = false;
 setSafeText(submitLoginBtn, "Unlock Control Panels");
+}
+});
+onAuthStateChanged(auth, (userObject) => {
+if (userObject) {
+const isDev = ["dev@admin.com", "dev@kathasagaram.com"].includes(userObject.email);
+isModeratorAuthenticated = true;
+isDeveloperModeUnlocked = isDev;
+sidebarModOptions.classList.remove('hidden');
+navBtnModerator.click();
+evaluateLocalStorageRestrictions();
+evaluateSystemFreezeState();
+} else {
+isModeratorAuthenticated = false;
+isDeveloperModeUnlocked = false;
+sidebarModOptions.classList.add('hidden');
+navBtnReviewer.click();
+evaluateLocalStorageRestrictions();
 }
 });
 function renderAccumulatedWinnersChips() {
@@ -3340,36 +3355,13 @@ if(await customConfirm("Are you sure you want to perform a Season Reset? This wi
 updateGlobalConfig({ modName: "Mod", isNameLocked: false, month: "January", topic: "", seasonName: "Jan00", seasonStarted: false }, "Season reset successfully.", "Error resetting season.");
 }
 });
-function checkAndRestoreSession() {
-try {
-const savedAuthString = sessionStorage.getItem('authMode');
-if (savedAuthString === 'developer') {
-isModeratorAuthenticated = true;
-isDeveloperModeUnlocked = true;
-sidebarModOptions.classList.remove('hidden');
-navBtnModerator.click();
-} else if (savedAuthString === 'moderator') {
-isModeratorAuthenticated = true;
-isDeveloperModeUnlocked = false;
-sidebarModOptions.classList.remove('hidden');
-navBtnModerator.click(); 
-}
-} catch (error) {}
-}
-checkAndRestoreSession();
 if (logoutBtn) {
 logoutBtn.addEventListener('click', async () => {
 if (!(await customConfirm("Confirm Logout!"))) return;
 try {
 await signOut(auth);
-sessionStorage.removeItem('authMode'); 
-} catch(error) {}
-isModeratorAuthenticated = false;
-isDeveloperModeUnlocked = false;
-sidebarModOptions.classList.add('hidden'); 
-navBtnReviewer.click(); 
-evaluateLocalStorageRestrictions();
 customAlert("Logout Successful");
+} catch(error) {}
 });
 }
 </script>
