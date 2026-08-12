@@ -1074,7 +1074,6 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .mt-3 { margin-top: 15px; }
 .mt-4 { margin-top: 20px; }
 .mt-5 { margin-top: 25px; }
-.mt-auto { margin-top: auto; }
 .mb-0 { margin-bottom: 0; }
 .mb-1 { margin-bottom: 4px; }
 .mb-2 { margin-bottom: 8px; }
@@ -1223,7 +1222,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <label for="inputModName">Moderator Name</label>
 <div class="d-flex gap-3 align-center">
 <input type="text" id="inputModName" placeholder="Handle" class="m-0 flex-1 sys-lockable input-reduced">
-<button type="button" id="saveModNameBtn" class="btn-mod-action d-flex align-center justify-center w-auto sys-lockable btn-reduced" title="Save Profile">
+<button type="button" id="saveModNameBtn" class="btn-mod-action d-flex align-center justify-center w-auto sys-lockable btn-reduced">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
 <path d="M12 16v-9"></path>
 <path d="M8 11l4-4 4 4"></path>
@@ -1255,35 +1254,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </div>
 </div>
 <div id="advancedModOptions" class="hidden pt-2">
-<div class="switch-container p-3 mb-3 flex-wrap gap-2">
-<div class="d-flex align-center justify-between w-100">
-<div><strong class="text-md">Guess Author</strong></div>
-<label class="switch scale-80 margin-neg-5">
-<input type="checkbox" id="toggleAuthorGuessBtn" class="sys-lockable">
-<span class="slider"></span>
-</label>
-</div>
-<div class="d-flex align-center w-100 mt-1 justify-end">
-<span class="text-xs opacity-80">Lock Time:</span>
-<input type="text" id="authorGuessLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
-</div>
-</div>
-<div class="switch-container p-3 mb-3 flex-wrap gap-2">
-<div class="d-flex align-center justify-between w-100">
-<div><strong class="text-md">Title Suggestion</strong></div>
-<label class="switch scale-80 margin-neg-5">
-<input type="checkbox" id="toggleTitleSuggestionBtn" class="sys-lockable">
-<span class="slider"></span>
-</label>
-</div>
-<div class="d-flex align-center w-100 mt-1 justify-end">
-<span class="text-xs opacity-80">Lock Time:</span>
-<input type="text" id="titleSuggestionLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
-</div>
-</div>
-<div class="d-flex justify-end w-100 mb-4 mt-neg-5" style="margin-top:-5px;">
-<button type="button" id="updateLockTimesBtn" class="btn-mod-action w-max padding-6-12 text-md sys-lockable">Update</button>
-</div>
+<button type="button" id="openTimeRestrictionsBtn" class="btn-mod-action w-100 p-2 text-sm mt-2 mb-3">Custom Time Restrictions</button>
 <div class="form-group mt-3 mb-1">
 <label>Season Summary</label>
 <div class="d-flex flex-row gap-4 mt-1 w-100">
@@ -1296,7 +1267,7 @@ Download
 </div>
 </div>
 </div>
-<div class="form-group mt-auto pt-1 d-flex flex-row justify-end gap-4">
+<div class="form-group pt-1 d-flex flex-row justify-end gap-4" style="margin-top: 25px;">
 <button type="button" id="sidebarManualBtn" class="btn-accent bg-admin text-white w-max padding-11-15 d-flex align-center justify-center gap-3">
 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="block">
 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -1444,10 +1415,16 @@ Logout
 </button>
 </div>
 <div class="form-group d-flex flex-col gap-3 mb-5">
+<div class="d-flex justify-between align-center">
 <h3 class="m-0 text-xl text-admin">Add New Story</h3>
+<button type="button" id="openSeasonEntriesBtn" class="btn-mod-action padding-6-12 radius-1 text-sm d-flex align-center gap-2">
+<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+Season Entries
+</button>
+</div>
 <div class="d-flex gap-4 align-center">
 <input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." class="flex-1 m-0 sys-lockable input-reduced">
-<button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action m-0 d-flex align-center justify-center sys-lockable btn-reduced" title="Upload Story">
+<button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action m-0 d-flex align-center justify-center sys-lockable btn-reduced">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
 <path d="M21 16.5A5.5 5.5 0 0 0 17.5 6h-1.26A8 8 0 1 0 4 15.25"></path>
 <polyline points="16 11 12 7 8 11"></polyline>
@@ -1460,7 +1437,7 @@ Logout
 <label for="deleteStorySelect" class="text-xl text-admin m-0 font-bold">📖 Select Story</label>
 <div class="d-flex gap-4 align-center">
 <select id="deleteStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
-<button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only text-white bg-admin sys-lockable btn-icon-reduced" style="background-color: var(--danger);" title="Delete Selected Story">
+<button type="button" id="deleteStoryBtn" class="btn-danger btn-icon-only text-white bg-admin sys-lockable btn-icon-reduced" style="background-color: var(--danger);">
 <svg viewBox="0 0 24 24">
 <path d="M19 8l-1 12H6L5 8h14M16 3H8l-1 2H2v2h20V5h-5l-1-2zM9 10h2v7H9v-7zm4 0h2v7h-2v-7z"/>
 </svg>
@@ -1470,7 +1447,7 @@ Logout
 <div class="d-flex justify-between align-center mb-2">
 <label class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
 <div class="d-flex gap-3 align-center">
-<button type="button" id="downloadStoryReviewsBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 4px 8px; display: flex; align-items: center; justify-content: center;" title="Download Reviews">
+<button type="button" id="downloadStoryReviewsBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 4px 8px; display: flex; align-items: center; justify-content: center;">
 <svg width="16" height="16"><use href="#icon-download"></use></svg>
 </button>
 <button type="button" id="backToStoriesListBtn" class="hidden bg-admin text-white border-none radius-1 cursor-pointer font-bold text-sm" style="padding: 4px 12px; width: max-content;">Back</button>
@@ -1489,7 +1466,7 @@ Logout
 </table>
 </div>
 </div>
-<div class="plain-section admin-header">
+<div class="plain-section admin-header hidden" id="dailyUpdatesSection">
 <div class="d-flex justify-between align-center border-bottom pb-1 mb-4">
 <h2 class="border-none pb-0 m-0">📆 Daily Updates</h2>
 <div class="d-flex flex-col align-center bg-admin radius-2 w-max" style="border: var(--border); padding: 8px 12px; min-width: auto; margin-left: auto;">
@@ -1498,7 +1475,7 @@ Logout
 </div>
 </div>
 <div class="form-group">
-<label for="authorGivenHeadingInput">Author given Heading</label>
+<label for="authorGivenHeadingInput">Title</label>
 <input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading" class="sys-lockable input-reduced">
 </div>
 <div class="form-group d-flex gap-4">
@@ -1515,7 +1492,7 @@ Logout
 <label for="correctGuesses">Guess the Author</label>
 <div class="d-flex gap-4 align-center">
 <select id="correctGuesses" class="flex-1 m-0 sys-lockable input-reduced"></select>
-<button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable btn-icon-reduced" title="Clear All Selections">
+<button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable btn-icon-reduced">
 <svg viewBox="0 0 24 24">
 <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
 </svg>
@@ -1607,6 +1584,65 @@ Exclusive Mode
 </div>
 </div>
 </div>
+<div id="timeRestrictionsOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000004; backdrop-filter: blur(4px);">
+<div class="custom-modal-box w-100 box-border" style="max-width: 400px; padding: 25px; text-align: left;">
+<div class="d-flex justify-between align-center border-bottom pb-3 mb-4">
+<h3 class="m-0" style="color: var(--primary);">Enable Time restriction</h3>
+<label class="switch scale-80 m-0">
+<input type="checkbox" id="masterTimeRestrictionToggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+<div id="timeRestrictionContent" style="transition: all 0.3s;">
+<div class="switch-container p-3 mb-3 flex-wrap gap-2">
+<div class="d-flex align-center justify-between w-100">
+<div><strong class="text-md">Guess Author</strong></div>
+<label class="switch scale-80 margin-neg-5">
+<input type="checkbox" id="toggleAuthorGuessBtn" class="sys-lockable">
+<span class="slider"></span>
+</label>
+</div>
+<div class="d-flex align-center w-100 mt-1 justify-end">
+<span class="text-xs opacity-80">Lock Time:</span>
+<input type="text" id="authorGuessLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
+</div>
+</div>
+<div class="switch-container p-3 mb-3 flex-wrap gap-2">
+<div class="d-flex align-center justify-between w-100">
+<div><strong class="text-md">Title Suggestion</strong></div>
+<label class="switch scale-80 margin-neg-5">
+<input type="checkbox" id="toggleTitleSuggestionBtn" class="sys-lockable">
+<span class="slider"></span>
+</label>
+</div>
+<div class="d-flex align-center w-100 mt-1 justify-end">
+<span class="text-xs opacity-80">Lock Time:</span>
+<input type="text" id="titleSuggestionLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
+</div>
+</div>
+<div class="d-flex justify-end w-100 mb-2 mt-4">
+<button type="button" id="updateLockTimesBtn" class="btn-mod-action w-max padding-6-12 text-md sys-lockable">Update</button>
+</div>
+</div>
+<button type="button" class="bg-transparent border-none text-muted cursor-pointer font-bold mt-2 close-modal-btn w-100 text-center" data-target="timeRestrictionsOverlay">Close</button>
+</div>
+</div>
+<div id="seasonEntriesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000003; backdrop-filter: blur(4px);">
+<div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 80vh;">
+<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+<h3 class="m-0" style="color: var(--primary);">Season Entries</h3>
+<div class="d-flex gap-2">
+<button type="button" id="seEditBtn" class="bg-transparent border-none cursor-pointer p-1">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+</button>
+<button type="button" id="seCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="seasonEntriesOverlay">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+</button>
+</div>
+</div>
+<div id="seasonEntriesList" style="overflow-y: auto; flex-grow: 1;"></div>
+</div>
+</div>
 <div id="fullscreenPreviewOverlay" class="fullscreen-manual-view hidden">
 <div class="manual-wrapper-box max-w-900 w-100">
 <div class="manual-header-row d-flex justify-between align-center border-bottom pt-0 pb-2 mb-5" style="border-bottom: 2px solid var(--primary);">
@@ -1669,7 +1705,7 @@ Download
 <div id="fdModalComments" class="mb-4 text-white text-md" style="max-height: 200px; overflow-y: auto;"></div>
 <div class="form-group mb-3">
 <label class="color-gold-alt text-sm mb-1 block">Developer Notes</label>
-<input type="text" id="fdModalNotes" class="p-2 border-gold-alt radius-1 box-border bg-dark-alt text-white w-100" placeholder="Type notes here...">
+<input type="text" id="fdModalNotes" class="p-2 border-gold-alt radius-1 box-border bg-dark-alt text-white w-100">
 </div>
 <div class="form-group mb-4">
 <label class="color-gold-alt text-sm mb-1 block">Status</label>
@@ -2001,6 +2037,8 @@ const fullscreenManualOverlay = $('fullscreenManualOverlay');
 const manualHeadingTarget = $('manualHeadingTarget');
 const manualContentContainer = $('manualContentContainer');
 const sidebarSeasonDisplay = $('sidebarSeasonDisplay');
+const masterTimeRestrictionToggle = $('masterTimeRestrictionToggle');
+const timeRestrictionContent = $('timeRestrictionContent');
 let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
 function applyTheme() {
 if (currentTheme === 'light') {
@@ -2314,7 +2352,7 @@ let isPreviousDay = false;
 if (activeStoryObject) {
 isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date().toDateString();
 }
-if (isPreviousDay || timeStringFormatted > lockTime) {
+if (isPreviousDay || (masterTimeRestrictionToggle.checked && timeStringFormatted > lockTime)) {
 customAlert("Submission time exceeded for the story.");
 } else {
 customAlert(`The ${featureName} feature is currently disabled by the moderator.`);
@@ -2580,6 +2618,24 @@ setSafeText(startSeasonBtn, "Start Season");
 advancedModOptions.classList.remove('hidden');
 }
 }
+function syncTimeRestrictionUI() {
+if (masterTimeRestrictionToggle.checked) {
+timeRestrictionContent.style.opacity = '1';
+timeRestrictionContent.style.pointerEvents = 'auto';
+} else {
+timeRestrictionContent.style.opacity = '0.4';
+timeRestrictionContent.style.pointerEvents = 'none';
+}
+}
+masterTimeRestrictionToggle.addEventListener('change', () => {
+syncTimeRestrictionUI();
+if (!isSystemPaused || isDeveloperModeUnlocked) {
+updateGlobalConfig({ enableMasterTimeRestriction: masterTimeRestrictionToggle.checked });
+}
+});
+$('openTimeRestrictionsBtn').addEventListener('click', () => {
+$('timeRestrictionsOverlay').classList.remove('hidden');
+});
 onSnapshot(doc(db, "app_state", "global_config"), (documentSnapshot) => {
 try {
 let data = {};
@@ -2608,6 +2664,12 @@ authorGuessLockTime.value = cachedAuthorGuessLockTime;
 if (document.activeElement !== titleSuggestionLockTime) {
 titleSuggestionLockTime.value = cachedTitleSuggestionLockTime;
 }
+if (data.enableMasterTimeRestriction !== undefined) {
+masterTimeRestrictionToggle.checked = !!data.enableMasterTimeRestriction;
+} else {
+masterTimeRestrictionToggle.checked = true;
+}
+syncTimeRestrictionUI();
 updateUserFormFieldsVisibility();
 isNameLockedByMod = !!data.isNameLocked;
 isSeasonStarted = !!data.seasonStarted;
@@ -2711,8 +2773,9 @@ if (!activeStoryObject) return;
 const isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date().toDateString();
 const timeNow = new Date();
 const timeStringFormatted = `${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')}`;
-const pastAuthorGuessTime = timeStringFormatted > cachedAuthorGuessLockTime;
-const pastTitleSuggestionTime = timeStringFormatted > cachedTitleSuggestionLockTime;
+const masterEnabled = masterTimeRestrictionToggle.checked;
+const pastAuthorGuessTime = masterEnabled && timeStringFormatted > cachedAuthorGuessLockTime;
+const pastTitleSuggestionTime = masterEnabled && timeStringFormatted > cachedTitleSuggestionLockTime;
 const hasRated = localStorage.getItem(`rated_${targetStory}`) === "true";
 friendNameInput.disabled = hasRated;
 ratingValueInput.disabled = hasRated;
@@ -2788,6 +2851,18 @@ tableRowElement.appendChild(tableDataName);
 dailyReviewsTableBody.appendChild(tableRowElement);
 });
 }
+function renderSeasonEntries() {
+const listContainer = $('seasonEntriesList');
+listContainer.innerHTML = '';
+arrayedStoriesList.forEach(story => {
+const item = createEl('div', { className: 'p-3 border-bottom text-md d-flex justify-between align-center text-bold' }, story.id);
+listContainer.appendChild(item);
+});
+}
+$('openSeasonEntriesBtn').addEventListener('click', () => {
+renderSeasonEntries();
+$('seasonEntriesOverlay').classList.remove('hidden');
+});
 onSnapshot(collection(db, "competitions"), (collectionSnapshot) => {
 arrayedStoriesList = [];
 let uniqueSeasonsSet = new Set();
