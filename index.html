@@ -966,18 +966,18 @@ font-weight: 800;
 color: var(--primary);
 }
 .manual-close-trigger {
-background-color: var(--danger);
-color: white;
-border: none;
+background-color: var(--input-bg);
+color: #DC2626;
+border: 1px solid var(--border-color);
 width: 32px;
 height: 32px;
 padding: 0;
 display: flex;
 align-items: center;
 justify-content: center;
-font-size: 16px;
+font-size: 18px;
 font-weight: bold;
-border-radius: 50%;
+border-radius: 4px;
 cursor: pointer;
 box-shadow: none;
 flex-shrink: 0;
@@ -1167,7 +1167,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .white-space-nowrap { white-space: nowrap; }
 .hover-bg-alt:hover td { background-color: var(--nav-btn-hover-bg); cursor: pointer; }
 .hover-text-primary:hover { color: var(--primary) !important; }
-.manual-list-item { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.2); padding: 16px 8px; margin-bottom: 0; border-radius: 0; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; transition: color 0.2s; }
+.manual-list-item { background: transparent; border: none; padding: 12px 8px; margin-bottom: 0; border-radius: 0; cursor: pointer; font-weight: bold; display: flex; justify-content: flex-start; align-items: center; gap: 8px; transition: color 0.2s; }
 .manual-list-item:hover { color: var(--primary); }
 .manual-back-btn { background: transparent; color: var(--primary); border: none; font-weight: bold; cursor: pointer; padding: 0 0 15px 0; display: flex; align-items: center; gap: 5px; box-shadow: none; }
 .input-reduced { height: 35px !important; min-height: 35px !important; padding: 4px 10px !important; font-size: 14px !important; }
@@ -3145,8 +3145,8 @@ manualContentContainer.innerHTML = "";
 const data = buildManualData();
 Object.keys(data).forEach(category => {
 const item = createEl('div', { className: 'manual-list-item' });
+item.appendChild(createEl('span', { className: 'text-lg' }, '•'));
 item.appendChild(createEl('span', {}, category));
-item.appendChild(createEl('span', {}, '→'));
 item.onclick = () => renderManualFeatures(category, data[category]);
 manualContentContainer.appendChild(item);
 });
@@ -3159,8 +3159,8 @@ backBtn.onclick = () => renderManualCategories();
 manualContentContainer.appendChild(backBtn);
 Object.keys(features).forEach(feature => {
 const item = createEl('div', { className: 'manual-list-item' });
+item.appendChild(createEl('span', { className: 'text-lg' }, '•'));
 item.appendChild(createEl('span', {}, feature));
-item.appendChild(createEl('span', {}, '→'));
 item.onclick = () => {
 const content = `<div class="text-left"><h3 class="mt-0" style="color:var(--primary);">${feature}</h3><p style="line-height:1.6; font-size:14px; font-weight:normal; margin-bottom:0; color:var(--text-color);">${features[feature]}</p></div>`;
 showCustomModal('alert', content);
