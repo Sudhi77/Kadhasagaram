@@ -1498,16 +1498,16 @@ Logout
 <img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-logo">
 <h2 class="border-none m-0 p-0 color-gold-alt shadow-text-gold">Developer options</h2>
 </div>
-<div class="form-group bg-dark p-6 radius-3 mb-5 border-gold-alt">
-<div class="d-flex justify-between align-center mb-3">
-<div class="text-xl font-bold text-white d-flex align-center" style="height:44px;">Build: <span id="devVersionDisplay" class="color-gold-alt ml-2">Loading...</span></div>
-<button type="button" id="devVersionHistoryBtn" class="dev-btn-gold px-3 text-sm" style="height:44px;">Version History</button>
+<div class="form-group bg-dark p-4 radius-3 mb-3 border-gold-alt">
+<div class="d-flex justify-between align-center mb-2">
+<div class="text-xl font-bold text-white d-flex align-center" style="height:30px;">Build: <span id="devVersionDisplay" class="color-gold-alt ml-2">Loading...</span></div>
+<button type="button" id="devVersionHistoryBtn" class="dev-btn-gold px-2 text-sm" style="height:30px;">Version History</button>
 </div>
-<div id="newBuildAlertContainer" class="hidden mt-3 bg-darker-alt p-4 radius-2 border-none" style="border: 1px solid var(--danger);">
-<label class="text-danger text-lg font-bold block mb-1">⚠️ New Git Build Detected!</label>
-<div class="text-sm color-gold-alt mb-3" style="color: #ccc;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
-<textarea id="devReleaseNotesInput" rows="3" placeholder="Enter release notes / developer updates for this version..." class="w-100 box-border bg-black-alt text-white border-gold-alt p-2 radius-1 mb-3 text-md" style="font-family: inherit;"></textarea>
-<button type="button" id="btnPublishReleaseNotes" class="dev-btn-gold w-100 p-3 d-flex align-center justify-center gap-2 m-0" style="padding: 10px 0;">
+<div id="newBuildAlertContainer" class="hidden mt-2 bg-darker-alt p-3 radius-2 border-none" style="border: 1px solid var(--danger);">
+<label class="text-danger text-md font-bold block mb-1">⚠️ New Git Build Detected!</label>
+<div class="text-sm color-gold-alt mb-2" style="color: #ccc;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
+<textarea id="devReleaseNotesInput" rows="2" placeholder="Enter release notes / developer updates for this version..." class="w-100 box-border bg-black-alt text-white border-gold-alt p-2 radius-1 mb-2 text-md" style="font-family: inherit;"></textarea>
+<button type="button" id="btnPublishReleaseNotes" class="dev-btn-gold w-100 p-2 d-flex align-center justify-center gap-2 m-0" style="padding: 6px 0;">
 <svg width="16" height="16"><use href="#icon-download"></use></svg>
 Publish Update Info
 </button>
@@ -1553,7 +1553,7 @@ Exclusive Mode
 </div>
 <div id="customModalOverlay" class="hidden">
 <div class="custom-modal-box">
-<p id="customModalMessage"></p>
+<div id="customModalMessage"></div>
 <input type="text" id="customModalInput" class="hidden">
 <div class="custom-modal-btn-row">
 <button id="customModalCancel" class="hidden">Cancel</button>
@@ -1621,6 +1621,9 @@ Exclusive Mode
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <h3 class="m-0" style="color: var(--primary);">All Stories</h3>
 <div class="d-flex gap-2 align-center">
+<button type="button" id="esDeleteBtn" class="hidden bg-transparent border-none cursor-pointer p-1">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+</button>
 <button type="button" id="esToggleEditBtn" class="bg-transparent border-none cursor-pointer p-1">
 <svg id="esPencilIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
 <span id="esSaveText" class="hidden font-bold" style="color: var(--primary);">Save</span>
@@ -2074,7 +2077,7 @@ const messageElement = $('customModalMessage');
 const inputElement = $('customModalInput');
 const buttonCancel = $('customModalCancel');
 const buttonOk = $('customModalOk');
-if(messageText.includes('<table') || messageText.includes('<div')) {
+if(messageText.includes('<table') || messageText.includes('<div') || messageText.includes('<br>')) {
 messageElement.innerHTML = messageText;
 } else {
 setSafeText(messageElement, messageText);
@@ -2631,7 +2634,9 @@ listContainer.innerHTML = '';
 arrayedStoriesList.forEach(story => {
 const item = createEl('div', { className: 'p-3 border-bottom d-flex align-center gap-3', 'data-id': story.id });
 if (isEditingStoryList) {
-const input = createEl('input', { type: 'text', value: story.id, className: 'w-100 p-2 radius-1 border-admin', 'data-old-id': story.id });
+const checkbox = createEl('input', { type: 'checkbox', className: 'es-delete-checkbox m-0 cursor-pointer flex-none', value: story.id, style: {width: '18px', height: '18px'} });
+item.appendChild(checkbox);
+const input = createEl('input', { type: 'text', value: story.id, className: 'flex-1 p-2 radius-1 border-admin', 'data-old-id': story.id });
 item.appendChild(input);
 } else {
 const textSpan = createEl('span', { className: 'text-md font-bold' }, story.id);
@@ -2645,6 +2650,7 @@ if (isSystemPaused && !isDeveloperModeUnlocked) return;
 isEditingStoryList = false;
 $('esPencilIcon').classList.remove('hidden');
 $('esSaveText').classList.add('hidden');
+$('esDeleteBtn').classList.add('hidden');
 renderEditStoriesList();
 $('editStoriesOverlay').classList.remove('hidden');
 });
@@ -2654,9 +2660,10 @@ if (!isEditingStoryList) {
 isEditingStoryList = true;
 $('esPencilIcon').classList.add('hidden');
 $('esSaveText').classList.remove('hidden');
+$('esDeleteBtn').classList.remove('hidden');
 renderEditStoriesList();
 } else {
-const inputs = $('editStoriesList').querySelectorAll('input');
+const inputs = $('editStoriesList').querySelectorAll('input[type="text"]');
 let updates = [];
 inputs.forEach(input => {
 const oldId = input.getAttribute('data-old-id');
@@ -2687,7 +2694,37 @@ setSafeText($('esSaveText'), "Save");
 isEditingStoryList = false;
 $('esPencilIcon').classList.remove('hidden');
 $('esSaveText').classList.add('hidden');
+$('esDeleteBtn').classList.add('hidden');
 renderEditStoriesList();
+}
+});
+$('esDeleteBtn').addEventListener('click', async () => {
+const checkboxes = document.querySelectorAll('.es-delete-checkbox:checked');
+if (checkboxes.length === 0) {
+customAlert("Please select at least one story to delete.");
+return;
+}
+const storiesToDelete = Array.from(checkboxes).map(cb => cb.value);
+const storyListString = storiesToDelete.map(s => `- ${s}`).join('<br>');
+const confirmMsg = `<div>Are you sure you want to delete the following stories and all their associated data?<br><br>${storyListString}<br><br>This action cannot be undone.</div>`;
+if (await customConfirm(confirmMsg)) {
+$('esDeleteBtn').disabled = true;
+try {
+for (const storyId of storiesToDelete) {
+await deleteDoc(doc(db, "competitions", storyId));
+}
+customAlert("Selected stories deleted successfully.");
+setTimeout(() => {
+isEditingStoryList = false;
+$('esPencilIcon').classList.remove('hidden');
+$('esSaveText').classList.add('hidden');
+$('esDeleteBtn').classList.add('hidden');
+renderEditStoriesList();
+}, 500);
+} catch (error) {
+customAlert("Error deleting stories.");
+}
+$('esDeleteBtn').disabled = false;
 }
 });
 onSnapshot(doc(db, "app_state", "global_config"), (documentSnapshot) => {
@@ -3188,7 +3225,7 @@ wrapDivElement.appendChild(createEl('hr', { className: "border-none border-dashe
 wrapDivElement.appendChild(createEl('label', { className: "text-lg font-bold mb-1 block", style: { color: "var(--h3-color)" } }, "Latest Developer Updates:"));
 const unorderedListElement = createEl('ul', { className: "about-list" });
 if (currentVersionState.changesMade.length > 0) {
-[...currentVersionState.changesMade].reverse().forEach(logString => {
+[...currentVersionState.changesMade].reverse().slice(0, 5).forEach(logString => {
 unorderedListElement.appendChild(createEl('li', {}, logString.includes(" | ") ? logString.split(" | ").slice(1).join(" | ") : logString));
 });
 } else {
