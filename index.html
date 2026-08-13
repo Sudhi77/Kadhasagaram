@@ -465,7 +465,7 @@ padding: 20px;
 flex-grow: 1;
 overflow-y: auto;
 }
-.side-menu-content label { font-size: 13px; }
+.side-menu-content label { font-size: 13px; text-align: left; justify-content: flex-start; }
 .side-menu-content input, .side-menu-content select { padding: 8px; font-size: 14px; }
 .side-menu-content button { padding: 8px 12px; font-size: 13px; }
 .status-alert {
@@ -1204,12 +1204,12 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </div>
 <button id="menuCloseBtn" class="side-menu-close">✕</button>
 </div>
-<div class="side-menu-content d-flex flex-col">
+<div class="side-menu-content d-flex flex-col" style="text-align: left;">
 <div class="form-group mb-2">
-<label class="d-flex align-center gap-2 mb-2 font-bold text-lg">
+<label class="d-flex align-center gap-2 mb-2 font-bold text-lg" style="justify-content: flex-start;">
 <span class="text-xl line-height-1">🖌️</span> Theme
 </label>
-<select id="themeSelect" class="cursor-pointer radius-3 input-reduced">
+<select id="themeSelect" class="cursor-pointer radius-3 input-reduced w-100">
 <option value="light">Classic Light</option>
 <option value="cyan">Deep Cyan</option>
 <option value="purple">Matte Purple</option>
@@ -1218,9 +1218,9 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </select>
 </div>
 <div id="sidebarModOptions" class="hidden mt-2 pt-1">
-<div class="form-group" id="modNameSetupGroup">
-<label for="inputModName">Moderator Name</label>
-<div class="d-flex gap-3 align-center">
+<div class="form-group" id="modNameSetupGroup" style="text-align: left;">
+<label for="inputModName" style="text-align: left;">Moderator Name</label>
+<div class="d-flex gap-3 align-center" style="justify-content: flex-start;">
 <input type="text" id="inputModName" placeholder="Handle" class="m-0 flex-1 sys-lockable input-reduced">
 <button type="button" id="saveModNameBtn" class="btn-mod-action d-flex align-center justify-center w-auto sys-lockable btn-reduced">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1231,10 +1231,11 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </button>
 </div>
 </div>
-<div class="form-group mt-3" id="seasonSetupGroup">
-<label for="inputTopic">Subject</label>
-<input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" class="mb-2 sys-lockable input-reduced">
-<select id="inputMonth" class="cursor-pointer radius-2 w-100 mb-3 sys-lockable input-reduced">
+<div class="form-group mt-3" id="seasonSetupGroup" style="text-align: left;">
+<label for="inputTopic" style="text-align: left;">Subject</label>
+<input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" class="mb-2 sys-lockable input-reduced w-100">
+<label for="inputMonth" style="text-align: left; display: block; margin-bottom: 6px;" class="font-bold">Month</label>
+<select id="inputMonth" class="cursor-pointer radius-2 mb-3 sys-lockable input-reduced" style="width: 80%;">
 <option value="">-- Select Month --</option>
 <option value="January">January</option>
 <option value="February">February</option>
@@ -1256,7 +1257,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <div id="advancedModOptions" class="hidden pt-2">
 <button type="button" id="openTimeRestrictionsBtn" class="btn-mod-action w-100 p-2 text-sm mt-2 mb-3">Custom Time Restrictions</button>
 <div class="form-group mt-3 mb-1">
-<label>Season Summary</label>
+<label style="text-align: left;">Season Summary</label>
 <div class="d-flex flex-row gap-2 mt-1 w-100">
 <button id="previewBtn" class="btn-preview flex-1 p-3 text-md d-flex align-center justify-center sys-lockable">Preview</button>
 <button id="downloadBtn" class="btn-download flex-1 p-3 text-md d-flex align-center justify-center gap-2 bg-admin text-white shadow-none text-shadow-none sys-lockable" style="text-shadow: none;">
@@ -1414,6 +1415,7 @@ Moderator Dashboard
 Logout
 </button>
 </div>
+<button type="button" id="openDailyUpdatesBtn" class="btn-mod-action w-100 mb-4 p-2 text-md sys-lockable">Daily Updates</button>
 <div class="form-group d-flex flex-col gap-3 mb-5">
 <h3 class="m-0 text-xl text-admin">Add New Story</h3>
 <div class="d-flex gap-4 align-center">
@@ -1427,20 +1429,26 @@ Logout
 </button>
 </div>
 </div>
-<div class="d-flex flex-col gap-4 mb-4 mt-5">
-<label for="adminStorySelect" class="text-xl text-admin m-0 font-bold">📖 Select Story</label>
-<div class="d-flex gap-4 align-center">
+<div class="d-flex justify-between align-center mb-4 mt-5">
+<label for="adminStorySelect" class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
+</div>
+<div class="d-flex gap-4 align-center mb-4">
 <select id="adminStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
-<button type="button" id="editStoriesListBtn" class="btn-mod-action btn-icon-only text-white bg-admin sys-lockable btn-icon-reduced">
+<div style="position:relative;">
+<button type="button" id="storyOptionsBtn" class="bg-transparent border-none cursor-pointer p-1">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="var(--admin-color)"><circle cx="12" cy="5" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="19" r="2.5"/></svg>
+</button>
+<div id="storyOptionsMenu" class="hidden" style="position:absolute; right:0; top:100%; background:var(--modal-bg); border:1px solid var(--border-color); border-radius:6px; z-index:1000; box-shadow:0 4px 15px rgba(0,0,0,0.3); width:max-content; overflow:hidden;">
+<button type="button" id="editStoriesListBtn" class="w-100 bg-transparent border-none p-3 cursor-pointer text-left hover-bg-alt font-bold d-flex align-center gap-2" style="color:var(--modal-text);">
 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+Edit Stories
+</button>
+<button type="button" id="downloadStoryReviewsBtn" class="w-100 bg-transparent border-none p-3 cursor-pointer text-left hover-bg-alt font-bold d-flex align-center gap-2" style="color:var(--modal-text);">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+Download Reviews
 </button>
 </div>
 </div>
-<div class="d-flex justify-between align-center mb-2">
-<label class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
-<button type="button" id="downloadStoryReviewsBtn" class="bg-admin text-white border-none radius-1 cursor-pointer" style="padding: 4px 8px; display: flex; align-items: center; justify-content: center;">
-<svg width="16" height="16"><use href="#icon-download"></use></svg>
-</button>
 </div>
 <div class="webview-scroll-frame mb-5 radius-2" style="border: var(--border);">
 <table class="webview-table m-0 table-condensed">
@@ -1454,42 +1462,6 @@ Logout
 </tbody>
 </table>
 </div>
-</div>
-<div class="plain-section admin-header hidden" id="dailyUpdatesSection">
-<div class="d-flex justify-between align-center border-bottom pb-1 mb-4">
-<h2 class="border-none pb-0 m-0">📆 Daily Updates</h2>
-<div class="d-flex flex-col align-center bg-admin radius-2 w-max" style="border: var(--border); padding: 8px 12px; min-width: auto; margin-left: auto;">
-<div id="currentDateDisplay" class="text-xl font-bold text-white text-center line-height-1">--/--/--</div>
-<div id="currentDayDisplay" class="text-md text-white font-bold mt-1 text-center line-height-1 opacity-90">---</div>
-</div>
-</div>
-<div class="form-group">
-<label for="authorGivenHeadingInput">Title</label>
-<input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading" class="sys-lockable input-reduced">
-</div>
-<div class="form-group d-flex gap-4">
-<div style="flex: 1.5;">
-<label for="readerSuggestions">Title Suggested</label>
-<select id="readerSuggestions" class="sys-lockable input-reduced"></select>
-</div>
-<div class="flex-1">
-<label for="headingSuggesterInput">Reviewer</label>
-<select id="headingSuggesterInput" class="sys-lockable input-reduced"></select>
-</div>
-</div>
-<div class="form-group">
-<label for="correctGuesses">Guess the Author</label>
-<div class="d-flex gap-4 align-center">
-<select id="correctGuesses" class="flex-1 m-0 sys-lockable input-reduced"></select>
-<button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable btn-icon-reduced">
-<svg viewBox="0 0 24 24">
-<path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
-</svg>
-</button>
-</div>
-<div id="winnersChipsContainer" class="winners-tags-container"></div>
-</div>
-<button type="button" id="saveNotesBtn" class="btn-mod-action w-max padding-10-40 sys-lockable">Save</button>
 </div>
 </div>
 <div id="devInterface" class="hidden">
@@ -1626,7 +1598,7 @@ Exclusive Mode
 </button>
 <button type="button" id="esToggleEditBtn" class="bg-transparent border-none cursor-pointer p-1">
 <svg id="esPencilIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-<span id="esSaveText" class="hidden font-bold" style="color: var(--primary);">Save</span>
+<svg id="esSaveIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
 </button>
 <button type="button" id="esCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="editStoriesOverlay">
 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -1634,6 +1606,51 @@ Exclusive Mode
 </div>
 </div>
 <div id="editStoriesList" style="overflow-y: auto; flex-grow: 1;"></div>
+</div>
+</div>
+<div id="dailyUpdatesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000005; backdrop-filter: blur(4px);">
+<div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 25px; text-align: left;">
+<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+<h3 class="m-0" style="color: var(--primary);">Daily Updates</h3>
+<button type="button" id="closeDailyUpdatesBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="dailyUpdatesOverlay">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+</button>
+</div>
+<div class="mb-4 d-flex justify-between align-center">
+<div>
+<span class="text-md font-bold text-muted">Story: </span>
+<span id="duLastAddedStory" class="text-lg font-bold" style="color: var(--admin-color);">---</span>
+</div>
+</div>
+<div class="form-group">
+<label for="authorGivenHeadingInput">Official Heading</label>
+<input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading" class="sys-lockable input-reduced">
+</div>
+<h4 class="m-0 mb-3 mt-4" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">Title Suggestion</h4>
+<div class="form-group">
+<label for="readerSuggestions">Title</label>
+<select id="readerSuggestions" class="w-100 sys-lockable input-reduced"></select>
+</div>
+<div class="form-group">
+<label for="headingSuggesterInput">Reviewer</label>
+<input type="text" id="headingSuggesterInput" class="w-100 sys-lockable input-reduced" readonly style="background-color: var(--input-bg); opacity: 0.8; cursor: not-allowed;">
+</div>
+<h4 class="m-0 mb-3 mt-4" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">Author Guessing</h4>
+<div class="form-group">
+<label for="correctGuesses">Guess the Author</label>
+<div class="d-flex gap-4 align-center">
+<select id="correctGuesses" class="flex-1 m-0 sys-lockable input-reduced"></select>
+<button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable btn-icon-reduced">
+<svg viewBox="0 0 24 24">
+<path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+</svg>
+</button>
+</div>
+<div id="winnersChipsContainer" class="winners-tags-container mt-2"></div>
+</div>
+<div class="d-flex justify-end mt-4">
+<button type="button" id="saveNotesBtn" class="btn-mod-action w-max padding-10-40 sys-lockable">Save</button>
+</div>
 </div>
 </div>
 <div id="fullscreenPreviewOverlay" class="fullscreen-manual-view hidden">
@@ -2229,6 +2246,17 @@ setSafeText(drModalGuess, guess);
 setSafeText(drModalSuggTitle, suggTitle);
 detailedReviewOverlay.classList.remove('hidden');
 }
+const storyOptionsBtn = $('storyOptionsBtn');
+const storyOptionsMenu = $('storyOptionsMenu');
+storyOptionsBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+storyOptionsMenu.classList.toggle('hidden');
+});
+document.addEventListener('click', (e) => {
+if (!storyOptionsBtn.contains(e.target) && !storyOptionsMenu.contains(e.target)) {
+storyOptionsMenu.classList.add('hidden');
+}
+});
 downloadStoryReviewsBtn.addEventListener('click', () => {
 if (!activeStorySnapshotDataCache) {
 customAlert("No data available to download.");
@@ -2316,17 +2344,14 @@ publishedDate: GIT_BUILD_DATE,
 publishedTime: GIT_BUILD_TIME,
 changesMade: [] 
 };
-const initialTodayDate = new Date();
-const initialDayString = String(initialTodayDate.getDate()).padStart(2, '0');
-const monthNamesArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const initialMonthName = monthNamesArray[initialTodayDate.getMonth()];
-const initialYearString = String(initialTodayDate.getFullYear()).slice(-2);
-const dayNamesArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const initialDayName = dayNamesArray[initialTodayDate.getDay()];
-const currentDateDisplayElement = $('currentDateDisplay');
-const currentDayDisplayElement = $('currentDayDisplay');
-if(currentDateDisplayElement) setSafeText(currentDateDisplayElement, `${initialDayString}/${initialMonthName.substring(0,3)}/${initialYearString}`);
-if(currentDayDisplayElement) setSafeText(currentDayDisplayElement, initialDayName);
+$('openDailyUpdatesBtn').addEventListener('click', () => {
+if (arrayedStoriesList.length > 0) {
+setSafeText($('duLastAddedStory'), arrayedStoriesList[0].id);
+} else {
+setSafeText($('duLastAddedStory'), "---");
+}
+$('dailyUpdatesOverlay').classList.remove('hidden');
+});
 function appendEmptyRow(tableBody, columnsSpan, text) {
 tableBody.innerHTML = '';
 const tableRow = createEl('tr');
@@ -2649,7 +2674,7 @@ $('editStoriesListBtn').addEventListener('click', () => {
 if (isSystemPaused && !isDeveloperModeUnlocked) return;
 isEditingStoryList = false;
 $('esPencilIcon').classList.remove('hidden');
-$('esSaveText').classList.add('hidden');
+$('esSaveIcon').classList.add('hidden');
 $('esDeleteBtn').classList.add('hidden');
 renderEditStoriesList();
 $('editStoriesOverlay').classList.remove('hidden');
@@ -2659,7 +2684,7 @@ if (isSystemPaused && !isDeveloperModeUnlocked) return;
 if (!isEditingStoryList) {
 isEditingStoryList = true;
 $('esPencilIcon').classList.add('hidden');
-$('esSaveText').classList.remove('hidden');
+$('esSaveIcon').classList.remove('hidden');
 $('esDeleteBtn').classList.remove('hidden');
 renderEditStoriesList();
 } else {
@@ -2674,7 +2699,6 @@ updates.push({ oldId, newId });
 });
 if (updates.length > 0) {
 $('esToggleEditBtn').disabled = true;
-setSafeText($('esSaveText'), "Saving...");
 try {
 for (const update of updates) {
 const oldDocRef = doc(db, "competitions", update.oldId);
@@ -2689,11 +2713,10 @@ customAlert("Stories updated successfully.");
 customAlert("Error updating stories.");
 }
 $('esToggleEditBtn').disabled = false;
-setSafeText($('esSaveText'), "Save");
 }
 isEditingStoryList = false;
 $('esPencilIcon').classList.remove('hidden');
-$('esSaveText').classList.add('hidden');
+$('esSaveIcon').classList.add('hidden');
 $('esDeleteBtn').classList.add('hidden');
 renderEditStoriesList();
 }
@@ -2717,7 +2740,7 @@ customAlert("Selected stories deleted successfully.");
 setTimeout(() => {
 isEditingStoryList = false;
 $('esPencilIcon').classList.remove('hidden');
-$('esSaveText').classList.add('hidden');
+$('esSaveIcon').classList.add('hidden');
 $('esDeleteBtn').classList.add('hidden');
 renderEditStoriesList();
 }, 500);
@@ -2907,7 +2930,7 @@ if ([...seasonsSetCollection, "All", globalSeasonCache].includes(downloadValue))
 function clearDailyUpdatesUI() {
 if (authorGivenHeadingInput) authorGivenHeadingInput.value = "";
 if (readerSuggestions) resetSelect(readerSuggestions, "-- Title --");
-if (headingSuggesterInput) resetSelect(headingSuggesterInput, "-- Name --");
+if (headingSuggesterInput) headingSuggesterInput.value = "";
 if (correctGuesses) resetSelect(correctGuesses, "-- Select Winner --");
 accumulatedWinnersStateArray = [];
 renderAccumulatedWinnersChips();
@@ -3051,7 +3074,7 @@ if(adminStorySelect.value !== targetSelectedStory) adminStorySelect.value = targ
 try {
 const documentSnapshot = await getDoc(doc(db, "competitions", targetSelectedStory));
 resetSelect(readerSuggestions, "-- Title --");
-resetSelect(headingSuggesterInput, "-- Name --");
+headingSuggesterInput.value = "";
 resetSelect(correctGuesses, "-- Select Winner --");
 accumulatedWinnersStateArray = [];
 headingToReviewerMap = {};
@@ -3084,7 +3107,6 @@ const currentAuthorGuess = dataObject[reviewerKeyString].authorGuess ?? "";
 if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
 headingToReviewerMap[currentSuggestedTitle] = reviewerKeyString;
 readerSuggestions.appendChild(createEl('option', { value: currentSuggestedTitle }, currentSuggestedTitle));
-headingSuggesterInput.appendChild(createEl('option', { value: reviewerKeyString }, reviewerKeyString));
 }
 if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
 correctGuesses.appendChild(createEl('option', { value: reviewerKeyString }, reviewerKeyString));
