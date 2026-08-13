@@ -1415,7 +1415,6 @@ Moderator Dashboard
 Logout
 </button>
 </div>
-<button type="button" id="openDailyUpdatesBtn" class="btn-mod-action w-100 mb-4 p-2 text-md sys-lockable">Daily Updates</button>
 <div class="form-group d-flex flex-col gap-3 mb-5">
 <h3 class="m-0 text-xl text-admin">Add New Story</h3>
 <div class="d-flex gap-4 align-center">
@@ -1429,6 +1428,7 @@ Logout
 </button>
 </div>
 </div>
+<button type="button" id="openDailyUpdatesBtn" class="btn-mod-action w-100 mb-4 p-2 text-md sys-lockable">Daily Updates</button>
 <div class="d-flex justify-between align-center mb-4 mt-5">
 <label for="adminStorySelect" class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
 </div>
@@ -1616,15 +1616,8 @@ Exclusive Mode
 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
-<div class="mb-4 d-flex justify-between align-center">
-<div>
-<span class="text-md font-bold text-muted">Story: </span>
-<span id="duLastAddedStory" class="text-lg font-bold" style="color: var(--admin-color);">---</span>
-</div>
-</div>
-<div class="form-group">
-<label for="authorGivenHeadingInput">Official Heading</label>
-<input type="text" id="authorGivenHeadingInput" placeholder="Enter official heading" class="sys-lockable input-reduced">
+<div class="mb-4 text-center">
+<span id="duLastAddedStory" class="text-xxl font-bold" style="color: var(--admin-color);">---</span>
 </div>
 <h4 class="m-0 mb-3 mt-4" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">Title Suggestion</h4>
 <div class="form-group">
@@ -2197,7 +2190,6 @@ const titleSuggestionInput = $('titleSuggestion');
 const submitRatingBtn = $('submitRatingBtn');
 const userAuthorGuessGroup = $('userAuthorGuessGroup');
 const userTitleSuggestionGroup = $('userTitleSuggestionGroup');
-const authorGivenHeadingInput = $('authorGivenHeadingInput');
 const readerSuggestions = $('readerSuggestions');
 const headingSuggesterInput = $('headingSuggesterInput');
 const correctGuesses = $('correctGuesses');
@@ -2265,7 +2257,7 @@ return;
 const currentStory = $('adminStorySelect').value;
 const downloadDate = new Date().toLocaleString();
 const rowsHtml = Object.entries(activeStorySnapshotDataCache)
-.filter(([key]) => !['created', 'season', '_suggestions', '_suggesterName', '_guesses', '_authorGivenHeading'].includes(key))
+.filter(([key]) => !['created', 'season', '_suggestions', '_suggesterName', '_guesses'].includes(key))
 .map(([key, review]) => `
 <tr>
 <td>${sanitizeText(key)}</td>
@@ -2344,9 +2336,14 @@ publishedDate: GIT_BUILD_DATE,
 publishedTime: GIT_BUILD_TIME,
 changesMade: [] 
 };
-$('openDailyUpdatesBtn').addEventListener('click', () => {
+$('openDailyUpdatesBtn').addEventListener('click', async () => {
 if (arrayedStoriesList.length > 0) {
-setSafeText($('duLastAddedStory'), arrayedStoriesList[0].id);
+const latestStoryId = arrayedStoriesList[0].id;
+setSafeText($('duLastAddedStory'), latestStoryId);
+if (adminStorySelect.value !== latestStoryId) {
+adminStorySelect.value = latestStoryId;
+await loadCurrentStoryNotes(latestStoryId);
+}
 } else {
 setSafeText($('duLastAddedStory'), "---");
 }
@@ -2928,7 +2925,6 @@ if ([...seasonsSetCollection, "All", globalSeasonCache].includes(previewValue)) 
 if ([...seasonsSetCollection, "All", globalSeasonCache].includes(downloadValue)) downloadSelectElement.value = downloadValue;
 }
 function clearDailyUpdatesUI() {
-if (authorGivenHeadingInput) authorGivenHeadingInput.value = "";
 if (readerSuggestions) resetSelect(readerSuggestions, "-- Title --");
 if (headingSuggesterInput) headingSuggesterInput.value = "";
 if (correctGuesses) resetSelect(correctGuesses, "-- Select Winner --");
@@ -3044,8 +3040,17 @@ evaluateLocalStorageRestrictions();
 });
 function renderAccumulatedWinnersChips() {
 winnersChipsContainer.innerHTML = '';
-accumulatedWinnersStateArray.forEach(nameString => {
-winnersChipsContainer.appendChild(createEl('div', { className: "winner-chip" }, nameString));
+accumulatedWinnersStateArray.forEach((nameString, index) => {
+const chip = createEl('div', { className: "winner-chip d-flex align-center gap-2", style: { cursor: "pointer" } });
+chip.appendChild(document.createTextNode(nameString));
+const closeIcon = createEl('span', { style: { fontWeight: "bold", fontSize: "14px", marginLeft: "4px" } }, "×");
+chip.appendChild(closeIcon);
+chip.onclick = () => {
+if(isSystemPaused && !isDeveloperModeUnlocked) return;
+accumulatedWinnersStateArray.splice(index, 1);
+renderAccumulatedWinnersChips();
+};
+winnersChipsContainer.appendChild(chip);
 });
 correctGuesses.value = "";
 }
@@ -3085,13 +3090,11 @@ const dataObject = documentSnapshot.data();
 activeStorySnapshotDataCache = dataObject;
 let rawSavedHeadingMatchValue = dataObject._suggestions || "";
 let rawSavedSuggesterMatchValue = dataObject._suggesterName || "";
-let rawSavedAuthorGivenHeading = dataObject._authorGivenHeading || "";
-authorGivenHeadingInput.value = rawSavedAuthorGivenHeading !== "*****" ? rawSavedAuthorGivenHeading : "";
 if (dataObject._guesses && dataObject._guesses !== "*****") {
 accumulatedWinnersStateArray = dataObject._guesses.split(',').map(stringElement => stringElement.trim()).filter(stringElement => stringElement.length > 0);
 }
 Object.keys(dataObject).forEach(reviewerKeyString => {
-if (reviewerKeyString !== 'created' && reviewerKeyString !== '_suggestions' && reviewerKeyString !== '_suggesterName' && reviewerKeyString !== '_guesses' && reviewerKeyString !== '_authorGivenHeading' && reviewerKeyString !== 'season') {
+if (reviewerKeyString !== 'created' && reviewerKeyString !== '_suggestions' && reviewerKeyString !== '_suggesterName' && reviewerKeyString !== '_guesses' && reviewerKeyString !== 'season') {
 reviewCountInteger++;
 let scoreValue = "N/A";
 let titleValue = "None";
@@ -3141,13 +3144,39 @@ appendEmptyRow(dailyReviewsTableBody, 2, "No reviews submitted for this story ye
 } else {
 activeStorySnapshotDataCache = null;
 renderAccumulatedWinnersChips();
-authorGivenHeadingInput.value = "";
 appendEmptyRow(dailyReviewsTableBody, 2, "Story data is empty or missing.");
 }
 } catch(error) {
 appendEmptyRow(dailyReviewsTableBody, 2, "Error loading reviews.");
 }
 }
+saveNotesBtn.addEventListener('click', async () => {
+if(isSystemPaused && !isDeveloperModeUnlocked) return;
+const targetStory = $('duLastAddedStory').innerText;
+if (!targetStory || targetStory === "---") {
+customAlert("No story selected.");
+return;
+}
+const suggesterName = headingSuggesterInput.value.trim();
+const suggestions = readerSuggestions.value;
+const guessesString = accumulatedWinnersStateArray.join(', ');
+saveNotesBtn.disabled = true;
+setSafeText(saveNotesBtn, "Saving...");
+try {
+await setDoc(doc(db, "competitions", targetStory), {
+_suggesterName: suggesterName,
+_suggestions: suggestions,
+_guesses: guessesString
+}, { merge: true });
+customAlert("Daily updates saved successfully.");
+$('dailyUpdatesOverlay').classList.add('hidden');
+} catch (error) {
+customAlert("Error saving daily updates.");
+} finally {
+saveNotesBtn.disabled = false;
+setSafeText(saveNotesBtn, "Save");
+}
+});
 saveModNameBtn.addEventListener('click', async () => {
 if((isSystemPaused && !isDeveloperModeUnlocked) || isNameLockedByMod) return;
 const targetNameString = inputModName.value.trim();
