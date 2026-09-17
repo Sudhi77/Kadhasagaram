@@ -1386,8 +1386,12 @@ Menu
 </div>
 </div>
 <div id="loginInterface" class="plain-section hidden">
-<h2 class="d-flex align-center gap-3"><span class="inline-block rotate-180 line-height-1">🗡️</span> Moderator / Developer Authentication</h2>
-<p class="text-lg text-muted mt-0">Enter your credentials below to access the control panels.</p>
+<h2 class="d-flex align-center gap-3">
+<svg viewBox="0 0 64 64" width="24" height="24" fill="currentColor" style="flex-shrink: 0;">
+<path d="M 32 6 C 34.2 6 36 7.8 36 10 C 36 11.6 35 13 33.6 13.6 L 39 23 L 42.6 14.8 C 41.6 14.2 41 13.2 41 12 C 41 9.8 42.8 8 45 8 C 47.2 8 49 9.8 49 12 C 49 13.5 48.2 14.8 46.8 15.5 L 43 28 L 51.6 20.3 C 51.2 19.6 51 18.8 51 18 C 51 15.8 52.8 14 55 14 C 57.2 14 59 15.8 59 18 C 59 19.9 57.7 21.5 55.8 21.9 L 46 33 L 48 48 L 16 48 L 18 33 L 8.2 21.9 C 6.3 21.5 5 19.9 5 18 C 5 15.8 6.8 14 9 14 C 11.2 14 13 15.8 13 18 C 13 18.8 12.8 19.6 12.4 20.3 L 21 28 L 17.2 15.5 C 15.8 14.8 15 13.5 15 12 C 15 9.8 16.8 8 19 8 C 21.2 8 23 9.8 23 12 C 23 13.2 22.4 14.2 21.4 14.8 L 25 23 L 30.4 13.6 C 29 13 28 11.6 28 10 C 28 7.8 29.8 6 32 6 Z M 20 50 L 44 50 L 46 54 L 46 56 L 18 56 L 18 54 Z" />
+</svg>
+Authentication Panel
+</h2>
 <div class="form-group">
 <label for="localEmailInput">Email Address</label>
 <input type="text" id="localEmailInput" placeholder="mod@admin.com">
@@ -1396,7 +1400,7 @@ Menu
 <label for="localPassInput">Enter Password</label>
 <input type="password" id="localPassInput" placeholder="••••••••">
 </div>
-<button type="button" id="submitLoginBtn" class="btn-mod-action">Unlock Control Panels</button>
+<button type="button" id="submitLoginBtn" class="btn-mod-action w-max">Authenticate</button>
 </div>
 <div id="modInterface" class="hidden">
 <div class="plain-section admin-header">
@@ -3035,7 +3039,7 @@ customAlert("Authentication failed. Please check your credentials.");
 localPassInput.value = "";
 } finally {
 submitLoginBtn.disabled = false;
-setSafeText(submitLoginBtn, "Unlock Control Panels");
+setSafeText(submitLoginBtn, "Authenticate");
 }
 });
 onAuthStateChanged(auth, (userObject) => {
