@@ -399,14 +399,6 @@ margin-bottom: 30px;
 padding: 0 4px;
 width: 100%;
 }
-.mod-tag {
-display: block;
-font-size: 14px;
-font-weight: 600;
-color: var(--text-muted);
-margin: 0;
-text-align: right;
-}
 .menu-overlay {
 position: fixed; 
 top: 0; left: 0; 
@@ -1145,7 +1137,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .scale-90 { transform: scale(0.9); }
 .rotate-180 { transform: rotate(180deg); }
 .svg-drop-shadow { filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5)); }
-.btn-logout { background: linear-gradient(135deg, #00FFFF, #4169E1); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); display: inline-flex; align-items: center; justify-content: center; }
+.btn-logout { background: linear-gradient(135deg, #00FFFF, #4169E1); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); display: inline-flex; align-items: center; justify-content: center; }
 .margin-neg-5 { margin: -5px; }
 .margin-neg-10-0 { margin: -10px 0; }
 .margin-right-neg-4 { margin-right: -4px; }
@@ -1203,7 +1195,10 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 </div>
 <button id="menuCloseBtn" class="side-menu-close">✕</button>
 </div>
-<div class="font-bold text-sm text-muted">Moderator: <span id="sidebarModNameDisplay" class="text-white">---</span></div>
+<div class="font-bold text-xl">
+<span class="text-silver">Moderator: </span>
+<span id="sidebarModNameDisplay" class="text-white">---</span>
+</div>
 </div>
 <div class="side-menu-content d-flex flex-col" style="text-align: left;">
 <div class="form-group mb-2">
@@ -1302,7 +1297,7 @@ About
 Menu
 </button>
 <button type="button" id="logoutBtn" class="btn-logout hidden m-0">
-<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
 <polyline points="16 17 21 12 16 7"></polyline>
 <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -1324,20 +1319,21 @@ Menu
 </div>
 <div id="userInterface">
 <div class="plain-section">
-<h2>Select Story</h2>
-<div class="form-group" style="margin-bottom: 12px;">
-<label for="storyDropdown">Choose a story from the list (Most recent on top):</label>
+<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+<h2 class="m-0 border-none p-0">Review</h2>
+<span id="currentDateDisplay" class="font-bold text-muted text-md"></span>
+</div>
+<div class="form-group" style="margin-bottom: 15px;">
 <select id="storyDropdown"></select>
 </div>
-<h2 style="margin-top: 0;">Review</h2>
 <form id="ratingForm">
-<div class="form-group">
+<div class="d-flex gap-4 mb-3 align-center">
+<div class="form-group flex-1 m-0">
 <label for="friendName">Your Name *</label>
 <input type="text" id="friendName" placeholder="Enter your Name" class="sys-lockable">
 </div>
-<div class="form-group">
+<div class="form-group m-0" style="width: 120px; flex-shrink: 0;">
 <label for="ratingValue">Rating *</label>
-<div style="width: 25%;">
 <select id="ratingValue" class="sys-lockable">
 <option value="" disabled selected>Rating</option>
 <option value="1">1</option>
@@ -1353,7 +1349,7 @@ Menu
 </select>
 </div>
 </div>
-<div class="form-group hidden" id="userAuthorGuessGroup">
+<div class="form-group hidden mt-3" id="userAuthorGuessGroup">
 <label for="authorGuess">Guess the Author <span class="font-normal text-placeholder">(Optional)</span></label>
 <input type="text" id="authorGuess" placeholder="Author suggestion" class="sys-lockable">
 </div>
@@ -1361,7 +1357,7 @@ Menu
 <label for="titleSuggestion">Suggest a Title <span class="font-normal text-placeholder">(Optional)</span></label>
 <input type="text" id="titleSuggestion" placeholder="Title suggestion" class="sys-lockable">
 </div>
-<button type="submit" id="submitRatingBtn" class="sys-lockable">Submit Review</button>
+<button type="submit" id="submitRatingBtn" class="sys-lockable mt-2">Submit Review</button>
 </form>
 </div>
 <div class="plain-section mt-5 text-center border-dashed pt-3">
@@ -2028,6 +2024,14 @@ const sidebarSeasonDisplay = getElementById('sidebarSeasonDisplay');
 const sidebarModNameDisplay = getElementById('sidebarModNameDisplay');
 const masterTimeRestrictionToggle = getElementById('masterTimeRestrictionToggle');
 const timeRestrictionContent = getElementById('timeRestrictionContent');
+const dateElement = getElementById('currentDateDisplay');
+if (dateElement) {
+const today = new Date();
+const d = String(today.getDate()).padStart(2, '0');
+const m = String(today.getMonth() + 1).padStart(2, '0');
+const y = String(today.getFullYear()).slice(-2);
+setSafeText(dateElement, `${d}/${m}/${y}`);
+}
 let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
 function applyTheme() {
 if (currentTheme === 'light') {
