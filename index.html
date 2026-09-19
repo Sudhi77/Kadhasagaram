@@ -1321,7 +1321,7 @@ Menu
 <div class="plain-section">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <h2 class="m-0 border-none p-0">Review</h2>
-<span id="currentDateDisplay" class="font-bold text-muted text-md"></span>
+<span id="currentDateDisplay" class="font-bold p-0 m-0" style="color: var(--primary); font-size: 20px;"></span>
 </div>
 <div class="form-group" style="margin-bottom: 15px;">
 <select id="storyDropdown"></select>
@@ -1332,7 +1332,7 @@ Menu
 <label for="friendName">Your Name *</label>
 <input type="text" id="friendName" placeholder="Enter your Name" class="sys-lockable">
 </div>
-<div class="form-group m-0" style="width: 120px; flex-shrink: 0;">
+<div class="form-group m-0" style="width: 60px; flex-shrink: 0;">
 <label for="ratingValue">Rating *</label>
 <select id="ratingValue" class="sys-lockable">
 <option value="" disabled selected>Rating</option>
@@ -1349,20 +1349,23 @@ Menu
 </select>
 </div>
 </div>
+<div class="form-group mt-3 mb-0">
+<textarea id="detailedReviewInput" placeholder="Detailed Review" class="sys-lockable w-100" rows="3" style="min-height: 80px;"></textarea>
+</div>
 <div class="form-group hidden mt-3" id="userAuthorGuessGroup">
 <label for="authorGuess">Guess the Author <span class="font-normal text-placeholder">(Optional)</span></label>
 <input type="text" id="authorGuess" placeholder="Author suggestion" class="sys-lockable">
 </div>
-<div class="form-group hidden" id="userTitleSuggestionGroup">
+<div class="form-group hidden mt-3" id="userTitleSuggestionGroup">
 <label for="titleSuggestion">Suggest a Title <span class="font-normal text-placeholder">(Optional)</span></label>
 <input type="text" id="titleSuggestion" placeholder="Title suggestion" class="sys-lockable">
 </div>
-<button type="submit" id="submitRatingBtn" class="sys-lockable mt-2">Submit Review</button>
+<button type="submit" id="submitRatingBtn" class="sys-lockable mt-3 w-max">Submit</button>
 </form>
 </div>
-<div class="plain-section mt-5 text-center border-dashed pt-3">
-<p class="text-lg text-muted mt-0">Have suggestions to improve this web app?</p>
-<button type="button" id="goToFeedbackBtn" class="btn-accent w-auto sys-lockable">Give App Feedback</button>
+<div class="plain-section mt-5 border-dashed pt-4 pb-4 d-flex align-center justify-between">
+<p class="text-lg text-muted m-0">Help us get better</p>
+<button type="button" id="goToFeedbackBtn" class="btn-accent w-max sys-lockable m-0">App Feedback</button>
 </div>
 </div>
 <div id="feedbackInterface" class="plain-section hidden">
@@ -2174,6 +2177,7 @@ const btnPublishReleaseNotes = getElementById('btnPublishReleaseNotes');
 const ratingForm = getElementById('ratingForm');
 const friendNameInput = getElementById('friendName');
 const ratingValueInput = getElementById('ratingValue');
+const detailedReviewInput = getElementById('detailedReviewInput');
 const authorGuessInput = getElementById('authorGuess');
 const titleSuggestionInput = getElementById('titleSuggestion');
 const submitRatingBtn = getElementById('submitRatingBtn');
@@ -2253,7 +2257,7 @@ const rowsHtml = Object.entries(activeStorySnapshotDataCache)
 <td>${sanitizeText(review?.score ?? review ?? "N/A")}</td>
 <td>${sanitizeText(review?.authorGuess ?? "None")}</td>
 <td>${sanitizeText(review?.suggestedTitle ?? "None")}</td>
-<td></td>
+<td>${sanitizeText(review?.detailedReview ?? "")}</td>
 </tr>
 `).join('');
 const htmlString = `<!DOCTYPE html>
@@ -2390,6 +2394,7 @@ return;
 }
 const friendName = friendNameInput.value.trim();
 let ratingRaw = ratingValueInput.value.trim();
+let detailedReview = detailedReviewInput ? detailedReviewInput.value.trim() : "";
 let authorGuess = authorGuessInput.value.trim() || "None";
 let titleSuggestion = titleSuggestionInput.value.trim() || "None";
 if (!friendName) {
@@ -2417,18 +2422,18 @@ setSafeText(submitRatingBtn, "Submitting...");
 const currentISODate = new Date().toISOString();
 try {
 await setDoc(doc(db, "competitions", targetStory), {
-[friendName]: { score: ratingRaw, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }
+[friendName]: { score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }
 }, { merge: true });
 if (!isDeveloperModeUnlocked) {
 localStorage.setItem(`rated_${targetStory}`, "true");
-localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({ name: friendName, score: ratingRaw, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }));
+localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({ name: friendName, score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }));
 }
 customAlert("Review submitted successfully! Thank you.");
 evaluateLocalStorageRestrictions(); 
 } catch (error) {
 customAlert("An error occurred while submitting your review. Please check your connection.");
 submitRatingBtn.disabled = false;
-setSafeText(submitRatingBtn, "Submit Review");
+setSafeText(submitRatingBtn, "Submit");
 }
 });
 goToFeedbackBtn.addEventListener('click', () => {
@@ -2862,10 +2867,11 @@ if (!targetStory) return;
 if (isDeveloperModeUnlocked) {
 friendNameInput.disabled = false;
 ratingValueInput.disabled = false;
+if (detailedReviewInput) toggleInputLock(detailedReviewInput, false);
 toggleInputLock(authorGuessInput, false);
 toggleInputLock(titleSuggestionInput, false);
 submitRatingBtn.disabled = false;
-setSafeText(submitRatingBtn, "Submit Review (Dev Bypass)");
+setSafeText(submitRatingBtn, "Submit (Dev Bypass)");
 return;
 }
 const activeStoryObject = arrayedStoriesList.find(story => story.id === targetStory);
@@ -2879,6 +2885,7 @@ const pastTitleSuggestionTime = masterEnabled && timeStringFormatted > cachedTit
 const hasRated = localStorage.getItem(`rated_${targetStory}`) === "true";
 friendNameInput.disabled = hasRated;
 ratingValueInput.disabled = hasRated;
+if (detailedReviewInput) toggleInputLock(detailedReviewInput, hasRated);
 const authorGuessLocked = !isAuthorGuessEnabled || isPreviousDay || pastAuthorGuessTime;
 const titleSuggestionLocked = !isTitleSuggestionEnabled || isPreviousDay || pastTitleSuggestionTime;
 toggleInputLock(authorGuessInput, authorGuessLocked);
@@ -2888,7 +2895,7 @@ submitRatingBtn.disabled = true;
 setSafeText(submitRatingBtn, "Ratings & Options Locked");
 } else {
 submitRatingBtn.disabled = false;
-setSafeText(submitRatingBtn, hasRated ? "Update Suggestions" : "Submit Review");
+setSafeText(submitRatingBtn, hasRated ? "Update Suggestions" : "Submit");
 }
 }
 function updateSeasonDropdowns(seasonsSetCollection) {
@@ -2933,7 +2940,15 @@ arrayedStoriesList.sort((elementA, elementB) => elementB.created - elementA.crea
 storyDropdown.innerHTML = '';
 adminStorySelect.innerHTML = '';
 arrayedStoriesList.forEach(storyObject => {
-storyDropdown.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
+let dateStr = "";
+if (storyObject.created) {
+const d = new Date(storyObject.created);
+const day = String(d.getDate()).padStart(2, '0');
+const month = String(d.getMonth() + 1).padStart(2, '0');
+const year = String(d.getFullYear()).slice(-2);
+dateStr = ` (${day}/${month}/${year})`;
+}
+storyDropdown.appendChild(createEl('option', { value: storyObject.id }, `${storyObject.id}${dateStr}`));
 adminStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 });
 if(arrayedStoriesList.length > 0) {
@@ -2963,12 +2978,14 @@ try {
 const parsedDataObject = JSON.parse(storedUserDataString);
 friendNameInput.value = parsedDataObject.name || "";
 ratingValueInput.value = parsedDataObject.score || "";
+if (detailedReviewInput) detailedReviewInput.value = parsedDataObject.detailedReview || "";
 authorGuessInput.value = parsedDataObject.authorGuess !== "None" ? parsedDataObject.authorGuess : "";
 titleSuggestionInput.value = parsedDataObject.suggestedTitle !== "None" ? parsedDataObject.suggestedTitle : "";
 } catch (error) {}
 } else {
 friendNameInput.value = "";
 ratingValueInput.value = "";
+if (detailedReviewInput) detailedReviewInput.value = "";
 authorGuessInput.value = "";
 titleSuggestionInput.value = "";
 }
