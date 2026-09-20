@@ -1507,6 +1507,76 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     box-shadow: 0 6px 15px rgba(250, 204, 21, 0.15);
 }
 .premium-btn-gold:active { transform: scale(0.98); }
+
+.premium-action-card {
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(135deg, rgba(4, 120, 87, 0.9) 0%, rgba(2, 44, 34, 0.95) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    text-align: left;
+    box-sizing: border-box;
+}
+.premium-action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    border-color: rgba(16, 185, 129, 0.6);
+}
+.premium-action-card:active {
+    transform: scale(0.98);
+}
+.action-icon-left {
+    width: 56px;
+    height: 56px;
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 16px;
+    color: #ffffff;
+}
+.action-text-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.action-text-center h3 {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.3px;
+}
+.action-text-center p {
+    margin: 0;
+    font-size: 13px;
+    color: #A7F3D0; 
+}
+.action-icon-right {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #ffffff;
+    transition: background 0.2s;
+}
+.premium-action-card:hover .action-icon-right {
+    background: rgba(255, 255, 255, 0.2);
+}
 </style>
 </head>
 <body>
@@ -1778,9 +1848,17 @@ Authentication Panel
             </div>
         </div>
 
-        <button type="button" id="openDailyUpdatesBtn" class="premium-btn-outline w-100 mb-5 sys-lockable">
-             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:10px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-             Manage Daily Updates
+        <button type="button" id="openDailyUpdatesBtn" class="premium-action-card sys-lockable">
+            <div class="action-icon-left">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <div class="action-text-center">
+                <h3>Daily Updates</h3>
+                <p>View and manage today's activity</p>
+            </div>
+            <div class="action-icon-right">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
         </button>
 
         <div class="mod-premium-card mt-3">
