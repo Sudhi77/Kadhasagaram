@@ -641,59 +641,6 @@ font-size: 13px;
 font-weight: 600;
 border: var(--winner-border);
 }
-.system-navigation-footer-bar {
-position: fixed;
-bottom: 0;
-left: 0;
-width: 100vw;
-height: 52px;
-background-color: var(--nav-bg);
-display: flex;
-box-sizing: border-box;
-border-top: var(--nav-border-top);
-z-index: 99998;
-backdrop-filter: var(--card-backdrop);
-}
-.nav-split-trigger-btn {
-flex: 1;
-height: 100%;
-background: transparent;
-color: var(--nav-btn-text);
-border: none;
-border-radius: 0;
-padding: 0;
-font-size: 16px;
-font-weight: 700;
-cursor: pointer;
-transition: all 0.2s ease-in-out;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-box-shadow: none;
-text-shadow: none;
-}
-.nav-split-trigger-btn:first-child {
-border-right: 20px solid transparent;
-border-image: var(--nav-divider-img) 0 100% 0 0 vertical repeat;
-margin-right: -20px;
-padding-right: 10px;
-}
-.nav-split-trigger-btn:hover {
-background-color: var(--nav-btn-hover-bg);
-color: var(--nav-btn-hover-text);
-transform: none;
-box-shadow: none;
-}
-.nav-split-trigger-btn.active-panel-indicator {
-background-color: var(--nav-active-bg);
-color: var(--nav-active-color);
-box-shadow: inset 0 4px 0 0 var(--nav-active-color);
-}
-.nav-split-trigger-btn.active-panel-indicator:hover {
-box-shadow: inset 0 4px 0 0 var(--nav-active-color);
-}
 .divider {
 border: 0;
 border-top: 2px dashed rgba(128,128,128,0.2);
@@ -1177,9 +1124,9 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    background: radial-gradient(circle at top center, #001A23 0%, #00151D 60%, #000B0F 100%);
-    padding: 40px 0 20px 0; 
-    color: #F8FAFC;
+    background: #00141C;
+    padding: 36px 0 0 0; 
+    color: #F5F7F8;
     font-family: 'Inter', "SF Pro Display", -apple-system, sans-serif;
     box-sizing: border-box;
 }
@@ -1188,9 +1135,9 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    background: #000B0F;
-    padding: 0 0 100px 0;
-    color: #F8FAFC;
+    background: #111111;
+    padding: 36px 0 120px 0;
+    color: #F5F7F8;
     font-family: 'Inter', "SF Pro Display", -apple-system, sans-serif;
     box-sizing: border-box;
 }
@@ -1200,39 +1147,35 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     padding: 0 28px;
     box-sizing: border-box;
 }
-.premium-header { margin-bottom: 30px; }
+.premium-header { margin-bottom: 28px; }
 .premium-header h2 {
     font-size: 28px;
     font-weight: 800;
-    color: #FFFFFF;
+    color: #F5F7F8;
     margin: 0 0 6px 0;
     letter-spacing: -0.5px;
     border: none;
 }
 .premium-header p {
     margin: 0;
-    color: #0EA5E9;
+    color: #00B486;
     font-size: 14px;
     font-weight: 500;
 }
 .mod-premium-card {
-    background: linear-gradient(145deg, rgba(2, 66, 54, 0.4) 0%, rgba(0, 31, 41, 0.6) 100%);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    border-radius: 25px;
+    background: #001B24;
+    border: 1px solid rgba(0, 180, 134, 0.45);
+    border-radius: 24px;
     padding: 24px;
-    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0, 180, 134, 0.08);
+    margin-bottom: 28px;
     position: relative;
     overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.mod-premium-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.6), transparent);
-    opacity: 0.5;
+.mod-premium-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 180, 134, 0.15);
 }
 .card-header-flex {
     display: flex;
@@ -1245,26 +1188,26 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .icon-circle {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #10B981 0%, #047857 100%);
+    background: linear-gradient(135deg, #00B486 0%, #00A982 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 180, 134, 0.2);
     color: #fff;
 }
 .header-text h3 {
     margin: 0 0 4px 0;
     font-size: 22px;
     font-weight: 700;
-    color: #ffffff;
+    color: #F5F7F8;
     letter-spacing: -0.5px;
 }
 .header-text p {
     margin: 0;
     font-size: 13px;
-    color: #94A3B8;
+    color: #9AA9B0;
 }
 .book-illustration {
     position: absolute;
@@ -1277,79 +1220,74 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .book-illustration svg {
     width: 140px;
     height: 140px;
-    stroke: #10B981;
+    stroke: #00B486;
 }
 .card-input-row {
     display: flex;
-    gap: 12px;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 180, 134, 0.45);
+    border-radius: 16px;
+    padding: 4px;
     position: relative;
     z-index: 2;
-    align-items: center;
 }
 .premium-input {
     flex: 1;
-    background: #00070A;
-    border: 1px solid rgba(14, 165, 233, 0.3);
-    border-radius: 16px;
-    padding: 0 20px;
-    height: 60px;
-    color: #ffffff;
+    background: transparent;
+    border: none;
+    color: #F5F7F8;
     font-size: 16px;
+    padding: 0 16px;
+    height: 52px;
     font-weight: 500;
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
     box-sizing: border-box;
 }
 .premium-input:focus {
     outline: none;
-    border-color: #10B981;
-    background: #00121A;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15), inset 0 2px 6px rgba(0,0,0,0.4);
 }
-.premium-input::placeholder { color: #475569; font-weight: 400; }
+.premium-input::placeholder { color: #9AA9B0; font-weight: 400; }
 .premium-btn-square {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #10B981 0%, #047857 100%);
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, #00B486 0%, #00A982 100%);
     border: none;
-    border-radius: 16px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     flex-shrink: 0;
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    box-shadow: 0 4px 15px rgba(0, 180, 134, 0.2);
     transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
     color: white;
 }
 .premium-btn-square:hover {
     filter: brightness(1.1);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45);
+    box-shadow: 0 8px 25px rgba(0, 180, 134, 0.3);
 }
 .premium-btn-square:active { transform: scale(0.95); }
 
 .premium-action-card {
     width: 100%;
     height: 110px;
-    background: linear-gradient(135deg, rgba(4, 120, 87, 0.9) 0%, rgba(2, 44, 34, 0.95) 100%);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, #00C896 0%, #00A982 100%);
+    border: 1px solid rgba(0, 180, 134, 0.6);
     border-radius: 28px;
     display: flex;
     align-items: center;
-    padding: 0 24px;
+    padding: 0 28px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-bottom: 32px;
-    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    margin-bottom: 28px;
+    box-shadow: 0 10px 30px rgba(0, 180, 134, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
     text-align: left;
     box-sizing: border-box;
 }
 .premium-action-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    border-color: rgba(16, 185, 129, 0.6);
+    box-shadow: 0 15px 35px rgba(0, 180, 134, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 .premium-action-card:active {
     transform: scale(0.98);
@@ -1357,7 +1295,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .action-icon-left {
     width: 56px;
     height: 56px;
-    background: rgba(16, 185, 129, 0.2);
+    background: rgba(0, 20, 28, 0.15);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1382,12 +1320,12 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .action-text-center p {
     margin: 0;
     font-size: 13px;
-    color: #A7F3D0; 
+    color: rgba(255, 255, 255, 0.85); 
 }
 .action-icon-right {
     width: 44px;
     height: 44px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1397,29 +1335,41 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     transition: background 0.2s;
 }
 .premium-action-card:hover .action-icon-right {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .premium-stats-row {
     display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: 16px;
+    margin-bottom: 28px;
     width: 100%;
     box-sizing: border-box;
 }
 .premium-stat-card {
     flex: 1;
     min-width: 0;
-    background: #00121A;
+    background: #001B24;
     border-radius: 20px;
-    padding: 16px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     box-sizing: border-box;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
+.premium-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+.stat-card-1 { border: 1px solid rgba(0, 120, 180, 0.45); }
+.stat-icon-1 { color: #008FC4; background: rgba(0, 120, 180, 0.15); }
+.stat-card-2 { border: 1px solid rgba(244, 180, 0, 0.45); }
+.stat-icon-2 { color: #F4B400; background: rgba(244, 180, 0, 0.15); }
+.stat-card-3 { border: 1px solid rgba(168, 85, 247, 0.45); }
+.stat-icon-3 { color: #C084FC; background: rgba(168, 85, 247, 0.15); }
+
 .stat-icon-container {
     width: 38px;
     height: 38px;
@@ -1432,13 +1382,13 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .stat-number {
     font-size: 24px;
     font-weight: 800;
-    color: #FFFFFF;
+    color: #F5F7F8;
     margin: 0;
     line-height: 1.1;
 }
 .stat-label {
     font-size: 12px;
-    color: #94A3B8;
+    color: #9AA9B0;
     margin: 4px 0 0 0;
     white-space: nowrap;
     overflow: hidden;
@@ -1446,8 +1396,8 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     font-weight: 500;
 }
 @media (max-width: 480px) {
-    .premium-stats-row { gap: 8px; }
-    .premium-stat-card { padding: 12px; border-radius: 16px; gap: 8px; }
+    .premium-stats-row { gap: 10px; }
+    .premium-stat-card { padding: 14px; border-radius: 16px; gap: 8px; }
     .stat-number { font-size: 20px; }
     .stat-label { font-size: 11px; }
     .stat-icon-container { width: 32px; height: 32px; }
@@ -1455,18 +1405,23 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 }
 
 .submissions-premium-card {
-    background: linear-gradient(145deg, #001722 0%, #000B0F 100%);
-    border: 1px solid rgba(14, 165, 233, 0.3);
-    border-radius: 25px;
+    background: #001B24;
+    border: 1px solid rgba(0, 120, 180, 0.45);
+    border-radius: 24px;
     padding: 24px;
-    box-shadow: 0 10px 40px rgba(14, 165, 233, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0, 120, 180, 0.08);
+    margin-bottom: 28px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.submissions-premium-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 120, 180, 0.15);
 }
 .submissions-header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
     gap: 16px;
 }
@@ -1478,13 +1433,13 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .chart-icon-circle {
     width: 44px;
     height: 44px;
-    background: rgba(14, 165, 233, 0.15);
+    background: rgba(0, 120, 180, 0.15);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    color: #38BDF8;
+    color: #008FC4;
 }
 .submissions-controls-group {
     display: flex;
@@ -1501,25 +1456,25 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .inline-select-container .custom-select-trigger {
     height: 44px !important;
     border-radius: 12px !important;
-    background: #000B0F !important;
-    border: 1px solid rgba(14, 165, 233, 0.4) !important;
-    color: #F8FAFC !important;
+    background: #00141C !important;
+    border: 1px solid rgba(0, 120, 180, 0.45) !important;
+    color: #F5F7F8 !important;
     font-weight: 600;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
 }
 .inline-select-container .custom-select-trigger:focus,
 .inline-select-container .custom-select-trigger:hover {
-    border-color: #38BDF8 !important;
+    border-color: #008FC4 !important;
 }
 
 .premium-card-title {
     font-size: 20px;
     font-weight: 700;
-    color: #F8FAFC;
+    color: #F5F7F8;
     letter-spacing: -0.3px;
 }
 .premium-table-container {
-    border: 1px solid rgba(14, 165, 233, 0.2);
+    border: 1px solid rgba(0, 120, 180, 0.2);
     border-radius: 16px;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.2);
@@ -1530,8 +1485,8 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     font-size: 14px;
 }
 .premium-table th {
-    background: linear-gradient(135deg, #10B981 0%, #047857 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, #00B486 0%, #00A982 100%);
+    color: #F5F7F8;
     padding: 16px;
     font-weight: 700;
     text-align: left;
@@ -1542,14 +1497,14 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .premium-table td {
     padding: 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    color: #CBD5E1;
+    color: #9AA9B0;
     vertical-align: middle;
 }
-.premium-table tr:hover td { background: rgba(16, 185, 129, 0.05); }
+.premium-table tr:hover td { background: rgba(0, 180, 134, 0.05); }
 .premium-icon-btn {
     background: transparent;
     border: none;
-    color: #38BDF8;
+    color: #008FC4;
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
@@ -1558,13 +1513,13 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     justify-content: center;
     transition: background 0.2s;
 }
-.premium-icon-btn:hover { background: rgba(14, 165, 233, 0.15); }
+.premium-icon-btn:hover { background: rgba(0, 120, 180, 0.15); }
 .premium-dropdown-menu {
     position: absolute;
     right: 0;
     top: 100%;
-    background: #00121A;
-    border: 1px solid rgba(14, 165, 233, 0.3);
+    background: #00141C;
+    border: 1px solid rgba(0, 120, 180, 0.45);
     border-radius: 16px;
     z-index: 1000;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
@@ -1579,17 +1534,17 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     padding: 14px 16px;
     cursor: pointer;
     text-align: left;
-    color: #F8FAFC;
+    color: #F5F7F8;
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 12px;
     font-size: 14px;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
 .premium-dropdown-item:hover {
-    background: rgba(14, 165, 233, 0.15);
-    color: #38BDF8;
+    background: rgba(0, 180, 134, 0.15);
+    color: #00B486;
 }
 
 .empty-state-cell { background: transparent !important; border: none !important; }
@@ -1597,60 +1552,59 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     padding: 60px 20px;
     text-align: center;
 }
-.empty-icon { color: #334155; margin-bottom: 16px; }
-.empty-title { color: #94A3B8; font-size: 20px; font-weight: 600; margin: 0 0 8px 0; }
-.empty-subtitle { color: #475569; font-size: 14px; margin: 0; }
+.empty-icon { color: #9AA9B0; margin-bottom: 16px; opacity: 0.6; }
+.empty-title { color: #F5F7F8; font-size: 20px; font-weight: 600; margin: 0 0 8px 0; }
+.empty-subtitle { color: #9AA9B0; font-size: 14px; margin: 0; }
 
 .dev-advanced-card {
     background: #111111;
-    border: 1px solid rgba(250, 204, 21, 0.4);
+    border: 1px solid rgba(244, 180, 0, 0.7);
     border-radius: 25px;
     padding: 24px;
-    box-shadow: 0 8px 30px rgba(250, 204, 21, 0.1);
-    margin-top: 40px; 
+    box-shadow: 0 8px 32px rgba(244, 180, 0, 0.1);
 }
 .dev-header-grid {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(250, 204, 21, 0.2);
-    margin-bottom: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(244, 180, 0, 0.4);
+    margin-bottom: 24px;
 }
 .dev-gear-circle {
     width: 50px;
     height: 50px;
-    border: 2px solid #FACC15;
+    border: 2px solid #F4B400;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FACC15;
-    box-shadow: inset 0 0 10px rgba(250, 204, 21, 0.1), 0 0 10px rgba(250, 204, 21, 0.1);
+    color: #F4B400;
+    box-shadow: inset 0 0 10px rgba(244, 180, 0, 0.1), 0 0 10px rgba(244, 180, 0, 0.1);
 }
-.dev-header-text h3 { color: #FACC15; font-size: 22px; margin: 0 0 4px 0; font-weight: 800; letter-spacing: -0.5px;}
-.dev-header-text p { color: #94A3B8; font-size: 13px; margin: 0; }
+.dev-header-text h3 { color: #F4B400; font-size: 22px; margin: 0 0 4px 0; font-weight: 800; letter-spacing: -0.5px;}
+.dev-header-text p { color: #9AA9B0; font-size: 13px; margin: 0; }
 .build-exclusive-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 }
-.build-text { font-size: 16px; font-weight: 700; color: #FFF; }
-.build-value { color: #FACC15; }
+.build-text { font-size: 16px; font-weight: 700; color: #F5F7F8; }
+.build-value { color: #F4B400; }
 .dev-grid-2x2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 16px;
 }
 @media (max-width: 400px) {
     .dev-grid-2x2 { grid-template-columns: 1fr; }
 }
 .dev-action-btn {
-    background: #111111;
-    border: 1px solid rgba(250, 204, 21, 0.3);
+    background: #151515;
+    border: 1px solid rgba(244, 180, 0, 0.7);
     border-radius: 16px;
-    color: #FACC15;
+    color: #F4B400;
     height: 64px;
     display: flex;
     align-items: center;
@@ -1662,9 +1616,10 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     transition: all 0.2s;
 }
 .dev-action-btn:hover {
-    box-shadow: 0 4px 15px rgba(250, 204, 21, 0.15);
-    background: rgba(250, 204, 21, 0.05);
+    box-shadow: 0 4px 15px rgba(244, 180, 0, 0.15);
+    background: rgba(244, 180, 0, 0.05);
 }
+.dev-action-btn:active { transform: scale(0.98); }
 
 .system-navigation-footer-bar {
     position: fixed;
@@ -1672,9 +1627,9 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     left: 0;
     width: 100vw;
     height: 85px;
-    background: rgba(0, 11, 15, 0.95);
+    background: rgba(0, 20, 28, 0.95);
     backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(14, 165, 233, 0.2);
+    border-top: 1px solid rgba(0, 180, 134, 0.45);
     display: flex;
     box-sizing: border-box;
     z-index: 99998;
@@ -1689,7 +1644,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     gap: 6px;
     background: transparent;
     border: none;
-    color: #64748B;
+    color: #9AA9B0;
     font-size: 12px;
     font-weight: 600;
     text-transform: none;
@@ -1702,37 +1657,37 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 .nav-split-trigger-btn:first-child { border-right: none; margin: 0; padding: 0; }
 .nav-split-trigger-btn svg { width: 24px; height: 24px; stroke: currentColor; }
 .nav-split-trigger-btn.active-panel-indicator {
-    color: #10B981;
-    background: radial-gradient(circle at top, rgba(16,185,129,0.1) 0%, transparent 60%);
-    box-shadow: inset 0 3px 0 0 #10B981;
+    color: #00B486;
+    background: radial-gradient(circle at top, rgba(0, 180, 134, 0.15) 0%, transparent 60%);
+    box-shadow: inset 0 3px 0 0 #00B486;
 }
 .nav-split-trigger-btn:hover { background: transparent; transform: none; box-shadow: none; }
 .nav-split-trigger-btn.active-panel-indicator:hover {
-    box-shadow: inset 0 3px 0 0 #10B981;
+    box-shadow: inset 0 3px 0 0 #00B486;
 }
 
 .premium-inner-card {
     background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(250, 204, 21, 0.2);
+    border: 1px solid rgba(244, 180, 0, 0.4);
     border-radius: 18px;
 }
 .premium-textarea {
     width: 100%;
     background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(250, 204, 21, 0.3);
+    border: 1px solid rgba(244, 180, 0, 0.7);
     border-radius: 16px;
-    color: #FFF;
+    color: #F5F7F8;
     padding: 16px;
     font-family: inherit;
     font-size: 14px;
     box-sizing: border-box;
     resize: vertical;
 }
-.premium-textarea:focus { outline: none; border-color: #FACC15; }
+.premium-textarea:focus { outline: none; border-color: #F4B400; }
 .premium-btn-gold {
-    background: linear-gradient(135deg, rgba(250, 204, 21, 0.15) 0%, rgba(202, 138, 4, 0.25) 100%);
-    border: 1px solid rgba(250, 204, 21, 0.3);
-    color: #FDE047;
+    background: linear-gradient(135deg, rgba(244, 180, 0, 0.15) 0%, rgba(217, 154, 0, 0.25) 100%);
+    border: 1px solid rgba(244, 180, 0, 0.7);
+    color: #FFC400;
     padding: 16px;
     border-radius: 16px;
     font-weight: 700;
@@ -1741,10 +1696,10 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     transition: all 0.2s;
 }
 .premium-btn-gold:hover {
-    background: linear-gradient(135deg, rgba(250, 204, 21, 0.25) 0%, rgba(202, 138, 4, 0.35) 100%);
-    border-color: #FACC15;
+    background: linear-gradient(135deg, rgba(244, 180, 0, 0.25) 0%, rgba(217, 154, 0, 0.35) 100%);
+    border-color: #F4B400;
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(250, 204, 21, 0.15);
+    box-shadow: 0 6px 15px rgba(244, 180, 0, 0.15);
 }
 .premium-btn-gold:active { transform: scale(0.98); }
 </style>
@@ -1981,81 +1936,75 @@ Authentication Panel
 </div>
 <button type="button" id="submitLoginBtn" class="btn-mod-action w-max">Authenticate</button>
 </div>
+
 <div id="modInterface" class="hidden premium-dashboard">
     <div class="premium-content-lock">
         
         <div class="premium-header">
             <h2>Moderator Dashboard</h2>
-            <p>Manage stories, reviews, and platform settings</p>
+            <p>Review. Manage. Improve.</p>
         </div>
 
         <div class="mod-premium-card add-story-card">
             <div class="card-header-flex">
                 <div class="icon-circle">
-                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 </div>
                 <div class="header-text">
                     <h3>Add New Story</h3>
                     <p>Enter a new story name to get started</p>
                 </div>
                 <div class="book-illustration">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                 </div>
             </div>
             
             <div class="card-input-row">
                 <input type="text" id="dashboardNewStoryInput" placeholder="Enter a new story name..." class="sys-lockable premium-input">
                 <button type="button" id="dashboardUpdateStoryBtn" class="sys-lockable premium-btn-square">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="17 8 12 3 7 8"></polyline>
-                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                    </svg>
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                 </button>
             </div>
         </div>
 
         <button type="button" id="openDailyUpdatesBtn" class="premium-action-card sys-lockable">
             <div class="action-icon-left">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
             </div>
             <div class="action-text-center">
                 <h3>Daily Updates</h3>
                 <p>View and manage today's activity</p>
             </div>
             <div class="action-icon-right">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </div>
         </button>
 
         <div class="premium-stats-row">
-            <div class="premium-stat-card" style="border-color: rgba(14, 165, 233, 0.3);">
-                <div class="stat-icon-container" style="background: rgba(14, 165, 233, 0.15); color: #38BDF8;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <div class="premium-stat-card stat-card-1">
+                <div class="stat-icon-container stat-icon-1">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                 </div>
                 <div>
-                    <h4 class="stat-number">0</h4>
+                    <h4 class="stat-number" id="totalStoriesStat">0</h4>
                     <p class="stat-label">Total Stories</p>
                 </div>
             </div>
-            <div class="premium-stat-card" style="border-color: rgba(250, 204, 21, 0.3);">
-                <div class="stat-icon-container" style="background: rgba(250, 204, 21, 0.15); color: #FACC15;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <div class="premium-stat-card stat-card-2">
+                <div class="stat-icon-container stat-icon-2">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                 </div>
                 <div>
-                    <h4 class="stat-number">0</h4>
+                    <h4 class="stat-number" id="totalReviewsStat">0</h4>
                     <p class="stat-label">Total Reviews</p>
                 </div>
             </div>
-            <div class="premium-stat-card" style="border-color: rgba(168, 85, 247, 0.3);">
-                <div class="stat-icon-container" style="background: rgba(168, 85, 247, 0.15); color: #C084FC;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <div class="premium-stat-card stat-card-3">
+                <div class="stat-icon-container stat-icon-3">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                 </div>
                 <div>
-                    <h4 class="stat-number">0</h4>
+                    <h4 class="stat-number" id="activeReviewersStat">0</h4>
                     <p class="stat-label">Active Reviewers</p>
                 </div>
             </div>
@@ -2065,7 +2014,7 @@ Authentication Panel
             <div class="submissions-header-row">
                 <div class="submissions-title-group">
                     <div class="chart-icon-circle">
-                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                     </div>
                     <h3 class="premium-card-title m-0">Submissions</h3>
                 </div>
@@ -2076,15 +2025,15 @@ Authentication Panel
                     </div>
                     <div style="position:relative;">
                         <button type="button" id="storyOptionsBtn" class="premium-icon-btn">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="19" r="2.5"/></svg>
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                         </button>
                         <div id="storyOptionsMenu" class="hidden premium-dropdown-menu">
                             <button type="button" id="editStoriesListBtn" class="premium-dropdown-item">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 Edit Stories
                             </button>
                             <button type="button" id="previewStoryReviewsBtn" class="premium-dropdown-item">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                 Preview
                             </button>
                         </div>
@@ -2109,9 +2058,10 @@ Authentication Panel
         </div>
     </div>
 </div>
+
 <div id="devInterface" class="hidden premium-dashboard">
     <div class="premium-content-lock">
-        <div class="dev-advanced-card mt-5">
+        <div class="dev-advanced-card">
             <div class="dev-header-grid">
                 <div class="dev-gear-circle">
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
@@ -2138,7 +2088,7 @@ Authentication Panel
                 <div class="text-sm color-gold-alt mb-3" style="color: #cbd5e1;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
                 <textarea id="devReleaseNotesInput" rows="2" placeholder="Enter release notes / developer updates for this version..." class="premium-textarea mb-3"></textarea>
                 <button type="button" id="btnPublishReleaseNotes" class="premium-btn-gold w-100 d-flex align-center justify-center gap-2 m-0" style="padding: 12px 0;">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Publish Update
                 </button>
             </div>
@@ -2149,7 +2099,7 @@ Authentication Panel
                     Version History
                 </button>
                 <button type="button" id="devLoadFeedbackBtn" class="dev-action-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                     User Feedback Preview
                 </button>
                 <button type="button" id="devSeasonHistoryBtn" class="dev-action-btn">
@@ -2165,17 +2115,18 @@ Authentication Panel
         </div>
     </div>
 </div>
-</div>
+
 <div class="system-navigation-footer-bar">
 <button type="button" id="navBtnReviewer" class="nav-split-trigger-btn active-panel-indicator">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
 <span>Reviewer</span>
 </button>
 <button type="button" id="navBtnModerator" class="nav-split-trigger-btn">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
 <span>Moderator</span>
 </button>
 </div>
+
 <div id="customModalOverlay" class="hidden">
 <div class="custom-modal-box">
 <div id="customModalMessage"></div>
@@ -2915,6 +2866,9 @@ const duStorySelect = getElementById('duStorySelect');
 const devSeasonHistoryBtn = getElementById('devSeasonHistoryBtn');
 const seasonHistoryOverlay = getElementById('seasonHistoryOverlay');
 const seasonHistoryList = getElementById('seasonHistoryList');
+const totalStoriesStat = getElementById('totalStoriesStat');
+const totalReviewsStat = getElementById('totalReviewsStat');
+const activeReviewersStat = getElementById('activeReviewersStat');
 let currentFeedbackUser = null;
 let currentPreviewTab = 'all';
 const detailedReviewOverlay = getElementById('detailedReviewOverlay');
@@ -3114,7 +3068,7 @@ tableBody.innerHTML = '';
 const tableRow = createEl('tr');
 if (text === "No stories available." || text === "No reviews submitted for this story yet." || text === "Story data is empty or missing.") {
 const td = createEl('td', { colSpan: columnsSpan, className: "empty-state-cell p-0 border-none" });
-td.innerHTML = `<div class="premium-empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"></path></svg></div><h4 class="empty-title">${text}</h4><p class="empty-subtitle">Add a new story to see submissions here.</p></div>`;
+td.innerHTML = `<div class="premium-empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg></div><h4 class="empty-title">${text}</h4><p class="empty-subtitle">Add a new story to see submissions here.</p></div>`;
 tableRow.appendChild(td);
 } else {
 tableRow.appendChild(createEl('td', { colSpan: columnsSpan, className: "text-center p-5 text-italic text-muted" }, text));
@@ -3729,6 +3683,7 @@ storyDropdown.appendChild(createEl('option', { value: storyObject.id }, `${story
 adminStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 if (duStorySelect) duStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 });
+if (totalStoriesStat) totalStoriesStat.textContent = arrayedStoriesList.length;
 if(arrayedStoriesList.length > 0) {
 if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
 if(!adminStorySelect.value) adminStorySelect.selectedIndex = 0;
