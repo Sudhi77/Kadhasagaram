@@ -1171,6 +1171,342 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 [data-theme]:not([data-theme="light"]) .calendar-badge { background-color: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
 [data-theme]:not([data-theme="light"]) .calendar-day { color: #ffffff; }
 [data-theme]:not([data-theme="light"]) .calendar-year { color: #aaaaaa; }
+
+#modInterface.premium-dashboard {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle at top center, #001A23 0%, #00151D 60%, #000B0F 100%);
+    padding: 40px 0 20px 0; 
+    color: #F8FAFC;
+    font-family: 'Inter', "SF Pro Display", -apple-system, sans-serif;
+    box-sizing: border-box;
+}
+#devInterface.premium-dashboard {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000B0F;
+    padding: 0 0 100px 0;
+    color: #F8FAFC;
+    font-family: 'Inter', "SF Pro Display", -apple-system, sans-serif;
+    box-sizing: border-box;
+}
+.premium-content-lock {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 28px;
+    box-sizing: border-box;
+}
+.premium-header { margin-bottom: 30px; }
+.premium-header h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+    border: none;
+}
+.premium-header p {
+    margin: 0;
+    color: #0EA5E9;
+    font-size: 14px;
+    font-weight: 500;
+}
+.mod-premium-card {
+    background: linear-gradient(145deg, rgba(2, 66, 54, 0.4) 0%, rgba(0, 31, 41, 0.6) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 25px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+}
+.mod-premium-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.6), transparent);
+    opacity: 0.5;
+}
+.card-header-flex {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 2;
+}
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #10B981 0%, #047857 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    color: #fff;
+}
+.header-text h3 {
+    margin: 0 0 4px 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+.header-text p {
+    margin: 0;
+    font-size: 13px;
+    color: #94A3B8;
+}
+.book-illustration {
+    position: absolute;
+    right: -20px;
+    top: -30px;
+    opacity: 0.04;
+    pointer-events: none;
+    transform: rotate(15deg);
+}
+.book-illustration svg {
+    width: 140px;
+    height: 140px;
+    stroke: #10B981;
+}
+.card-input-row {
+    display: flex;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+    align-items: center;
+}
+.premium-input {
+    flex: 1;
+    background: #00070A;
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    border-radius: 16px;
+    padding: 0 20px;
+    height: 60px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    box-sizing: border-box;
+}
+.premium-input:focus {
+    outline: none;
+    border-color: #10B981;
+    background: #00121A;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15), inset 0 2px 6px rgba(0,0,0,0.4);
+}
+.premium-input::placeholder { color: #475569; font-weight: 400; }
+.premium-btn-square {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #10B981 0%, #047857 100%);
+    border: none;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    color: white;
+}
+.premium-btn-square:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45);
+}
+.premium-btn-square:active { transform: scale(0.95); }
+.premium-btn-outline {
+    background: rgba(14, 165, 233, 0.1);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    color: #38BDF8;
+    padding: 18px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(8px);
+}
+.premium-btn-outline:hover {
+    background: rgba(14, 165, 233, 0.2);
+    border-color: #38BDF8;
+    color: #FFF;
+    transform: translateY(-1px);
+}
+.premium-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #F8FAFC;
+    letter-spacing: -0.3px;
+}
+.premium-select {
+    background: #00070A;
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    color: #F8FAFC;
+    height: 54px;
+    border-radius: 16px;
+    padding: 0 16px;
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    appearance: none;
+}
+.premium-select:focus { border-color: #10B981; outline: none; }
+.premium-table-container {
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+}
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.premium-table th {
+    background: rgba(14, 165, 233, 0.1);
+    color: #38BDF8;
+    padding: 16px;
+    font-weight: 700;
+    text-align: left;
+    border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+}
+.premium-table td {
+    padding: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #CBD5E1;
+    vertical-align: middle;
+}
+.premium-table tr:hover td { background: rgba(16, 185, 129, 0.05); }
+.premium-icon-btn {
+    background: transparent;
+    border: none;
+    color: #38BDF8;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.premium-icon-btn:hover { background: rgba(14, 165, 233, 0.15); }
+.premium-dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: #00121A;
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    border-radius: 16px;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    width: 180px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+.premium-dropdown-item {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    color: #F8FAFC;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+.premium-dropdown-item:hover {
+    background: rgba(14, 165, 233, 0.15);
+    color: #38BDF8;
+}
+.dev-premium-card {
+    background: linear-gradient(145deg, rgba(66, 48, 0, 0.4) 0%, rgba(26, 20, 0, 0.7) 100%);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    border-radius: 25px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(250, 204, 21, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    margin-bottom: 24px;
+}
+.border-bottom-gold { border-bottom: 1px solid rgba(250, 204, 21, 0.15); }
+.premium-gold-text {
+    color: #FACC15;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+.dev-lion-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    border: 2px solid rgba(250, 204, 21, 0.4);
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(250, 204, 21, 0.15);
+}
+.premium-inner-card {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    border-radius: 18px;
+}
+.premium-textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    border-radius: 16px;
+    color: #FFF;
+    padding: 16px;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+.premium-textarea:focus { outline: none; border-color: #FACC15; }
+.premium-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.premium-btn-gold {
+    background: linear-gradient(135deg, rgba(250, 204, 21, 0.15) 0%, rgba(202, 138, 4, 0.25) 100%);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    color: #FDE047;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.premium-btn-gold:hover {
+    background: linear-gradient(135deg, rgba(250, 204, 21, 0.25) 0%, rgba(202, 138, 4, 0.35) 100%);
+    border-color: #FACC15;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(250, 204, 21, 0.15);
+}
+.premium-btn-gold:active { transform: scale(0.98); }
 </style>
 </head>
 <body>
@@ -1405,100 +1741,127 @@ Authentication Panel
 </div>
 <button type="button" id="submitLoginBtn" class="btn-mod-action w-max">Authenticate</button>
 </div>
-<div id="modInterface" class="hidden">
-<div class="plain-section admin-header">
-<div class="d-flex align-center border-bottom pb-1 mb-4">
-<h2 class="border-none pb-0 m-0 d-flex align-center">
-Moderator Dashboard
-</h2>
+<div id="modInterface" class="hidden premium-dashboard">
+    <div class="premium-content-lock">
+        
+        <div class="premium-header">
+            <h2>Moderator Dashboard</h2>
+            <p>Manage stories, reviews, and platform settings</p>
+        </div>
+
+        <div class="mod-premium-card add-story-card">
+            <div class="card-header-flex">
+                <div class="icon-circle">
+                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+                <div class="header-text">
+                    <h3>Add New Story</h3>
+                    <p>Enter a new story name to get started</p>
+                </div>
+                <div class="book-illustration">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="card-input-row">
+                <input type="text" id="dashboardNewStoryInput" placeholder="Enter a new story name..." class="sys-lockable premium-input">
+                <button type="button" id="dashboardUpdateStoryBtn" class="sys-lockable premium-btn-square">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <button type="button" id="openDailyUpdatesBtn" class="premium-btn-outline w-100 mb-5 sys-lockable">
+             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:10px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+             Manage Daily Updates
+        </button>
+
+        <div class="mod-premium-card mt-3">
+            <div class="d-flex justify-between align-center mb-4">
+                <h3 class="premium-card-title m-0">📊 Submissions</h3>
+                <div style="position:relative;">
+                    <button type="button" id="storyOptionsBtn" class="premium-icon-btn">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="19" r="2.5"/></svg>
+                    </button>
+                    <div id="storyOptionsMenu" class="hidden premium-dropdown-menu">
+                        <button type="button" id="editStoriesListBtn" class="premium-dropdown-item">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            Edit Stories
+                        </button>
+                        <button type="button" id="previewStoryReviewsBtn" class="premium-dropdown-item">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            Preview
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <select id="adminStorySelect" class="premium-select sys-lockable"></select>
+            </div>
+
+            <div class="webview-scroll-frame premium-table-container">
+                <table class="premium-table m-0">
+                    <thead id="submissionsTableHead">
+                        <tr>
+                            <th>Reviewer</th>
+                            <th>Date</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyReviewsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="form-group d-flex flex-col gap-3 mb-5">
-<h3 class="m-0 text-xl text-admin">Add New Story</h3>
-<div class="d-flex gap-4 align-center">
-<input type="text" id="dashboardNewStoryInput" placeholder="Enter new story name..." class="flex-1 m-0 sys-lockable input-reduced">
-<button type="button" id="dashboardUpdateStoryBtn" class="btn-mod-action m-0 d-flex align-center justify-center sys-lockable btn-reduced">
-<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-<path d="M21 16.5A5.5 5.5 0 0 0 17.5 6h-1.26A8 8 0 1 0 4 15.25"></path>
-<polyline points="16 11 12 7 8 11"></polyline>
-<line x1="12" y1="7" x2="12" y2="18"></line>
-</svg>
-</button>
-</div>
-</div>
-<button type="button" id="openDailyUpdatesBtn" class="btn-mod-action w-100 mb-4 p-2 text-md sys-lockable">Daily Updates</button>
-<div class="d-flex justify-between align-center mb-4 mt-5">
-<label for="adminStorySelect" class="text-xl text-admin m-0 font-bold">📊 Submissions</label>
-</div>
-<div class="d-flex gap-4 align-center mb-4">
-<select id="adminStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
-<div style="position:relative;">
-<button type="button" id="storyOptionsBtn" class="bg-transparent border-none cursor-pointer p-1">
-<svg viewBox="0 0 24 24" width="24" height="24" fill="var(--admin-color)"><circle cx="12" cy="5" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="19" r="2.5"/></svg>
-</button>
-<div id="storyOptionsMenu" class="hidden" style="position:absolute; right:0; top:100%; background:var(--modal-bg); border:1px solid var(--border-color); border-radius:6px; z-index:1000; box-shadow:0 4px 15px rgba(0,0,0,0.3); width:max-content; overflow:hidden;">
-<button type="button" id="editStoriesListBtn" class="w-100 bg-transparent border-none p-3 cursor-pointer text-left hover-bg-alt font-bold d-flex align-center gap-2" style="color:var(--modal-text);">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-Edit Stories
-</button>
-<button type="button" id="previewStoryReviewsBtn" class="w-100 bg-transparent border-none p-3 cursor-pointer text-left hover-bg-alt font-bold d-flex align-center gap-2" style="color:var(--modal-text);">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-Preview
-</button>
-</div>
-</div>
-</div>
-<div class="webview-scroll-frame mb-5 radius-2" style="border: var(--border);">
-<table class="webview-table m-0 table-condensed">
-<thead id="submissionsTableHead">
-<tr>
-<th><b>Reviewer</b></th>
-<th><b>Date</b></th>
-<th><b>Rating</b></th>
-</tr>
-</thead>
-<tbody id="dailyReviewsTableBody">
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="devInterface" class="hidden">
-<div class="plain-section dev-header dev-dark-gold-box">
-<div class="d-flex align-center gap-5 border-bottom-gold-alt pb-2 mb-4">
-<img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-logo">
-<h2 class="border-none m-0 p-0 color-gold-alt shadow-text-gold">Developer options</h2>
-</div>
-<div class="form-group bg-dark p-4 radius-3 mb-3">
-<div class="d-flex justify-between align-center flex-wrap gap-4 mb-4">
-<div class="text-xl font-bold text-white d-flex align-center" style="height:30px;">Build: <span id="devVersionDisplay" class="color-gold-alt ml-2">Loading...</span></div>
-<div class="switch-container danger-toggle bg-transparent border-none p-0 shadow-none d-flex align-center gap-4 m-0 w-auto">
-<strong id="exclusiveModeText" class="text-white d-flex align-center gap-3 text-lg" style="transition: color 0.3s;">
-Exclusive Mode
-</strong>
-<label class="switch scale-90 m-0">
-<input type="checkbox" id="devPauseToggle">
-<span class="slider"></span>
-</label>
-</div>
-</div>
-<div id="newBuildAlertContainer" class="hidden mt-2 bg-darker-alt p-3 radius-2 border-none mb-4" style="border: 1px solid var(--danger);">
-<label class="text-danger text-md font-bold block mb-1">⚠️ New Git Build Detected!</label>
-<div class="text-sm color-gold-alt mb-2" style="color: #ccc;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
-<textarea id="devReleaseNotesInput" rows="2" placeholder="Enter release notes / developer updates for this version..." class="w-100 box-border bg-black-alt text-white border-gold-alt p-2 radius-1 mb-2 text-md" style="font-family: inherit;"></textarea>
-<button type="button" id="btnPublishReleaseNotes" class="dev-btn-gold w-100 p-2 d-flex align-center justify-center gap-2 m-0" style="padding: 6px 0; text-align: center;">
-<svg width="16" height="16"><use href="#icon-download"></use></svg>
-Publish
-</button>
-</div>
-<div class="d-flex align-center gap-4 flex-wrap mb-4 mt-2">
-<button type="button" id="devVersionHistoryBtn" class="dev-btn-gold w-max padding-10-15">Version History</button>
-<button type="button" id="devLoadFeedbackBtn" class="dev-btn-gold w-max padding-10-15">User feedback preview</button>
-</div>
-<div class="d-flex align-center gap-4 flex-wrap">
-<button type="button" id="devSeasonHistoryBtn" class="dev-btn-gold w-max padding-10-15">Season history</button>
-<button type="button" id="devSeasonResetBtn" class="dev-btn-gold w-max padding-10-15">Season Reset</button>
-</div>
-</div>
+<div id="devInterface" class="hidden premium-dashboard">
+    <div class="premium-content-lock">
+        <div class="dev-premium-card mt-3">
+            
+            <div class="d-flex align-center gap-4 mb-4 border-bottom-gold pb-3">
+                <img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-avatar">
+                <div>
+                    <h2 class="m-0 premium-gold-text">Developer Options</h2>
+                    <div class="text-sm" style="color: #FDE047;">Build: <span id="devVersionDisplay" class="font-bold ml-1">Loading...</span></div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-between align-center p-4 mb-4 premium-inner-card">
+                <strong id="exclusiveModeText" class="text-white text-lg">Exclusive Mode</strong>
+                <label class="switch m-0 scale-90">
+                    <input type="checkbox" id="devPauseToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div id="newBuildAlertContainer" class="hidden premium-inner-card p-4 mb-4" style="border-color: rgba(220, 38, 38, 0.4);">
+                <label class="text-danger text-lg font-bold block mb-1">⚠️ New Git Build Detected!</label>
+                <div class="text-sm color-gold-alt mb-3" style="color: #cbd5e1;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
+                <textarea id="devReleaseNotesInput" rows="2" placeholder="Enter release notes / developer updates for this version..." class="premium-textarea mb-3"></textarea>
+                <button type="button" id="btnPublishReleaseNotes" class="premium-btn-gold w-100 d-flex align-center justify-center gap-2 m-0" style="padding: 12px 0;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Publish Update
+                </button>
+            </div>
+
+            <div class="premium-grid-2 mb-2 mt-4">
+                <button type="button" id="devVersionHistoryBtn" class="premium-btn-gold">Version History</button>
+                <button type="button" id="devLoadFeedbackBtn" class="premium-btn-gold">User Feedback</button>
+                <button type="button" id="devSeasonHistoryBtn" class="premium-btn-gold">Season History</button>
+                <button type="button" id="devSeasonResetBtn" class="premium-btn-gold">Season Reset</button>
+            </div>
+            
+        </div>
+    </div>
 </div>
 </div>
 <div class="system-navigation-footer-bar">
