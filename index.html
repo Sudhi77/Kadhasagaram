@@ -1329,47 +1329,141 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45);
 }
 .premium-btn-square:active { transform: scale(0.95); }
-.premium-btn-outline {
-    background: rgba(14, 165, 233, 0.1);
-    border: 1px solid rgba(14, 165, 233, 0.3);
-    color: #38BDF8;
-    padding: 18px;
-    border-radius: 20px;
-    font-size: 16px;
-    font-weight: 700;
+
+.premium-action-card {
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(135deg, rgba(4, 120, 87, 0.9) 0%, rgba(2, 44, 34, 0.95) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    text-align: left;
+    box-sizing: border-box;
+}
+.premium-action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    border-color: rgba(16, 185, 129, 0.6);
+}
+.premium-action-card:active {
+    transform: scale(0.98);
+}
+.action-icon-left {
+    width: 56px;
+    height: 56px;
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    backdrop-filter: blur(8px);
+    flex-shrink: 0;
+    margin-right: 16px;
+    color: #ffffff;
 }
-.premium-btn-outline:hover {
-    background: rgba(14, 165, 233, 0.2);
-    border-color: #38BDF8;
-    color: #FFF;
-    transform: translateY(-1px);
+.action-text-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+.action-text-center h3 {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.3px;
+}
+.action-text-center p {
+    margin: 0;
+    font-size: 13px;
+    color: #A7F3D0; 
+}
+.action-icon-right {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #ffffff;
+    transition: background 0.2s;
+}
+.premium-action-card:hover .action-icon-right {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.submissions-premium-card {
+    background: linear-gradient(145deg, #001722 0%, #000B0F 100%);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    border-radius: 25px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(14, 165, 233, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    margin-bottom: 24px;
+}
+.submissions-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.submissions-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.chart-icon-circle {
+    width: 44px;
+    height: 44px;
+    background: rgba(14, 165, 233, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #38BDF8;
+}
+.submissions-controls-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    justify-content: flex-end;
+    min-width: 220px;
+}
+.inline-select-container {
+    flex: 1;
+    max-width: 220px;
+}
+.inline-select-container .custom-select-trigger {
+    height: 44px !important;
+    border-radius: 12px !important;
+    background: #000B0F !important;
+    border: 1px solid rgba(14, 165, 233, 0.4) !important;
+    color: #F8FAFC !important;
+    font-weight: 600;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
+}
+.inline-select-container .custom-select-trigger:focus,
+.inline-select-container .custom-select-trigger:hover {
+    border-color: #38BDF8 !important;
+}
+
 .premium-card-title {
     font-size: 20px;
     font-weight: 700;
     color: #F8FAFC;
     letter-spacing: -0.3px;
 }
-.premium-select {
-    background: #00070A;
-    border: 1px solid rgba(14, 165, 233, 0.3);
-    color: #F8FAFC;
-    height: 54px;
-    border-radius: 16px;
-    padding: 0 16px;
-    font-size: 15px;
-    font-weight: 600;
-    width: 100%;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-    appearance: none;
-}
-.premium-select:focus { border-color: #10B981; outline: none; }
 .premium-table-container {
     border: 1px solid rgba(14, 165, 233, 0.2);
     border-radius: 16px;
@@ -1441,6 +1535,7 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     background: rgba(14, 165, 233, 0.15);
     color: #38BDF8;
 }
+
 .dev-premium-card {
     background: linear-gradient(145deg, rgba(66, 48, 0, 0.4) 0%, rgba(26, 20, 0, 0.7) 100%);
     border: 1px solid rgba(250, 204, 21, 0.3);
@@ -1507,76 +1602,6 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     box-shadow: 0 6px 15px rgba(250, 204, 21, 0.15);
 }
 .premium-btn-gold:active { transform: scale(0.98); }
-
-.premium-action-card {
-    width: 100%;
-    height: 110px;
-    background: linear-gradient(135deg, rgba(4, 120, 87, 0.9) 0%, rgba(2, 44, 34, 0.95) 100%);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    border-radius: 28px;
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-bottom: 32px;
-    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    text-align: left;
-    box-sizing: border-box;
-}
-.premium-action-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    border-color: rgba(16, 185, 129, 0.6);
-}
-.premium-action-card:active {
-    transform: scale(0.98);
-}
-.action-icon-left {
-    width: 56px;
-    height: 56px;
-    background: rgba(16, 185, 129, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-right: 16px;
-    color: #ffffff;
-}
-.action-text-center {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.action-text-center h3 {
-    margin: 0 0 4px 0;
-    font-size: 20px;
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: -0.3px;
-}
-.action-text-center p {
-    margin: 0;
-    font-size: 13px;
-    color: #A7F3D0; 
-}
-.action-icon-right {
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: #ffffff;
-    transition: background 0.2s;
-}
-.premium-action-card:hover .action-icon-right {
-    background: rgba(255, 255, 255, 0.2);
-}
 </style>
 </head>
 <body>
@@ -1861,28 +1886,35 @@ Authentication Panel
             </div>
         </button>
 
-        <div class="mod-premium-card mt-3">
-            <div class="d-flex justify-between align-center mb-4">
-                <h3 class="premium-card-title m-0">📊 Submissions</h3>
-                <div style="position:relative;">
-                    <button type="button" id="storyOptionsBtn" class="premium-icon-btn">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="19" r="2.5"/></svg>
-                    </button>
-                    <div id="storyOptionsMenu" class="hidden premium-dropdown-menu">
-                        <button type="button" id="editStoriesListBtn" class="premium-dropdown-item">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                            Edit Stories
+        <div class="submissions-premium-card mt-3">
+            <div class="submissions-header-row">
+                <div class="submissions-title-group">
+                    <div class="chart-icon-circle">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    </div>
+                    <h3 class="premium-card-title m-0">Submissions</h3>
+                </div>
+                
+                <div class="submissions-controls-group">
+                    <div class="inline-select-container">
+                        <select id="adminStorySelect" class="sys-lockable"></select>
+                    </div>
+                    <div style="position:relative;">
+                        <button type="button" id="storyOptionsBtn" class="premium-icon-btn">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="12" cy="19" r="2.5"/></svg>
                         </button>
-                        <button type="button" id="previewStoryReviewsBtn" class="premium-dropdown-item">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                            Preview
-                        </button>
+                        <div id="storyOptionsMenu" class="hidden premium-dropdown-menu">
+                            <button type="button" id="editStoriesListBtn" class="premium-dropdown-item">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                Edit Stories
+                            </button>
+                            <button type="button" id="previewStoryReviewsBtn" class="premium-dropdown-item">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                Preview
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="mb-4">
-                <select id="adminStorySelect" class="premium-select sys-lockable"></select>
             </div>
 
             <div class="webview-scroll-frame premium-table-container">
