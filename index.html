@@ -1336,7 +1336,7 @@ Menu
 <label for="friendName">Your Name *</label>
 <input type="text" id="friendName" placeholder="Enter your Name" class="sys-lockable">
 </div>
-<div class="form-group m-0" style="width: 60px; flex-shrink: 0;">
+<div class="form-group m-0" style="width: 69px; flex-shrink: 0;">
 <label for="ratingValue">Rating *</label>
 <select id="ratingValue" class="sys-lockable">
 <option value="" disabled selected>Rating</option>
@@ -1468,12 +1468,20 @@ Preview
 <img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-logo">
 <h2 class="border-none m-0 p-0 color-gold-alt shadow-text-gold">Developer options</h2>
 </div>
-<div class="form-group bg-dark p-4 radius-3 mb-3 border-gold-alt">
-<div class="d-flex justify-between align-center mb-2">
+<div class="form-group bg-dark p-4 radius-3 mb-3">
+<div class="d-flex justify-between align-center flex-wrap gap-4 mb-4">
 <div class="text-xl font-bold text-white d-flex align-center" style="height:30px;">Build: <span id="devVersionDisplay" class="color-gold-alt ml-2">Loading...</span></div>
-<button type="button" id="devVersionHistoryBtn" class="dev-btn-gold px-2 text-sm" style="height:30px;">Version History</button>
+<div class="switch-container danger-toggle bg-transparent border-none p-0 shadow-none d-flex align-center gap-4 m-0 w-auto">
+<strong id="exclusiveModeText" class="text-white d-flex align-center gap-3 text-lg" style="transition: color 0.3s;">
+Exclusive Mode
+</strong>
+<label class="switch scale-90 m-0">
+<input type="checkbox" id="devPauseToggle">
+<span class="slider"></span>
+</label>
 </div>
-<div id="newBuildAlertContainer" class="hidden mt-2 bg-darker-alt p-3 radius-2 border-none" style="border: 1px solid var(--danger);">
+</div>
+<div id="newBuildAlertContainer" class="hidden mt-2 bg-darker-alt p-3 radius-2 border-none mb-4" style="border: 1px solid var(--danger);">
 <label class="text-danger text-md font-bold block mb-1">⚠️ New Git Build Detected!</label>
 <div class="text-sm color-gold-alt mb-2" style="color: #ccc;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
 <textarea id="devReleaseNotesInput" rows="2" placeholder="Enter release notes / developer updates for this version..." class="w-100 box-border bg-black-alt text-white border-gold-alt p-2 radius-1 mb-2 text-md" style="font-family: inherit;"></textarea>
@@ -1482,38 +1490,13 @@ Preview
 Publish
 </button>
 </div>
-</div>
-<div class="switch-container danger-toggle p-3 px-4 w-100 box-border mb-5 bg-dark border-gold-alt d-flex align-center justify-between flex-wrap gap-4">
-<div class="d-flex align-center gap-4">
-<strong id="exclusiveModeText" class="text-white d-flex align-center gap-3 text-lg" style="transition: color 0.3s;">
-<svg viewBox="0 0 64 64" class="svg-drop-shadow" style="width: 26px; height: 26px;">
-<defs>
-<linearGradient id="goldQueen" x1="0%" y1="0%" x2="100%" y2="100%">
-<stop offset="0%" stop-color="#FFF8DC" />
-<stop offset="25%" stop-color="#FFD700" />
-<stop offset="50%" stop-color="#DAA520" />
-<stop offset="75%" stop-color="#B8860B" />
-<stop offset="100%" stop-color="#8B6508" />
-</linearGradient>
-<linearGradient id="goldQueenEdge" x1="0%" y1="0%" x2="0%" y2="100%">
-<stop offset="0%" stop-color="#FFF" />
-<stop offset="100%" stop-color="#DAA520" />
-</linearGradient>
-</defs>
-<path fill="url(#goldQueen)" stroke="url(#goldQueenEdge)" stroke-width="1.5" d="M 32 6 C 34.2 6 36 7.8 36 10 C 36 11.6 35 13 33.6 13.6 L 39 23 L 42.6 14.8 C 41.6 14.2 41 13.2 41 12 C 41 9.8 42.8 8 45 8 C 47.2 8 49 9.8 49 12 C 49 13.5 48.2 14.8 46.8 15.5 L 43 28 L 51.6 20.3 C 51.2 19.6 51 18.8 51 18 C 51 15.8 52.8 14 55 14 C 57.2 14 59 15.8 59 18 C 59 19.9 57.7 21.5 55.8 21.9 L 46 33 L 48 48 L 16 48 L 18 33 L 8.2 21.9 C 6.3 21.5 5 19.9 5 18 C 5 15.8 6.8 14 9 14 C 11.2 14 13 15.8 13 18 C 13 18.8 12.8 19.6 12.4 20.3 L 21 28 L 17.2 15.5 C 15.8 14.8 15 13.5 15 12 C 15 9.8 16.8 8 19 8 C 21.2 8 23 9.8 23 12 C 23 13.2 22.4 14.2 21.4 14.8 L 25 23 L 30.4 13.6 C 29 13 28 11.6 28 10 C 28 7.8 29.8 6 32 6 Z M 20 50 L 44 50 L 46 54 L 46 56 L 18 56 L 18 54 Z" />
-</svg>
-Exclusive Mode
-</strong>
-<label class="switch scale-90 m-0">
-<input type="checkbox" id="devPauseToggle">
-<span class="slider"></span>
-</label>
-</div>
-<button type="button" id="devSeasonResetBtn" class="dev-btn-gold padding-6-12 text-sm w-max">Season Reset</button>
-</div>
-<div class="btn-row mt-4 align-center gap-4">
+<div class="d-flex align-center gap-4 flex-wrap mb-4 mt-2">
+<button type="button" id="devVersionHistoryBtn" class="dev-btn-gold w-max padding-10-15">Version History</button>
 <button type="button" id="devLoadFeedbackBtn" class="dev-btn-gold w-max padding-10-15">User feedback preview</button>
+</div>
+<div class="d-flex align-center gap-4 flex-wrap">
 <button type="button" id="devSeasonHistoryBtn" class="dev-btn-gold w-max padding-10-15">Season history</button>
+<button type="button" id="devSeasonResetBtn" class="dev-btn-gold w-max padding-10-15">Season Reset</button>
 </div>
 </div>
 </div>
