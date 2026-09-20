@@ -1443,7 +1443,7 @@ Preview
 <table class="webview-table m-0 table-condensed">
 <thead id="submissionsTableHead">
 <tr>
-<th><b>Reviewer Name</b></th>
+<th><b>Reviewer</b></th>
 <th><b>Date</b></th>
 <th><b>Rating</b></th>
 </tr>
@@ -2304,13 +2304,13 @@ rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitl
 }
 });
 if (currentPreviewTab === 'all') {
-spTableHead.innerHTML = `<tr><th>Reviewer Name</th><th>Date</th><th>Rating</th></tr>`;
+spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>`;
 } else if (currentPreviewTab === 'detailed') {
-spTableHead.innerHTML = `<tr><th>Reviewer Name</th><th>Detailed Review</th></tr>`;
+spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Detailed Review</th></tr>`;
 } else if (currentPreviewTab === 'author') {
-spTableHead.innerHTML = `<tr><th>Reviewer Name</th><th>Guess the author</th></tr>`;
+spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Guess the author</th></tr>`;
 } else if (currentPreviewTab === 'title') {
-spTableHead.innerHTML = `<tr><th>Reviewer Name</th><th>Title Suggestion</th></tr>`;
+spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Title Suggestion</th></tr>`;
 }
 if (rowsData.length === 0) {
 spTableBody.innerHTML = `<tr><td colspan="3" class="text-center text-muted text-italic py-5">No records found.</td></tr>`;
@@ -2374,13 +2374,13 @@ rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)
 });
 let theadHtml = '';
 if (currentPreviewTab === 'all') {
-theadHtml = `<tr><th>Reviewer Name</th><th>Date</th><th>Rating</th></tr>`;
+theadHtml = `<tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>`;
 } else if (currentPreviewTab === 'detailed') {
-theadHtml = `<tr><th>Reviewer Name</th><th>Detailed Review</th></tr>`;
+theadHtml = `<tr><th>Reviewer</th><th>Detailed Review</th></tr>`;
 } else if (currentPreviewTab === 'author') {
-theadHtml = `<tr><th>Reviewer Name</th><th>Guess the author</th></tr>`;
+theadHtml = `<tr><th>Reviewer</th><th>Guess the author</th></tr>`;
 } else if (currentPreviewTab === 'title') {
-theadHtml = `<tr><th>Reviewer Name</th><th>Title Suggestion</th></tr>`;
+theadHtml = `<tr><th>Reviewer</th><th>Title Suggestion</th></tr>`;
 }
 const htmlString = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reviews - ${sanitizeText(currentStory)}</title><style>body { font-family: sans-serif; margin: 20px; color: #333; }table { width: 100%; border-collapse: collapse; font-size: 14px; }th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }th { background-color: #f8f9fa; color: #2b4c7e; }tr:nth-child(even) { background-color: #f9f9f9; }</style></head><body><h2>${sanitizeText(currentStory)} - ${currentPreviewTab.toUpperCase()}</h2><table><thead>${theadHtml}</thead><tbody>${rowsHtml}</tbody></table></body></html>`;
 const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
@@ -2606,7 +2606,7 @@ devDownloadFeedbackBtn.classList.remove('hidden');
 feedbackTableHead.innerHTML = '';
 const headTableRow = createEl('tr');
 const tableHeaderOne = createEl('th', { className: "bg-gold text-black text-center p-3 border-bottom-gold-alt", style: { backgroundColor: "#D4A017", color: "#000" } });
-tableHeaderOne.appendChild(createEl('b', {}, "Reviewer Name"));
+tableHeaderOne.appendChild(createEl('b', {}, "Reviewer"));
 headTableRow.appendChild(tableHeaderOne);
 const tableHeaderTwo = createEl('th', { className: "text-center p-3 border-bottom-gold-alt", style: { backgroundColor: "#D4A017", color: "#000" } });
 tableHeaderTwo.appendChild(createEl('b', {}, "Status"));
@@ -2647,7 +2647,7 @@ setSafeText(devLoadFeedbackBtn, "User feedback preview");
 });
 devDownloadFeedbackBtn.addEventListener('click', () => {
 if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
-let tableHeadHtmlString = `<tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer Name</b></th>`;
+let tableHeadHtmlString = `<tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer</b></th>`;
 for(let increment = 1; increment <= cachedMaxCols; increment++) {
 tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${increment}</b></th>`;
 }
@@ -3415,8 +3415,8 @@ return { rawHtmlTemplate: spreadsheetStringTemplate + `</table></body></html>`, 
 storiesArray.forEach((storyObject) => {
 const dataObject = storyObject.data;
 const storyTitleString = sanitizeText(storyObject.id);
-spreadsheetStringTemplate += `<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer Name</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>`;
-tempTableBodyContentString += `<tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitleString}</th></tr><tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer Name</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>`;
+spreadsheetStringTemplate += `<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>`;
+tempTableBodyContentString += `<tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitleString}</th></tr><tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>`;
 let reviewRowsArray = [];
 Object.keys(dataObject).forEach(keyString => {
 if (keyString !== 'created' && keyString !== '_suggestions' && keyString !== '_suggesterName' && keyString !== '_guesses' && keyString !== '_authorGivenHeading' && keyString !== 'season') {
