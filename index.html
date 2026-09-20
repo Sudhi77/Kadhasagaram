@@ -1469,9 +1469,9 @@ Preview
 <label class="text-danger text-md font-bold block mb-1">⚠️ New Git Build Detected!</label>
 <div class="text-sm color-gold-alt mb-2" style="color: #ccc;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
 <textarea id="devReleaseNotesInput" rows="2" placeholder="Enter release notes / developer updates for this version..." class="w-100 box-border bg-black-alt text-white border-gold-alt p-2 radius-1 mb-2 text-md" style="font-family: inherit;"></textarea>
-<button type="button" id="btnPublishReleaseNotes" class="dev-btn-gold w-100 p-2 d-flex align-center justify-center gap-2 m-0" style="padding: 6px 0;">
+<button type="button" id="btnPublishReleaseNotes" class="dev-btn-gold w-100 p-2 d-flex align-center justify-center gap-2 m-0" style="padding: 6px 0; text-align: center;">
 <svg width="16" height="16"><use href="#icon-download"></use></svg>
-Publish Update Info
+Publish
 </button>
 </div>
 </div>
@@ -1505,6 +1505,7 @@ Exclusive Mode
 </div>
 <div class="btn-row mt-4 align-center gap-4">
 <button type="button" id="devLoadFeedbackBtn" class="dev-btn-gold w-max padding-10-15">User feedback preview</button>
+<button type="button" id="devSeasonHistoryBtn" class="dev-btn-gold w-max padding-10-15">Season history</button>
 </div>
 </div>
 </div>
@@ -1734,6 +1735,17 @@ Download
 </tbody>
 </table>
 </div>
+</div>
+</div>
+<div id="seasonHistoryOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000008; backdrop-filter: blur(4px);">
+<div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 80vh;">
+<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+<h3 class="m-0" style="color: var(--primary);">Season History</h3>
+<button type="button" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="seasonHistoryOverlay">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+</button>
+</div>
+<div id="seasonHistoryList" style="overflow-y: auto; flex-grow: 1;"></div>
 </div>
 </div>
 <script type="module">
@@ -2237,6 +2249,9 @@ const fdModalNotes = getElementById('fdModalNotes');
 const fdModalStatus = getElementById('fdModalStatus');
 const fdModalSaveBtn = getElementById('fdModalSaveBtn');
 const duStorySelect = getElementById('duStorySelect');
+const devSeasonHistoryBtn = getElementById('devSeasonHistoryBtn');
+const seasonHistoryOverlay = getElementById('seasonHistoryOverlay');
+const seasonHistoryList = getElementById('seasonHistoryList');
 let currentFeedbackUser = null;
 let currentPreviewTab = 'all';
 const detailedReviewOverlay = getElementById('detailedReviewOverlay');
@@ -2245,6 +2260,7 @@ const drModalDate = getElementById('drModalDate');
 const drModalRating = getElementById('drModalRating');
 const drModalGuess = getElementById('drModalGuess');
 const drModalSuggTitle = getElementById('drModalSuggTitle');
+let globalSeasonsSet = new Set();
 function openDetailedReviewModal(name, rating, guess, suggTitle, dateString) {
 setSafeText(drModalName, name);
 let formattedDate = dateString;
@@ -3023,6 +3039,7 @@ const dataObject = documentItem.data();
 arrayedStoriesList.push({ id: documentItem.id, created: dataObject.created || 0, season: dataObject.season || "Legacy" });
 if (dataObject.season) uniqueSeasonsSet.add(dataObject.season);
 });
+globalSeasonsSet = uniqueSeasonsSet;
 updateSeasonDropdowns(uniqueSeasonsSet);
 arrayedStoriesList.sort((elementA, elementB) => elementB.created - elementA.created);
 storyDropdown.innerHTML = '';
@@ -3335,7 +3352,7 @@ customAlert(`Release notes published successfully.\nVersion updated to Build ${G
 customAlert("Error syncing version deployment metrics to Firestore storage collections.");
 } finally {
 btnPublishReleaseNotes.disabled = false;
-btnPublishReleaseNotes.innerHTML = '<svg width="16" height="16"><use href="#icon-download"></use></svg> Publish Update Info';
+btnPublishReleaseNotes.innerHTML = '<svg width="16" height="16"><use href="#icon-download"></use></svg> Publish';
 }
 });
 }
@@ -3393,6 +3410,47 @@ wrapDivElement.appendChild(unorderedListElement);
 toggleMenu(false);
 showCustomModal('alert', wrapDivElement.outerHTML);
 });
+if(devSeasonHistoryBtn) {
+devSeasonHistoryBtn.addEventListener('click', () => {
+seasonHistoryList.innerHTML = '';
+const allSeasons = new Set([...globalSeasonsSet]);
+if (globalSeasonCache && globalSeasonCache !== "---") allSeasons.add(globalSeasonCache);
+if (allSeasons.size === 0) {
+seasonHistoryList.appendChild(createEl('div', {className: 'p-3 text-center text-muted'}, 'No season history found.'));
+} else {
+allSeasons.forEach(season => {
+if(season === "Legacy" || season === "All") return;
+const item = createEl('div', { className: 'p-3 border-bottom d-flex justify-between align-center gap-3' });
+item.appendChild(createEl('span', { className: 'text-md font-bold', style: { color: 'var(--modal-text)' } }, season));
+const delBtn = createEl('button', { className: 'bg-transparent border-none cursor-pointer p-1 m-0' });
+delBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
+delBtn.onclick = async () => {
+const userInput = await customPrompt(`Type 'Delete' to confirm deletion of season ${season}.`, "");
+if (userInput === "Delete") {
+delBtn.disabled = true;
+try {
+const storiesToDelete = arrayedStoriesList.filter(s => s.season === season).map(s => s.id);
+for (const storyId of storiesToDelete) {
+await deleteDoc(doc(db, "competitions", storyId));
+}
+customAlert(`Season ${season} deleted successfully.`);
+item.remove();
+globalSeasonsSet.delete(season);
+} catch (e) {
+customAlert("Error deleting season.");
+delBtn.disabled = false;
+}
+} else if (userInput !== null) {
+customAlert("Deletion cancelled.");
+}
+};
+item.appendChild(delBtn);
+seasonHistoryList.appendChild(item);
+});
+}
+seasonHistoryOverlay.classList.remove('hidden');
+});
+}
 async function compileMasterDataMatrix(seasonFilterString = "All") {
 const querySnapshotObject = await getDocs(collection(db, "competitions"));
 const today = new Date();
