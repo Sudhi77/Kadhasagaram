@@ -169,7 +169,7 @@ background-color: var(--bg-color);
 background-attachment: fixed;
 color: var(--text-color);
 line-height: 1.6;
-padding: 0 0 80px 0;
+padding: 0 0 110px 0;
 margin: 0;
 transition: background 0.3s ease, color 0.3s ease;
 }
@@ -646,53 +646,44 @@ position: fixed;
 bottom: 0;
 left: 0;
 width: 100vw;
-height: 52px;
-background-color: var(--nav-bg);
+height: 85px;
+background: rgba(0, 11, 15, 0.95);
+backdrop-filter: blur(10px);
+border-top: 1px solid rgba(14, 165, 233, 0.2);
 display: flex;
 box-sizing: border-box;
-border-top: var(--nav-border-top);
 z-index: 99998;
-backdrop-filter: var(--card-backdrop);
+padding-bottom: env(safe-area-inset-bottom);
 }
 .nav-split-trigger-btn {
 flex: 1;
-height: 100%;
-background: transparent;
-color: var(--nav-btn-text);
-border: none;
-border-radius: 0;
-padding: 0;
-font-size: 16px;
-font-weight: 700;
-cursor: pointer;
-transition: all 0.2s ease-in-out;
-display: inline-flex;
+display: flex;
+flex-direction: column;
 align-items: center;
 justify-content: center;
-text-transform: uppercase;
-letter-spacing: 0.5px;
+gap: 6px;
+background: transparent;
+border: none;
+color: #64748B;
+font-size: 12px;
+font-weight: 600;
+text-transform: none;
+letter-spacing: 0;
+cursor: pointer;
+transition: all 0.2s ease-in-out;
 box-shadow: none;
 text-shadow: none;
 }
-.nav-split-trigger-btn:first-child {
-border-right: 20px solid transparent;
-border-image: var(--nav-divider-img) 0 100% 0 0 vertical repeat;
-margin-right: -20px;
-padding-right: 10px;
-}
-.nav-split-trigger-btn:hover {
-background-color: var(--nav-btn-hover-bg);
-color: var(--nav-btn-hover-text);
-transform: none;
-box-shadow: none;
-}
+.nav-split-trigger-btn:first-child { border-right: none; margin: 0; padding: 0; }
+.nav-split-trigger-btn svg { width: 24px; height: 24px; stroke: currentColor; }
 .nav-split-trigger-btn.active-panel-indicator {
-background-color: var(--nav-active-bg);
-color: var(--nav-active-color);
-box-shadow: inset 0 4px 0 0 var(--nav-active-color);
+color: #10B981;
+background: radial-gradient(circle at top, rgba(16,185,129,0.1) 0%, transparent 60%);
+box-shadow: inset 0 3px 0 0 #10B981;
 }
+.nav-split-trigger-btn:hover { background: transparent; transform: none; box-shadow: none; }
 .nav-split-trigger-btn.active-panel-indicator:hover {
-box-shadow: inset 0 4px 0 0 var(--nav-active-color);
+box-shadow: inset 0 3px 0 0 #10B981;
 }
 .divider {
 border: 0;
@@ -1476,13 +1467,15 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     font-size: 14px;
 }
 .premium-table th {
-    background: rgba(14, 165, 233, 0.1);
-    color: #38BDF8;
+    background: linear-gradient(135deg, #10B981 0%, #047857 100%);
+    color: #ffffff;
     padding: 16px;
     font-weight: 700;
     text-align: left;
-    border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+    border: none;
 }
+.premium-table th:first-child { border-top-left-radius: 12px; }
+.premium-table th:last-child { border-top-right-radius: 12px; }
 .premium-table td {
     padding: 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -1536,31 +1529,125 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     color: #38BDF8;
 }
 
-.dev-premium-card {
-    background: linear-gradient(145deg, rgba(66, 48, 0, 0.4) 0%, rgba(26, 20, 0, 0.7) 100%);
-    border: 1px solid rgba(250, 204, 21, 0.3);
+.empty-state-cell { background: transparent !important; border: none !important; }
+.premium-empty-state {
+    padding: 60px 20px;
+    text-align: center;
+}
+.empty-icon { color: #334155; margin-bottom: 16px; }
+.empty-title { color: #94A3B8; font-size: 20px; font-weight: 600; margin: 0 0 8px 0; }
+.empty-subtitle { color: #475569; font-size: 14px; margin: 0; }
+
+.dev-advanced-card {
+    background: #111111;
+    border: 1px solid rgba(250, 204, 21, 0.4);
     border-radius: 25px;
     padding: 24px;
-    box-shadow: 0 10px 40px rgba(250, 204, 21, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(250, 204, 21, 0.1);
+    margin-top: 40px; 
+}
+.dev-header-grid {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(250, 204, 21, 0.2);
+    margin-bottom: 20px;
+}
+.dev-gear-circle {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #FACC15;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FACC15;
+    box-shadow: inset 0 0 10px rgba(250, 204, 21, 0.1), 0 0 10px rgba(250, 204, 21, 0.1);
+}
+.dev-header-text h3 { color: #FACC15; font-size: 22px; margin: 0 0 4px 0; font-weight: 800; letter-spacing: -0.5px;}
+.dev-header-text p { color: #94A3B8; font-size: 13px; margin: 0; }
+.build-exclusive-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 24px;
 }
-.border-bottom-gold { border-bottom: 1px solid rgba(250, 204, 21, 0.15); }
-.premium-gold-text {
-    color: #FACC15;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+.build-text { font-size: 16px; font-weight: 700; color: #FFF; }
+.build-value { color: #FACC15; }
+.dev-grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
 }
-.dev-lion-avatar {
-    width: 56px;
-    height: 56px;
+@media (max-width: 400px) {
+    .dev-grid-2x2 { grid-template-columns: 1fr; }
+}
+.dev-action-btn {
+    background: #111111;
+    border: 1px solid rgba(250, 204, 21, 0.3);
     border-radius: 16px;
-    border: 2px solid rgba(250, 204, 21, 0.4);
-    object-fit: cover;
-    box-shadow: 0 4px 15px rgba(250, 204, 21, 0.15);
+    color: #FACC15;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
+.dev-action-btn:hover {
+    box-shadow: 0 4px 15px rgba(250, 204, 21, 0.15);
+    background: rgba(250, 204, 21, 0.05);
+}
+
+.system-navigation-footer-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 85px;
+    background: rgba(0, 11, 15, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(14, 165, 233, 0.2);
+    display: flex;
+    box-sizing: border-box;
+    z-index: 99998;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-split-trigger-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: #64748B;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: none;
+    text-shadow: none;
+}
+.nav-split-trigger-btn:first-child { border-right: none; margin: 0; padding: 0; }
+.nav-split-trigger-btn svg { width: 24px; height: 24px; stroke: currentColor; }
+.nav-split-trigger-btn.active-panel-indicator {
+    color: #10B981;
+    background: radial-gradient(circle at top, rgba(16,185,129,0.1) 0%, transparent 60%);
+    box-shadow: inset 0 3px 0 0 #10B981;
+}
+.nav-split-trigger-btn:hover { background: transparent; transform: none; box-shadow: none; }
+.nav-split-trigger-btn.active-panel-indicator:hover {
+    box-shadow: inset 0 3px 0 0 #10B981;
+}
+
 .premium-inner-card {
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(250, 204, 21, 0.2);
@@ -1579,11 +1666,6 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     resize: vertical;
 }
 .premium-textarea:focus { outline: none; border-color: #FACC15; }
-.premium-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
 .premium-btn-gold {
     background: linear-gradient(135deg, rgba(250, 204, 21, 0.15) 0%, rgba(202, 138, 4, 0.25) 100%);
     border: 1px solid rgba(250, 204, 21, 0.3);
@@ -1924,6 +2006,7 @@ Authentication Panel
                             <th>Reviewer</th>
                             <th>Date</th>
                             <th>Rating</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="dailyReviewsTableBody">
@@ -1935,24 +2018,28 @@ Authentication Panel
 </div>
 <div id="devInterface" class="hidden premium-dashboard">
     <div class="premium-content-lock">
-        <div class="dev-premium-card mt-3">
-            
-            <div class="d-flex align-center gap-4 mb-4 border-bottom-gold pb-3">
-                <img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-avatar">
-                <div>
-                    <h2 class="m-0 premium-gold-text">Developer Options</h2>
-                    <div class="text-sm" style="color: #FDE047;">Build: <span id="devVersionDisplay" class="font-bold ml-1">Loading...</span></div>
+        <div class="dev-advanced-card mt-5">
+            <div class="dev-header-grid">
+                <div class="dev-gear-circle">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </div>
+                <div class="dev-header-text">
+                    <h3>Developer Options</h3>
+                    <p>Tools for advanced users</p>
                 </div>
             </div>
-
-            <div class="d-flex justify-between align-center p-4 mb-4 premium-inner-card">
-                <strong id="exclusiveModeText" class="text-white text-lg">Exclusive Mode</strong>
-                <label class="switch m-0 scale-90">
-                    <input type="checkbox" id="devPauseToggle">
-                    <span class="slider"></span>
-                </label>
+            
+            <div class="build-exclusive-row">
+                <div class="build-text">Build: <span id="devVersionDisplay" class="build-value">Loading...</span></div>
+                <div class="d-flex align-center gap-3">
+                    <strong id="exclusiveModeText" class="text-white text-md">Exclusive Mode</strong>
+                    <label class="switch m-0 scale-80">
+                        <input type="checkbox" id="devPauseToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
-
+            
             <div id="newBuildAlertContainer" class="hidden premium-inner-card p-4 mb-4" style="border-color: rgba(220, 38, 38, 0.4);">
                 <label class="text-danger text-lg font-bold block mb-1">⚠️ New Git Build Detected!</label>
                 <div class="text-sm color-gold-alt mb-3" style="color: #cbd5e1;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
@@ -1963,11 +2050,23 @@ Authentication Panel
                 </button>
             </div>
 
-            <div class="premium-grid-2 mb-2 mt-4">
-                <button type="button" id="devVersionHistoryBtn" class="premium-btn-gold">Version History</button>
-                <button type="button" id="devLoadFeedbackBtn" class="premium-btn-gold">User Feedback</button>
-                <button type="button" id="devSeasonHistoryBtn" class="premium-btn-gold">Season History</button>
-                <button type="button" id="devSeasonResetBtn" class="premium-btn-gold">Season Reset</button>
+            <div class="dev-grid-2x2 mt-4">
+                <button type="button" id="devVersionHistoryBtn" class="dev-action-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Version History
+                </button>
+                <button type="button" id="devLoadFeedbackBtn" class="dev-action-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    User Feedback Preview
+                </button>
+                <button type="button" id="devSeasonHistoryBtn" class="dev-action-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    Season History
+                </button>
+                <button type="button" id="devSeasonResetBtn" class="dev-action-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+                    Season Reset
+                </button>
             </div>
             
         </div>
@@ -1975,8 +2074,14 @@ Authentication Panel
 </div>
 </div>
 <div class="system-navigation-footer-bar">
-<button type="button" id="navBtnReviewer" class="nav-split-trigger-btn active-panel-indicator">Reviewer</button>
-<button type="button" id="navBtnModerator" class="nav-split-trigger-btn">Moderator</button>
+<button type="button" id="navBtnReviewer" class="nav-split-trigger-btn active-panel-indicator">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+<span>Reviewer</span>
+</button>
+<button type="button" id="navBtnModerator" class="nav-split-trigger-btn">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+<span>Moderator</span>
+</button>
 </div>
 <div id="customModalOverlay" class="hidden">
 <div class="custom-modal-box">
@@ -2914,7 +3019,13 @@ loadCurrentStoryNotes(adminStorySelect.value);
 function appendEmptyRow(tableBody, columnsSpan, text) {
 tableBody.innerHTML = '';
 const tableRow = createEl('tr');
+if (text === "No stories available." || text === "No reviews submitted for this story yet." || text === "Story data is empty or missing.") {
+const td = createEl('td', { colSpan: columnsSpan, className: "empty-state-cell p-0 border-none" });
+td.innerHTML = `<div class="premium-empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"></path></svg></div><h4 class="empty-title">${text}</h4><p class="empty-subtitle">Add a new story to see submissions here.</p></div>`;
+tableRow.appendChild(td);
+} else {
 tableRow.appendChild(createEl('td', { colSpan: columnsSpan, className: "text-center p-5 text-italic text-muted" }, text));
+}
 tableBody.appendChild(tableRow);
 }
 function handleLockedSuggestionInteraction(inputElement, lockTime, featureName) {
@@ -3531,7 +3642,7 @@ loadCurrentStoryNotes(adminStorySelect.value);
 autoFillPreviousUserInputs();
 } else {
 dailyReviewsTableBody.innerHTML = '';
-appendEmptyRow(dailyReviewsTableBody, 3, "No stories available.");
+appendEmptyRow(dailyReviewsTableBody, 4, "No stories available.");
 }
 evaluateLocalStorageRestrictions();
 });
@@ -3651,9 +3762,9 @@ renderAccumulatedWinnersChips();
 });
 async function loadCurrentStoryNotes(targetSelectedStory) {
 dailyReviewsTableBody.innerHTML = '';
-appendEmptyRow(dailyReviewsTableBody, 3, "Loading reviews...");
+appendEmptyRow(dailyReviewsTableBody, 4, "Loading reviews...");
 if (!targetSelectedStory) {
-appendEmptyRow(dailyReviewsTableBody, 3, "Select a story to load submissions");
+appendEmptyRow(dailyReviewsTableBody, 4, "Select a story to load submissions");
 return;
 }
 if(storyDropdown.value !== targetSelectedStory) storyDropdown.value = targetSelectedStory;
@@ -3721,6 +3832,7 @@ displayDate = "N/A";
 }
 tableRowElement.appendChild(createEl('td', {}, displayDate));
 tableRowElement.appendChild(createEl('td', {}, scoreValue));
+tableRowElement.appendChild(createEl('td', {}, "-"));
 dailyReviewsTableBody.appendChild(tableRowElement);
 }
 });
@@ -3728,15 +3840,15 @@ if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValu
 if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
 renderAccumulatedWinnersChips();
 if(reviewCountInteger === 0) {
-appendEmptyRow(dailyReviewsTableBody, 3, "No reviews submitted for this story yet.");
+appendEmptyRow(dailyReviewsTableBody, 4, "No reviews submitted for this story yet.");
 }
 } else {
 activeStorySnapshotDataCache = null;
 renderAccumulatedWinnersChips();
-appendEmptyRow(dailyReviewsTableBody, 3, "Story data is empty or missing.");
+appendEmptyRow(dailyReviewsTableBody, 4, "Story data is empty or missing.");
 }
 } catch(error) {
-appendEmptyRow(dailyReviewsTableBody, 3, "Error loading reviews.");
+appendEmptyRow(dailyReviewsTableBody, 4, "Error loading reviews.");
 }
 }
 saveNotesBtn.addEventListener('click', async () => {
