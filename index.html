@@ -3477,7 +3477,9 @@ const triggerDownloadModalFlow = () => {
 toggleMenu(false);
 getElementById('downloadSeasonModal').classList.remove('hidden');
 };
+if (downloadBtn) {
 downloadBtn.addEventListener('click', triggerDownloadModalFlow);
+}
 getElementById('confirmDownloadBtn').addEventListener('click', async () => {
 const buttonElement = getElementById('confirmDownloadBtn');
 buttonElement.disabled = true;
