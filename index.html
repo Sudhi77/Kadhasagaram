@@ -1256,10 +1256,6 @@ box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
 <label style="text-align: left;">Season Summary</label>
 <div class="d-flex flex-row gap-2 mt-1 w-100">
 <button id="previewBtn" class="btn-preview flex-1 p-3 text-md d-flex align-center justify-center sys-lockable">Preview</button>
-<button id="downloadBtn" class="btn-download flex-1 p-3 text-md d-flex align-center justify-center gap-2 bg-admin text-white shadow-none text-shadow-none sys-lockable" style="text-shadow: none;">
-<svg width="14" height="14"><use href="#icon-download"></use></svg>
-Download
-</button>
 </div>
 </div>
 </div>
@@ -1436,9 +1432,9 @@ Moderator Dashboard
 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
 Edit Stories
 </button>
-<button type="button" id="downloadStoryReviewsBtn" class="w-100 bg-transparent border-none p-3 cursor-pointer text-left hover-bg-alt font-bold d-flex align-center gap-2" style="color:var(--modal-text);">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-Download Reviews
+<button type="button" id="previewStoryReviewsBtn" class="w-100 bg-transparent border-none p-3 cursor-pointer text-left hover-bg-alt font-bold d-flex align-center gap-2" style="color:var(--modal-text);">
+<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+Preview
 </button>
 </div>
 </div>
@@ -1449,6 +1445,7 @@ Download Reviews
 <tr>
 <th><b>Reviewer Name</b></th>
 <th><b>Date</b></th>
+<th><b>Rating</b></th>
 </tr>
 </thead>
 <tbody id="dailyReviewsTableBody">
@@ -1584,7 +1581,7 @@ Exclusive Mode
 <div id="editStoriesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000003; backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 80vh;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
-<button type="button" id="esDeleteBtn" class="hidden bg-transparent border-none cursor-pointer p-1">
+<button type="button" id="esDeleteBtn" class="hidden bg-transparent border-none cursor-pointer p-1 m-0">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
 </button>
 <div class="d-flex gap-2 align-center ml-auto">
@@ -1603,27 +1600,22 @@ Exclusive Mode
 <div id="dailyUpdatesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000005; backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 25px; text-align: left;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
-<h3 class="m-0" style="color: var(--primary);">Daily Updates</h3>
-<button type="button" id="closeDailyUpdatesBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="dailyUpdatesOverlay">
+<select id="duStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
+<button type="button" id="closeDailyUpdatesBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn ml-3" data-target="dailyUpdatesOverlay">
 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
-<div class="mb-4 text-center">
-<span id="duLastAddedStory" class="text-xxl font-bold" style="color: var(--admin-color);">---</span>
-</div>
 <h4 class="m-0 mb-3 mt-4" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">Title Suggestion</h4>
 <div class="form-group">
-<label for="readerSuggestions">Title</label>
 <select id="readerSuggestions" class="w-100 sys-lockable input-reduced"></select>
 </div>
 <div class="form-group">
 <label for="headingSuggesterInput">Reviewer</label>
 <input type="text" id="headingSuggesterInput" class="w-100 sys-lockable input-reduced" readonly style="background-color: var(--input-bg); opacity: 0.8; cursor: not-allowed;">
 </div>
-<h4 class="m-0 mb-3 mt-4" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">Author Guessing</h4>
-<div class="form-group">
-<label for="correctGuesses">Guess the Author</label>
-<div class="d-flex gap-4 align-center">
+<div class="form-group mt-4">
+<label for="correctGuesses" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px; display: block; font-size: 16px;">Guess the Author</label>
+<div class="d-flex gap-4 align-center mt-3">
 <select id="correctGuesses" class="flex-1 m-0 sys-lockable input-reduced"></select>
 <button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable btn-icon-reduced">
 <svg viewBox="0 0 24 24">
@@ -1714,6 +1706,33 @@ Download
 <div class="d-flex justify-end gap-3 mt-2">
 <button type="button" id="fdModalCloseBtn" class="bg-dark-alt text-white border-gold-alt padding-6-12 radius-1 shadow-none cursor-pointer close-modal-btn" data-target="feedbackDetailOverlay">Cancel</button>
 <button type="button" id="fdModalSaveBtn" class="dev-btn-gold padding-6-12 radius-1 cursor-pointer">Save Changes</button>
+</div>
+</div>
+</div>
+<div id="storyPreviewOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000006; backdrop-filter: blur(4px);">
+<div class="custom-modal-box w-100 box-border" style="max-width: 600px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 85vh;">
+<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+<button type="button" id="spDownloadBtn" class="bg-transparent border-none cursor-pointer p-1" style="color: var(--primary);">
+<svg width="24" height="24"><use href="#icon-download"></use></svg>
+</button>
+<h3 id="spHeading" class="m-0 text-center flex-1" style="color: var(--primary);">Story Preview</h3>
+<button type="button" id="spCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="storyPreviewOverlay">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+</button>
+</div>
+<div class="d-flex gap-2 mb-3 overflow-x-auto pb-1" style="flex-wrap: wrap; justify-content: center;">
+<button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="all">All Reviews</button>
+<button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="detailed" style="background: var(--input-bg); color: var(--text-color);">Detailed Reviews</button>
+<button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="author" style="background: var(--input-bg); color: var(--text-color);">Guess the author</button>
+<button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="title" style="background: var(--input-bg); color: var(--text-color);">Title Suggestion</button>
+</div>
+<div class="webview-scroll-frame radius-2" style="border: var(--border); flex-grow: 1;">
+<table class="webview-table m-0 table-condensed">
+<thead id="spTableHead">
+</thead>
+<tbody id="spTableBody">
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -2204,14 +2223,22 @@ const feedbackTableBody = getElementById('feedbackTableBody');
 const navBtnReviewer = getElementById('navBtnReviewer');
 const navBtnModerator = getElementById('navBtnModerator');
 const logoutBtn = getElementById('logoutBtn');
-const downloadStoryReviewsBtn = getElementById('downloadStoryReviewsBtn');
+const previewStoryReviewsBtn = getElementById('previewStoryReviewsBtn');
+const storyPreviewOverlay = getElementById('storyPreviewOverlay');
+const spTableHead = getElementById('spTableHead');
+const spTableBody = getElementById('spTableBody');
+const spHeading = getElementById('spHeading');
+const spTabs = document.querySelectorAll('.sp-tab-btn');
+const spDownloadBtn = getElementById('spDownloadBtn');
 const feedbackDetailOverlay = getElementById('feedbackDetailOverlay');
 const fdModalTitle = getElementById('fdModalTitle');
 const fdModalComments = getElementById('fdModalComments');
 const fdModalNotes = getElementById('fdModalNotes');
 const fdModalStatus = getElementById('fdModalStatus');
 const fdModalSaveBtn = getElementById('fdModalSaveBtn');
+const duStorySelect = getElementById('duStorySelect');
 let currentFeedbackUser = null;
+let currentPreviewTab = 'all';
 const detailedReviewOverlay = getElementById('detailedReviewOverlay');
 const drModalName = getElementById('drModalName');
 const drModalDate = getElementById('drModalDate');
@@ -2241,64 +2268,124 @@ if (!storyOptionsBtn.contains(event.target) && !storyOptionsMenu.contains(event.
 storyOptionsMenu.classList.add('hidden');
 }
 });
-downloadStoryReviewsBtn.addEventListener('click', () => {
+function renderPreviewTable() {
+if (!activeStorySnapshotDataCache) return;
+spTableHead.innerHTML = '';
+spTableBody.innerHTML = '';
+const currentStory = adminStorySelect.value;
+spHeading.textContent = `${currentStory}`;
+let rowsData = [];
+Object.keys(activeStorySnapshotDataCache).forEach(key => {
+if (['created', 'season', '_suggestions', '_suggesterName', '_guesses'].includes(key)) return;
+const review = activeStorySnapshotDataCache[key];
+const score = (typeof review === 'object') ? (review.score ?? "N/A") : review;
+const authorGuess = (typeof review === 'object') ? (review.authorGuess ?? "None") : "None";
+const suggestedTitle = (typeof review === 'object') ? (review.suggestedTitle ?? "None") : "None";
+const detailedReview = (typeof review === 'object') ? (review.detailedReview ?? "") : "";
+const dateStr = (typeof review === 'object') ? (review.date ?? "N/A") : "N/A";
+let displayDate = "N/A";
+if (dateStr && dateStr !== "N/A") {
+try {
+const dateObject = new Date(dateStr);
+const day = String(dateObject.getDate()).padStart(2, '0');
+const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+const year = String(dateObject.getFullYear()).slice(-2);
+displayDate = `${day}/${month}/${year}`;
+} catch(e) {}
+}
+if (currentPreviewTab === 'all') {
+rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(displayDate)}</td><td>${sanitizeText(score)}</td></tr>`);
+} else if (currentPreviewTab === 'detailed' && detailedReview && detailedReview.trim() !== "") {
+rowsData.push(`<tr><td>${sanitizeText(key)}</td><td class="text-left" style="white-space: pre-wrap;">${sanitizeText(detailedReview)}</td></tr>`);
+} else if (currentPreviewTab === 'author' && authorGuess && authorGuess !== "None" && authorGuess.trim() !== "") {
+rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(authorGuess)}</td></tr>`);
+} else if (currentPreviewTab === 'title' && suggestedTitle && suggestedTitle !== "None" && suggestedTitle.trim() !== "") {
+rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)}</td></tr>`);
+}
+});
+if (currentPreviewTab === 'all') {
+spTableHead.innerHTML = `<tr><th>Reviewer Name</th><th>Date</th><th>Rating</th></tr>`;
+} else if (currentPreviewTab === 'detailed') {
+spTableHead.innerHTML = `<tr><th>Reviewer Name</th><th>Detailed Review</th></tr>`;
+} else if (currentPreviewTab === 'author') {
+spTableHead.innerHTML = `<tr><th>Reviewer Name</th><th>Guess the author</th></tr>`;
+} else if (currentPreviewTab === 'title') {
+spTableHead.innerHTML = `<tr><th>Reviewer Name</th><th>Title Suggestion</th></tr>`;
+}
+if (rowsData.length === 0) {
+spTableBody.innerHTML = `<tr><td colspan="3" class="text-center text-muted text-italic py-5">No records found.</td></tr>`;
+} else {
+spTableBody.innerHTML = rowsData.join('');
+}
+}
+spTabs.forEach(tab => {
+tab.addEventListener('click', (e) => {
+spTabs.forEach(t => { t.style.background = 'var(--input-bg)'; t.style.color = 'var(--text-color)'; });
+e.target.style.background = 'var(--accent)';
+e.target.style.color = 'var(--btn-accent-text)';
+currentPreviewTab = e.target.dataset.tab;
+renderPreviewTable();
+});
+});
+previewStoryReviewsBtn.addEventListener('click', () => {
+storyOptionsMenu.classList.add('hidden');
 if (!activeStorySnapshotDataCache) {
-customAlert("No data available to download.");
+customAlert("No data available to preview.");
 return;
 }
-const currentStory = getElementById('adminStorySelect').value;
-const downloadDate = new Date().toLocaleString();
-const rowsHtml = Object.entries(activeStorySnapshotDataCache)
-.filter(([key]) => !['created', 'season', '_suggestions', '_suggesterName', '_guesses'].includes(key))
-.map(([key, review]) => `
-<tr>
-<td>${sanitizeText(key)}</td>
-<td>${sanitizeText(review?.score ?? review ?? "N/A")}</td>
-<td>${sanitizeText(review?.authorGuess ?? "None")}</td>
-<td>${sanitizeText(review?.suggestedTitle ?? "None")}</td>
-<td>${sanitizeText(review?.detailedReview ?? "")}</td>
-</tr>
-`).join('');
-const htmlString = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Reviews - ${sanitizeText(currentStory)}</title>
-<style>
-body { font-family: sans-serif; margin: 20px; color: #333; }
-.header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 2px solid #2b4c7e; padding-bottom: 10px; }
-.header h2 { margin: 0; color: #2b4c7e; }
-.header span { font-size: 14px; color: #666; font-weight: bold; }
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-th { background-color: #f8f9fa; color: #2b4c7e; }
-tr:nth-child(even) { background-color: #f9f9f9; }
-</style>
-</head>
-<body>
-<div class="header">
-<h2>${sanitizeText(currentStory)}</h2>
-<span>Downloaded: ${downloadDate}</span>
-</div>
-<table>
-<thead>
-<tr>
-<th>Reviewer Name</th>
-<th>Rating</th>
-<th>Suggested Heading</th>
-<th>Suggested Title</th>
-<th>Detailed Review</th>
-</tr>
-</thead>
-<tbody>
-${rowsHtml}
-</tbody>
-</table>
-</body>
-</html>`;
+currentPreviewTab = 'all';
+spTabs.forEach(t => { t.style.background = 'var(--input-bg)'; t.style.color = 'var(--text-color)'; });
+spTabs[0].style.background = 'var(--accent)';
+spTabs[0].style.color = 'var(--btn-accent-text)';
+renderPreviewTable();
+storyPreviewOverlay.classList.remove('hidden');
+});
+spDownloadBtn.addEventListener('click', () => {
+if (!activeStorySnapshotDataCache) return;
+const currentStory = adminStorySelect.value;
+let rowsHtml = '';
+Object.keys(activeStorySnapshotDataCache).forEach(key => {
+if (['created', 'season', '_suggestions', '_suggesterName', '_guesses'].includes(key)) return;
+const review = activeStorySnapshotDataCache[key];
+const score = (typeof review === 'object') ? (review.score ?? "N/A") : review;
+const authorGuess = (typeof review === 'object') ? (review.authorGuess ?? "None") : "None";
+const suggestedTitle = (typeof review === 'object') ? (review.suggestedTitle ?? "None") : "None";
+const detailedReview = (typeof review === 'object') ? (review.detailedReview ?? "") : "";
+const dateStr = (typeof review === 'object') ? (review.date ?? "N/A") : "N/A";
+let displayDate = "N/A";
+if (dateStr && dateStr !== "N/A") {
+try {
+const dateObject = new Date(dateStr);
+const day = String(dateObject.getDate()).padStart(2, '0');
+const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+const year = String(dateObject.getFullYear()).slice(-2);
+displayDate = `${day}/${month}/${year}`;
+} catch(e) {}
+}
+if (currentPreviewTab === 'all') {
+rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(displayDate)}</td><td>${sanitizeText(score)}</td></tr>`;
+} else if (currentPreviewTab === 'detailed' && detailedReview && detailedReview.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(key)}</td><td style="white-space: pre-wrap;">${sanitizeText(detailedReview)}</td></tr>`;
+} else if (currentPreviewTab === 'author' && authorGuess && authorGuess !== "None" && authorGuess.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(authorGuess)}</td></tr>`;
+} else if (currentPreviewTab === 'title' && suggestedTitle && suggestedTitle !== "None" && suggestedTitle.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)}</td></tr>`;
+}
+});
+let theadHtml = '';
+if (currentPreviewTab === 'all') {
+theadHtml = `<tr><th>Reviewer Name</th><th>Date</th><th>Rating</th></tr>`;
+} else if (currentPreviewTab === 'detailed') {
+theadHtml = `<tr><th>Reviewer Name</th><th>Detailed Review</th></tr>`;
+} else if (currentPreviewTab === 'author') {
+theadHtml = `<tr><th>Reviewer Name</th><th>Guess the author</th></tr>`;
+} else if (currentPreviewTab === 'title') {
+theadHtml = `<tr><th>Reviewer Name</th><th>Title Suggestion</th></tr>`;
+}
+const htmlString = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reviews - ${sanitizeText(currentStory)}</title><style>body { font-family: sans-serif; margin: 20px; color: #333; }table { width: 100%; border-collapse: collapse; font-size: 14px; }th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }th { background-color: #f8f9fa; color: #2b4c7e; }tr:nth-child(even) { background-color: #f9f9f9; }</style></head><body><h2>${sanitizeText(currentStory)} - ${currentPreviewTab.toUpperCase()}</h2><table><thead>${theadHtml}</thead><tbody>${rowsHtml}</tbody></table></body></html>`;
 const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
 const url = URL.createObjectURL(blob);
-const anchorElement = createEl('a', { href: url, download: `${currentStory}_Reviews.html` });
+const anchorElement = createEl('a', { href: url, download: `${currentStory}_${currentPreviewTab}.html` });
 document.body.appendChild(anchorElement);
 anchorElement.click();
 document.body.removeChild(anchorElement);
@@ -2331,15 +2418,17 @@ changesMade: []
 getElementById('openDailyUpdatesBtn').addEventListener('click', async () => {
 if (arrayedStoriesList.length > 0) {
 const latestStoryId = arrayedStoriesList[0].id;
-setSafeText(getElementById('duLastAddedStory'), latestStoryId);
+duStorySelect.value = latestStoryId;
 if (adminStorySelect.value !== latestStoryId) {
 adminStorySelect.value = latestStoryId;
 await loadCurrentStoryNotes(latestStoryId);
 }
-} else {
-setSafeText(getElementById('duLastAddedStory'), "---");
 }
 getElementById('dailyUpdatesOverlay').classList.remove('hidden');
+});
+duStorySelect.addEventListener('change', () => {
+adminStorySelect.value = duStorySelect.value;
+loadCurrentStoryNotes(adminStorySelect.value);
 });
 function appendEmptyRow(tableBody, columnsSpan, text) {
 tableBody.innerHTML = '';
@@ -2938,6 +3027,7 @@ updateSeasonDropdowns(uniqueSeasonsSet);
 arrayedStoriesList.sort((elementA, elementB) => elementB.created - elementA.created);
 storyDropdown.innerHTML = '';
 adminStorySelect.innerHTML = '';
+if (duStorySelect) duStorySelect.innerHTML = '';
 arrayedStoriesList.forEach(storyObject => {
 let dateStr = "";
 if (storyObject.created) {
@@ -2949,15 +3039,17 @@ dateStr = ` (${day}/${month}/${year})`;
 }
 storyDropdown.appendChild(createEl('option', { value: storyObject.id }, `${storyObject.id}${dateStr}`));
 adminStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
+if (duStorySelect) duStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 });
 if(arrayedStoriesList.length > 0) {
 if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
 if(!adminStorySelect.value) adminStorySelect.selectedIndex = 0;
+if(duStorySelect && !duStorySelect.value) duStorySelect.selectedIndex = 0;
 loadCurrentStoryNotes(adminStorySelect.value);
 autoFillPreviousUserInputs();
 } else {
 dailyReviewsTableBody.innerHTML = '';
-appendEmptyRow(dailyReviewsTableBody, 2, "No stories available.");
+appendEmptyRow(dailyReviewsTableBody, 3, "No stories available.");
 }
 evaluateLocalStorageRestrictions();
 });
@@ -2994,6 +3086,7 @@ evaluateLocalStorageRestrictions();
 autoFillPreviousUserInputs();
 });
 adminStorySelect.addEventListener('change', () => {
+if (duStorySelect) duStorySelect.value = adminStorySelect.value;
 loadCurrentStoryNotes(adminStorySelect.value);
 });
 readerSuggestions.addEventListener('change', () => {
@@ -3076,13 +3169,14 @@ renderAccumulatedWinnersChips();
 });
 async function loadCurrentStoryNotes(targetSelectedStory) {
 dailyReviewsTableBody.innerHTML = '';
-appendEmptyRow(dailyReviewsTableBody, 2, "Loading reviews...");
+appendEmptyRow(dailyReviewsTableBody, 3, "Loading reviews...");
 if (!targetSelectedStory) {
-appendEmptyRow(dailyReviewsTableBody, 2, "Select a story to load submissions");
+appendEmptyRow(dailyReviewsTableBody, 3, "Select a story to load submissions");
 return;
 }
 if(storyDropdown.value !== targetSelectedStory) storyDropdown.value = targetSelectedStory;
 if(adminStorySelect.value !== targetSelectedStory) adminStorySelect.value = targetSelectedStory;
+if(duStorySelect && duStorySelect.value !== targetSelectedStory) duStorySelect.value = targetSelectedStory;
 try {
 const documentSnapshot = await getDoc(doc(db, "competitions", targetSelectedStory));
 resetSelect(readerSuggestions, "-- Title --");
@@ -3136,7 +3230,7 @@ if (reviewDateValue && reviewDateValue !== "N/A") {
 try {
 const dateObject = new Date(reviewDateValue);
 const day = String(dateObject.getDate()).padStart(2, '0');
-const month = dateObject.toLocaleString('en-US', { month: 'short' });
+const month = String(dateObject.getMonth() + 1).padStart(2, '0');
 const year = String(dateObject.getFullYear()).slice(-2);
 displayDate = `${day}/${month}/${year}`;
 } catch(error) {
@@ -3144,6 +3238,7 @@ displayDate = "N/A";
 }
 }
 tableRowElement.appendChild(createEl('td', {}, displayDate));
+tableRowElement.appendChild(createEl('td', {}, scoreValue));
 dailyReviewsTableBody.appendChild(tableRowElement);
 }
 });
@@ -3151,20 +3246,20 @@ if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValu
 if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
 renderAccumulatedWinnersChips();
 if(reviewCountInteger === 0) {
-appendEmptyRow(dailyReviewsTableBody, 2, "No reviews submitted for this story yet.");
+appendEmptyRow(dailyReviewsTableBody, 3, "No reviews submitted for this story yet.");
 }
 } else {
 activeStorySnapshotDataCache = null;
 renderAccumulatedWinnersChips();
-appendEmptyRow(dailyReviewsTableBody, 2, "Story data is empty or missing.");
+appendEmptyRow(dailyReviewsTableBody, 3, "Story data is empty or missing.");
 }
 } catch(error) {
-appendEmptyRow(dailyReviewsTableBody, 2, "Error loading reviews.");
+appendEmptyRow(dailyReviewsTableBody, 3, "Error loading reviews.");
 }
 }
 saveNotesBtn.addEventListener('click', async () => {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
-const targetStory = getElementById('duLastAddedStory').innerText;
+const targetStory = duStorySelect.value;
 if (!targetStory || targetStory === "---") {
 customAlert("No story selected.");
 return;
@@ -3300,7 +3395,8 @@ showCustomModal('alert', wrapDivElement.outerHTML);
 });
 async function compileMasterDataMatrix(seasonFilterString = "All") {
 const querySnapshotObject = await getDocs(collection(db, "competitions"));
-const currentDateFormattedString = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+const today = new Date();
+const currentDateFormattedString = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getFullYear()).slice(-2)}`;
 let spreadsheetStringTemplate = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }</style></head><body><table>`;
 let tempTableBodyContentString = "";
 let storiesArray = [];
