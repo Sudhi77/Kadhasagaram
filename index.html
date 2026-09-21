@@ -645,6 +645,21 @@ margin: 0 auto;
 padding: 0 28px;
 box-sizing: border-box;
 }
+.premium-header { margin-bottom: 28px; }
+.premium-header h2 {
+font-size: 28px;
+font-weight: 800;
+color: #F5F7F8;
+margin: 0 0 6px 0;
+letter-spacing: -0.5px;
+border: none;
+}
+.premium-header p {
+margin: 0;
+color: #00B486;
+font-size: 14px;
+font-weight: 500;
+}
 .mod-premium-card {
 background: #001B24;
 border: 1px solid rgba(0, 180, 134, 0.45);
@@ -1312,6 +1327,13 @@ About
 </svg>
 Menu
 </button>
+<button type="button" id="logoutBtn" class="btn-logout hidden m-0">
+<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+<polyline points="16 17 21 12 16 7"></polyline>
+<line x1="21" y1="12" x2="9" y2="12"></line>
+</svg>
+</button>
 </div>
 <div id="pausedBanner" class="status-alert hidden">
 <div class="status-icon-box">
@@ -1329,9 +1351,9 @@ Menu
 
 <div id="userInterface">
 <div class="plain-section">
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 120, 180, 0.35); padding-bottom: 16px; margin-bottom: 24px; flex-wrap: nowrap;">
-<h2 style="margin: 0; padding: 0; border: none; font-size: 24px;">Review</h2>
-<div id="currentDateDisplay" class="calendar-badge" style="margin: 0;"></div>
+<div class="d-flex justify-between align-center border-bottom pb-3 mb-4">
+<h2 class="m-0 border-none p-0">Review</h2>
+<div id="currentDateDisplay" class="calendar-badge"></div>
 </div>
 <div class="form-group mb-4">
 <select id="storyDropdown"></select>
@@ -1420,19 +1442,9 @@ Authentication Panel
 <div id="modInterface" class="hidden premium-dashboard">
     <div class="premium-content-lock">
         
-        <div class="premium-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
-            <div>
-                <h2 style="margin: 0 0 6px 0; font-size: 28px; font-weight: 800; color: #F5F7F8; letter-spacing: -0.5px; border: none;">Moderator Dashboard</h2>
-                <p style="margin: 0; color: #00B486; font-size: 14px; font-weight: 500;">Review. Manage. Improve.</p>
-            </div>
-            <button type="button" id="logoutBtn" class="hidden m-0" style="background: rgba(220, 38, 38, 0.15); color: #FECACA; border: 1px solid rgba(220,38,38,0.3); padding: 10px 16px; border-radius: 12px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: inherit;">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                </svg>
-                Logout
-            </button>
+        <div class="premium-header">
+            <h2>Moderator Dashboard</h2>
+            <p>Review. Manage. Improve.</p>
         </div>
 
         <div class="mod-premium-card add-story-card">
