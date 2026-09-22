@@ -1879,6 +1879,15 @@ getElementById(closeBtn.dataset.target).classList.add('hidden');
 document.body.style.overflow = "";
 if (closeBtn.id === 'fdModalCloseBtn') currentFeedbackUser = null;
 }
+const openWrappers = document.querySelectorAll('.custom-select-wrapper.open');
+for (let i = 0; i < openWrappers.length; i++) {
+if (!openWrappers[i].contains(event.target)) {
+const selectElement = openWrappers[i].querySelector('select');
+if (selectElement && selectElement._customDropdown) {
+selectElement._customDropdown.close();
+}
+}
+}
 });
 const toggleInputLock = (element, isLocked) => {
 element.readOnly = isLocked;
@@ -1892,6 +1901,7 @@ element.appendChild(createEl('option', { value: "" }, placeholder));
 class CustomDropdown {
 constructor(nativeSelect) {
 this.select = nativeSelect;
+this.select._customDropdown = this;
 if(this.select.hasAttribute('data-custom-dropdown')) return;
 this.select.setAttribute('data-custom-dropdown', 'true');
 this.options = [];
@@ -2116,25 +2126,28 @@ if(focusedElement) focusedElement.scrollIntoView({ block: 'nearest' });
 this.close();
 }
 });
-document.addEventListener('click', (event) => {
-if (!this.wrapper.contains(event.target) && this.isOpen) {
-this.close();
-}
-});
 }
 }
 const initializeDropdownComponents = () => {
 document.querySelectorAll('select').forEach(select => {
 new CustomDropdown(select);
 });
-const originalInsert = Element.prototype.appendChild;
-Element.prototype.appendChild = function() {
-const result = originalInsert.apply(this, arguments);
-if (arguments[0] && arguments[0].tagName === 'SELECT') {
-new CustomDropdown(arguments[0]);
+const selectObserver = new MutationObserver((mutations) => {
+mutations.forEach((mutation) => {
+mutation.addedNodes.forEach((node) => {
+if (node.nodeType === 1) {
+if (node.tagName === 'SELECT') {
+new CustomDropdown(node);
 }
-return result;
-};
+const selects = node.querySelectorAll('select');
+for (let i = 0; i < selects.length; i++) {
+new CustomDropdown(selects[i]);
+}
+}
+});
+});
+});
+selectObserver.observe(document.body, { childList: true, subtree: true });
 };
 if (document.readyState === 'loading') {
 document.addEventListener("DOMContentLoaded", initializeDropdownComponents);
@@ -2742,6 +2755,7 @@ cachedFeedbackData = data;
 cachedMaxCols = maximumColumns;
 devDownloadFeedbackBtn.classList.remove('hidden');
 feedbackTableHead.innerHTML = '';
+const headFragment = document.createDocumentFragment();
 const headTableRow = createEl('tr');
 const tableHeaderOne = createEl('th', { className: "bg-gold text-black text-center p-3 border-bottom-gold-alt", style: { backgroundColor: "#D4A017", color: "#000" } });
 tableHeaderOne.appendChild(createEl('b', {}, "Reviewer"));
@@ -2749,8 +2763,10 @@ headTableRow.appendChild(tableHeaderOne);
 const tableHeaderTwo = createEl('th', { className: "text-center p-3 border-bottom-gold-alt", style: { backgroundColor: "#D4A017", color: "#000" } });
 tableHeaderTwo.appendChild(createEl('b', {}, "Status"));
 headTableRow.appendChild(tableHeaderTwo);
-feedbackTableHead.appendChild(headTableRow);
+headFragment.appendChild(headTableRow);
+feedbackTableHead.appendChild(headFragment);
 feedbackTableBody.innerHTML = '';
+const bodyFragment = document.createDocumentFragment();
 Object.keys(data).forEach(user => {
 if(!feedbackDevState[user]) {
 feedbackDevState[user] = { notes: "", status: "Pending" };
@@ -2769,8 +2785,9 @@ else if (feedbackDevState[user].status === 'Rejected') statusSpan.style.color = 
 else if (feedbackDevState[user].status === 'In Review') statusSpan.style.color = '#D4A017';
 tableDataStatus.appendChild(statusSpan);
 tableRowElement.appendChild(tableDataStatus);
-feedbackTableBody.appendChild(tableRowElement);
+bodyFragment.appendChild(tableRowElement);
 });
+feedbackTableBody.appendChild(bodyFragment);
 getElementById('fullscreenFeedbackOverlay').classList.remove('hidden');
 document.body.style.overflow = "hidden";
 } else {
@@ -2873,6 +2890,7 @@ getElementById('timeRestrictionsOverlay').classList.remove('hidden');
 function renderEditStoriesList() {
 const listContainer = getElementById('editStoriesList');
 listContainer.innerHTML = '';
+const fragment = document.createDocumentFragment();
 arrayedStoriesList.forEach(story => {
 const item = createEl('div', { className: 'p-3 border-bottom d-flex align-center gap-3', 'data-id': story.id });
 if (isEditingStoryList) {
@@ -2884,8 +2902,9 @@ item.appendChild(input);
 const textSpan = createEl('span', { className: 'text-md font-bold' }, story.id);
 item.appendChild(textSpan);
 }
-listContainer.appendChild(item);
+fragment.appendChild(item);
 });
+listContainer.appendChild(fragment);
 }
 getElementById('editStoriesListBtn').addEventListener('click', () => {
 if (isSystemPaused && !isDeveloperModeUnlocked) return;
@@ -3131,18 +3150,22 @@ const previewValue = previewSelectElement.value;
 const downloadValue = downloadSelectElement.value;
 previewSelectElement.innerHTML = '';
 downloadSelectElement.innerHTML = '';
-previewSelectElement.appendChild(createEl('option', { value: "All" }, "All Seasons"));
-downloadSelectElement.appendChild(createEl('option', { value: "All" }, "All Seasons"));
+const previewFragment = document.createDocumentFragment();
+const downloadFragment = document.createDocumentFragment();
+previewFragment.appendChild(createEl('option', { value: "All" }, "All Seasons"));
+downloadFragment.appendChild(createEl('option', { value: "All" }, "All Seasons"));
 if (globalSeasonCache && globalSeasonCache !== "---" && !seasonsSetCollection.has(globalSeasonCache)) {
-previewSelectElement.appendChild(createEl('option', { value: globalSeasonCache }, globalSeasonCache));
-downloadSelectElement.appendChild(createEl('option', { value: globalSeasonCache }, globalSeasonCache));
+previewFragment.appendChild(createEl('option', { value: globalSeasonCache }, globalSeasonCache));
+downloadFragment.appendChild(createEl('option', { value: globalSeasonCache }, globalSeasonCache));
 }
 seasonsSetCollection.forEach(seasonString => {
 if(seasonString && seasonString !== "Legacy" && seasonString !== "All") {
-previewSelectElement.appendChild(createEl('option', { value: seasonString }, seasonString));
-downloadSelectElement.appendChild(createEl('option', { value: seasonString }, seasonString));
+previewFragment.appendChild(createEl('option', { value: seasonString }, seasonString));
+downloadFragment.appendChild(createEl('option', { value: seasonString }, seasonString));
 }
 });
+previewSelectElement.appendChild(previewFragment);
+downloadSelectElement.appendChild(downloadFragment);
 if ([...seasonsSetCollection, "All", globalSeasonCache].includes(previewValue)) previewSelectElement.value = previewValue;
 if ([...seasonsSetCollection, "All", globalSeasonCache].includes(downloadValue)) downloadSelectElement.value = downloadValue;
 }
@@ -3167,6 +3190,9 @@ arrayedStoriesList.sort((elementA, elementB) => elementB.created - elementA.crea
 storyDropdown.innerHTML = '';
 adminStorySelect.innerHTML = '';
 if (duStorySelect) duStorySelect.innerHTML = '';
+const storyDropdownFragment = document.createDocumentFragment();
+const adminStorySelectFragment = document.createDocumentFragment();
+const duStorySelectFragment = document.createDocumentFragment();
 let totalReviewsCount = 0;
 let reviewersSet = new Set();
 arrayedStoriesList.forEach(storyObject => {
@@ -3178,10 +3204,13 @@ const month = String(d.getMonth() + 1).padStart(2, '0');
 const year = String(d.getFullYear()).slice(-2);
 dateStr = ` (${day}/${month}/${year})`;
 }
-storyDropdown.appendChild(createEl('option', { value: storyObject.id }, `${storyObject.id}${dateStr}`));
-adminStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
-if (duStorySelect) duStorySelect.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
+storyDropdownFragment.appendChild(createEl('option', { value: storyObject.id }, `${storyObject.id}${dateStr}`));
+adminStorySelectFragment.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
+if (duStorySelect) duStorySelectFragment.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 });
+storyDropdown.appendChild(storyDropdownFragment);
+adminStorySelect.appendChild(adminStorySelectFragment);
+if (duStorySelect) duStorySelect.appendChild(duStorySelectFragment);
 if (totalStoriesStat) totalStoriesStat.textContent = arrayedStoriesList.length;
 if(arrayedStoriesList.length > 0) {
 if(!storyDropdown.value) storyDropdown.selectedIndex = 0;
@@ -3282,6 +3311,7 @@ evaluateLocalStorageRestrictions();
 });
 function renderAccumulatedWinnersChips() {
 winnersChipsContainer.innerHTML = '';
+const fragment = document.createDocumentFragment();
 accumulatedWinnersStateArray.forEach((nameString, index) => {
 const chip = createEl('div', { className: "winner-chip d-flex align-center gap-2", style: { cursor: "pointer" } });
 chip.appendChild(document.createTextNode(nameString));
@@ -3292,8 +3322,9 @@ if(isSystemPaused && !isDeveloperModeUnlocked) return;
 accumulatedWinnersStateArray.splice(index, 1);
 renderAccumulatedWinnersChips();
 };
-winnersChipsContainer.appendChild(chip);
+fragment.appendChild(chip);
 });
+winnersChipsContainer.appendChild(fragment);
 correctGuesses.value = "";
 }
 correctGuesses.addEventListener('change', () => {
@@ -3336,6 +3367,9 @@ let rawSavedSuggesterMatchValue = dataObject._suggesterName || "";
 if (dataObject._guesses && dataObject._guesses !== "*****") {
 accumulatedWinnersStateArray = dataObject._guesses.split(',').map(stringElement => stringElement.trim()).filter(stringElement => stringElement.length > 0);
 }
+const tableFragment = document.createDocumentFragment();
+const readerSuggestionsFragment = document.createDocumentFragment();
+const correctGuessesFragment = document.createDocumentFragment();
 Object.keys(dataObject).forEach(reviewerKeyString => {
 if (reviewerKeyString !== 'created' && reviewerKeyString !== '_suggestions' && reviewerKeyString !== '_suggesterName' && reviewerKeyString !== '_guesses' && reviewerKeyString !== 'season') {
 reviewCountInteger++;
@@ -3352,10 +3386,10 @@ const currentSuggestedTitle = dataObject[reviewerKeyString].suggestedTitle ?? ""
 const currentAuthorGuess = dataObject[reviewerKeyString].authorGuess ?? "";
 if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
 headingToReviewerMap[currentSuggestedTitle] = reviewerKeyString;
-readerSuggestions.appendChild(createEl('option', { value: currentSuggestedTitle }, currentSuggestedTitle));
+readerSuggestionsFragment.appendChild(createEl('option', { value: currentSuggestedTitle }, currentSuggestedTitle));
 }
 if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
-correctGuesses.appendChild(createEl('option', { value: reviewerKeyString }, reviewerKeyString));
+correctGuessesFragment.appendChild(createEl('option', { value: reviewerKeyString }, reviewerKeyString));
 }
 } else {
 scoreValue = dataObject[reviewerKeyString];
@@ -3382,9 +3416,12 @@ displayDate = "N/A";
 tableRowElement.appendChild(createEl('td', {}, displayDate));
 tableRowElement.appendChild(createEl('td', {}, scoreValue));
 tableRowElement.appendChild(createEl('td', {}, "-"));
-dailyReviewsTableBody.appendChild(tableRowElement);
+tableFragment.appendChild(tableRowElement);
 }
 });
+readerSuggestions.appendChild(readerSuggestionsFragment);
+correctGuesses.appendChild(correctGuessesFragment);
+dailyReviewsTableBody.appendChild(tableFragment);
 if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValue;
 if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
 renderAccumulatedWinnersChips();
@@ -3581,8 +3618,8 @@ async function compileMasterDataMatrix(seasonFilterString = "All") {
 const querySnapshotObject = await getDocs(collection(db, "competitions"));
 const today = new Date();
 const currentDateFormattedString = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getFullYear()).slice(-2)}`;
-let spreadsheetStringTemplate = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }</style></head><body><table>`;
-let tempTableBodyContentString = "";
+let spreadsheetStringTemplateArr = [`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }</style></head><body><table>`];
+let tempTableBodyContentStringArr = [];
 let storiesArray = [];
 querySnapshotObject.forEach(documentItem => {
 const dataObject = documentItem.data();
@@ -3594,13 +3631,13 @@ storiesArray.push({ id: documentItem.id, data: dataObject });
 storiesArray.sort((elementA, elementB) => (elementB.data.created || 0) - (elementA.data.created || 0));
 if (storiesArray.length === 0) {
 const emptyMessageString = `<tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilterString}</td></tr>`;
-return { rawHtmlTemplate: spreadsheetStringTemplate + `</table></body></html>`, tableBodyRows: emptyMessageString };
+return { rawHtmlTemplate: spreadsheetStringTemplateArr[0] + `</table></body></html>`, tableBodyRows: emptyMessageString };
 }
 storiesArray.forEach((storyObject) => {
 const dataObject = storyObject.data;
 const storyTitleString = sanitizeText(storyObject.id);
-spreadsheetStringTemplate += `<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>`;
-tempTableBodyContentString += `<tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitleString}</th></tr><tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>`;
+spreadsheetStringTemplateArr.push(`<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>`);
+tempTableBodyContentStringArr.push(`<tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitleString}</th></tr><tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>`);
 let reviewRowsArray = [];
 Object.keys(dataObject).forEach(keyString => {
 if (keyString !== 'created' && keyString !== '_suggestions' && keyString !== '_suggesterName' && keyString !== '_guesses' && keyString !== '_authorGivenHeading' && keyString !== 'season') {
@@ -3623,18 +3660,18 @@ guess: "None"
 });
 if (reviewRowsArray.length === 0) {
 const emptyRowString = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">No reviews submitted yet</td></tr>`;
-spreadsheetStringTemplate += emptyRowString;
-tempTableBodyContentString += emptyRowString;
+spreadsheetStringTemplateArr.push(emptyRowString);
+tempTableBodyContentStringArr.push(emptyRowString);
 } else {
 reviewRowsArray.forEach(reviewObject => {
 const rowHtmlString = `<tr><td>${currentDateFormattedString}</td><td>${reviewObject.reviewer}</td><td>${reviewObject.score}</td><td>${reviewObject.guess}</td><td>${reviewObject.title}</td></tr>`;
-spreadsheetStringTemplate += rowHtmlString;
-tempTableBodyContentString += rowHtmlString;
+spreadsheetStringTemplateArr.push(rowHtmlString);
+tempTableBodyContentStringArr.push(rowHtmlString);
 });
 }
 });
-spreadsheetStringTemplate += `</table></body></html>`;
-return { rawHtmlTemplate: spreadsheetStringTemplate, tableBodyRows: tempTableBodyContentString };
+spreadsheetStringTemplateArr.push(`</table></body></html>`);
+return { rawHtmlTemplate: spreadsheetStringTemplateArr.join(''), tableBodyRows: tempTableBodyContentStringArr.join('') };
 }
 async function loadPreviewTable() {
 const badgeElement = getElementById('previewLoadingBadge');
