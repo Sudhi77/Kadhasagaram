@@ -1236,18 +1236,6 @@ display: block;
 </div>
 </div>
 <div class="side-menu-content d-flex flex-col" style="text-align: left;">
-<div class="form-group mb-2">
-<label class="d-flex align-center gap-2 mb-2 font-bold text-lg" style="justify-content: flex-start;">
-<span class="text-xl line-height-1">🖌️</span> Theme
-</label>
-<select id="themeSelect" class="cursor-pointer radius-3 input-reduced w-100">
-<option value="light">Classic Light</option>
-<option value="cyan">Deep Cyan</option>
-<option value="purple">Matte Purple</option>
-<option value="emerald">Forest Green</option>
-<option value="mono">Black & Gray</option>
-</select>
-</div>
 <div id="sidebarModOptions" class="hidden mt-2 pt-1">
 <div class="form-group" id="modNameSetupGroup" style="text-align: left;">
 <label for="inputModName" style="text-align: left;">Moderator Name</label>
@@ -2174,7 +2162,6 @@ const menuOpenBtn = getElementById('menuOpenBtn');
 const menuCloseBtn = getElementById('menuCloseBtn');
 const sideMenu = getElementById('sideMenu');
 const menuOverlay = getElementById('menuOverlay');
-const themeSelect = getElementById('themeSelect');
 const sidebarModOptions = getElementById('sidebarModOptions');
 const advancedModOptions = getElementById('advancedModOptions');
 const sidebarAboutBtn = getElementById('sidebarAboutBtn');
@@ -2191,18 +2178,6 @@ const month = monthNames[today.getMonth()];
 const year = today.getFullYear();
 dateElement.innerHTML = `<div class="calendar-month">${month}</div><div class="calendar-day">${day}</div><div class="calendar-year">${year}</div>`;
 }
-let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
-function applyTheme() {
-if (currentTheme === 'light') {
-document.documentElement.removeAttribute('data-theme');
-} else {
-document.documentElement.setAttribute('data-theme', currentTheme);
-}
-if(themeSelect) {
-themeSelect.value = currentTheme;
-}
-}
-applyTheme();
 function toggleMenu(show) {
 if (show) {
 sideMenu.classList.add('open');
@@ -2215,12 +2190,6 @@ menuOverlay.classList.remove('visible');
 menuOpenBtn.addEventListener('click', () => toggleMenu(true));
 menuCloseBtn.addEventListener('click', () => toggleMenu(false));
 menuOverlay.addEventListener('click', () => toggleMenu(false));
-themeSelect.addEventListener('change', (event) => {
-currentTheme = event.target.value;
-localStorage.setItem('kathasagaram_theme', currentTheme);
-applyTheme();
-setTimeout(() => toggleMenu(false), 150); 
-});
 const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
 function sanitizeText(stringToSanitize) {
 if (stringToSanitize === null || stringToSanitize === undefined) return "";
