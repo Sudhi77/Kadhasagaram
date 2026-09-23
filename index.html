@@ -18,7 +18,7 @@
 --dev-color: #F4B400;
 --danger: #DC2626;
 --purple-banner: #001B24;
---border-color: rgba(0, 120, 180, 0.35); 
+--border-color: rgba(0, 120, 180, 0.35);
 --card-bg: #001B24;
 --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 --card-border: 1px solid rgba(0, 120, 180, 0.35);
@@ -74,11 +74,26 @@
 --winner-border: 1px solid rgba(0, 143, 196, 0.4);
 --nav-divider-img: none;
 --dropdown-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+--z-base: 1;
+--z-above: 2;
+--z-active: 100;
+--z-dropdown-menu: 1000;
+--z-nav: 99998;
+--z-overlay: 999998;
+--z-menu: 999999;
+--z-dropdown: 100000;
+--z-modal-1: 1000001;
+--z-modal-2: 1000002;
+--z-modal-3: 1000003;
+--z-modal-4: 1000004;
+--z-modal-5: 1000005;
+--z-modal-6: 1000006;
+--z-modal-8: 1000008;
 }
 body {
 font-family: 'Inter', "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 background: #00141C;
-background-color: #00141C; 
+background-color: #00141C;
 background-attachment: fixed;
 color: var(--text-color);
 line-height: 1.6;
@@ -124,7 +139,7 @@ border-color: var(--primary);
 .custom-select-trigger:focus {
 outline: none;
 border-color: var(--primary);
-box-shadow: 0 0 0 3px rgba(0, 180, 134, 0.2); 
+box-shadow: 0 0 0 3px rgba(0, 180, 134, 0.2);
 }
 .custom-select-wrapper.disabled .custom-select-trigger {
 background-color: rgba(255, 255, 255, 0.03);
@@ -172,7 +187,7 @@ background-color: #001722;
 border: 1px solid rgba(0, 120, 180, 0.45);
 border-radius: 16px;
 box-shadow: var(--dropdown-shadow);
-z-index: 100000;
+z-index: var(--z-dropdown);
 opacity: 0;
 visibility: hidden;
 transform: translateY(-8px);
@@ -200,7 +215,7 @@ font-size: 14px;
 .custom-select-option:last-child {
 margin-bottom: 0;
 }
-.custom-select-option:hover, 
+.custom-select-option:hover,
 .custom-select-option.focused {
 background-color: rgba(0, 180, 134, 0.12);
 color: #00B486;
@@ -208,7 +223,7 @@ color: #00B486;
 .custom-select-option.selected {
 color: #00B486;
 font-weight: 600;
-background-color: rgba(0, 180, 134, 0.18); 
+background-color: rgba(0, 180, 134, 0.18);
 }
 .custom-select-text {
 white-space: nowrap;
@@ -223,9 +238,9 @@ color: var(--primary);
 flex-shrink: 0;
 }
 @media (prefers-reduced-motion: reduce) {
-.custom-select-chevron, 
-.custom-select-panel, 
-.custom-select-trigger, 
+.custom-select-chevron,
+.custom-select-panel,
+.custom-select-trigger,
 .custom-select-option {
 transition: none !important;
 }
@@ -276,17 +291,17 @@ box-sizing: border-box;
 .logo-group {
 display: flex;
 align-items: center;
-gap: 15px; 
+gap: 15px;
 }
 .banner-logo {
-height: 64px; 
-width: 64px;  
+height: 64px;
+width: 64px;
 object-fit: cover;
 border-radius: 50%;
 display: block;
 margin: 0;
 border: 2px solid rgba(0, 180, 134, 0.4);
-box-shadow: 0 4px 14px rgba(0,0,0,0.5); 
+box-shadow: 0 4px 14px rgba(0,0,0,0.5);
 }
 .banner-topic {
 font-size: 20px;
@@ -297,7 +312,7 @@ text-align: left;
 line-height: 1.2;
 }
 .banner-content-lock .month-sub {
-font-size: 14px; 
+font-size: 14px;
 font-weight: 700;
 color: #00B486;
 margin: 0;
@@ -313,30 +328,30 @@ margin-bottom: 24px;
 width: 100%;
 }
 .menu-overlay {
-position: fixed; 
-top: 0; left: 0; 
+position: fixed;
+top: 0; left: 0;
 width: 100vw; height: 100vh;
 background: var(--modal-overlay);
-z-index: 999998;
-opacity: 0; 
-pointer-events: none; 
+z-index: var(--z-overlay);
+opacity: 0;
+pointer-events: none;
 transition: opacity 0.3s ease;
 backdrop-filter: blur(4px);
 }
 .menu-overlay.visible {
-opacity: 1; 
+opacity: 1;
 pointer-events: auto;
 }
 .side-menu {
-position: fixed; 
-top: 0; left: -320px; 
+position: fixed;
+top: 0; left: -320px;
 width: 300px; height: 100vh;
-background: #001B24; 
+background: #001B24;
 color: var(--modal-text);
-z-index: 999999; 
+z-index: var(--z-menu);
 box-shadow: 4px 0 25px rgba(0,0,0,0.7);
-transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-display: flex; 
+transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+display: flex;
 flex-direction: column;
 border-right: 1px solid rgba(0, 120, 180, 0.35);
 }
@@ -348,7 +363,7 @@ display: flex;
 flex-direction: column;
 align-items: flex-start;
 gap: 8px;
-padding: 24px 20px; 
+padding: 24px 20px;
 padding-bottom: 12px;
 border-bottom: 1px solid rgba(0, 120, 180, 0.2);
 }
@@ -405,7 +420,7 @@ backdrop-filter: blur(12px);
 border: 1px solid rgba(0, 120, 180, 0.35);
 transition: all 0.3s ease;
 position: relative;
-z-index: 1;
+z-index: var(--z-base);
 }
 h2 {
 margin-top: 0;
@@ -426,11 +441,11 @@ font-weight: 600;
 .form-group {
 margin-bottom: 18px;
 position: relative;
-z-index: 1;
+z-index: var(--z-base);
 }
-.plain-section.dropdown-active, 
+.plain-section.dropdown-active,
 .form-group.dropdown-active {
-z-index: 100;
+z-index: var(--z-active);
 }
 .btn-row {
 display: flex;
@@ -543,7 +558,7 @@ min-height: 24px;
 .winner-chip {
 display: inline-flex;
 align-items: center;
-background-color: var(--winner-bg); 
+background-color: var(--winner-bg);
 color: var(--winner-text);
 padding: 4px 10px;
 border-radius: 16px;
@@ -616,14 +631,13 @@ transform: translateY(-1px);
 .btn-submit-review:active {
 transform: scale(0.98);
 }
-
 #modInterface.premium-dashboard {
 width: 100vw;
 position: relative;
 left: 50%;
 transform: translateX(-50%);
 background: #00141C;
-padding: 36px 0 0 0; 
+padding: 36px 0 0 0;
 color: #F5F7F8;
 font-family: 'Inter', "SF Pro Display", -apple-system, sans-serif;
 box-sizing: border-box;
@@ -681,7 +695,7 @@ align-items: center;
 gap: 16px;
 margin-bottom: 24px;
 position: relative;
-z-index: 2;
+z-index: var(--z-above);
 }
 .icon-circle {
 width: 50px;
@@ -728,7 +742,7 @@ border: 1px solid rgba(0, 180, 134, 0.45);
 border-radius: 16px;
 padding: 4px;
 position: relative;
-z-index: 2;
+z-index: var(--z-above);
 }
 .premium-input {
 flex: 1;
@@ -766,7 +780,6 @@ transform: translateY(-2px);
 box-shadow: 0 8px 25px rgba(0, 180, 134, 0.3);
 }
 .premium-btn-square:active { transform: scale(0.95); }
-
 .premium-action-card {
 width: 100%;
 height: 110px;
@@ -818,7 +831,7 @@ letter-spacing: -0.3px;
 .action-text-center p {
 margin: 0;
 font-size: 13px;
-color: rgba(255, 255, 255, 0.85); 
+color: rgba(255, 255, 255, 0.85);
 }
 .action-icon-right {
 width: 44px;
@@ -835,7 +848,6 @@ transition: background 0.2s;
 .premium-action-card:hover .action-icon-right {
 background: rgba(255, 255, 255, 0.25);
 }
-
 .premium-stats-row {
 display: flex;
 gap: 16px;
@@ -867,7 +879,6 @@ box-shadow: 0 12px 30px rgba(0,0,0,0.25);
 .stat-icon-2 { color: #F4B400; background: rgba(244, 180, 0, 0.15); }
 .stat-card-3 { border: 1px solid rgba(168, 85, 247, 0.45); }
 .stat-icon-3 { color: #C084FC; background: rgba(168, 85, 247, 0.15); }
-
 .stat-icon-container {
 width: 38px;
 height: 38px;
@@ -901,7 +912,6 @@ font-weight: 500;
 .stat-icon-container { width: 32px; height: 32px; }
 .stat-icon-container svg { width: 16px; height: 16px; }
 }
-
 .submissions-premium-card {
 background: #001B24;
 border: 1px solid rgba(0, 120, 180, 0.45);
@@ -964,7 +974,6 @@ box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
 .inline-select-container .custom-select-trigger:hover {
 border-color: #008FC4 !important;
 }
-
 .premium-card-title {
 font-size: 20px;
 font-weight: 700;
@@ -1019,7 +1028,7 @@ top: 100%;
 background: #00141C;
 border: 1px solid rgba(0, 120, 180, 0.45);
 border-radius: 16px;
-z-index: 1000;
+z-index: var(--z-dropdown-menu);
 box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 width: 180px;
 overflow: hidden;
@@ -1044,7 +1053,6 @@ transition: background 0.2s, color 0.2s;
 background: rgba(0, 180, 134, 0.15);
 color: #00B486;
 }
-
 .empty-state-cell { background: transparent !important; border: none !important; }
 .premium-empty-state {
 padding: 60px 20px;
@@ -1053,7 +1061,6 @@ text-align: center;
 .empty-icon { color: #9AA9B0; margin-bottom: 16px; opacity: 0.6; }
 .empty-title { color: #F5F7F8; font-size: 20px; font-weight: 600; margin: 0 0 8px 0; }
 .empty-subtitle { color: #9AA9B0; font-size: 14px; margin: 0; }
-
 .dev-advanced-card {
 background: #111111;
 border: 1px solid rgba(244, 180, 0, 0.7);
@@ -1106,7 +1113,6 @@ box-shadow: 0 4px 15px rgba(244, 180, 0, 0.15);
 background: rgba(244, 180, 0, 0.05);
 }
 .dev-action-btn:active { transform: scale(0.98); }
-
 .system-navigation-footer-bar {
 position: fixed;
 bottom: 0;
@@ -1118,7 +1124,7 @@ backdrop-filter: blur(10px);
 border-top: 1px solid rgba(0, 180, 134, 0.45);
 display: flex;
 box-sizing: border-box;
-z-index: 99998;
+z-index: var(--z-nav);
 padding-bottom: env(safe-area-inset-bottom);
 }
 .nav-split-trigger-btn {
@@ -1151,7 +1157,6 @@ box-shadow: inset 0 3px 0 0 #00B486;
 .nav-split-trigger-btn.active-panel-indicator:hover {
 box-shadow: inset 0 3px 0 0 #00B486;
 }
-
 .premium-inner-card {
 background: rgba(0, 0, 0, 0.5);
 border: 1px solid rgba(244, 180, 0, 0.4);
@@ -1188,7 +1193,6 @@ transform: translateY(-2px);
 box-shadow: 0 6px 15px rgba(244, 180, 0, 0.15);
 }
 .premium-btn-gold:active { transform: scale(0.98); }
-
 .dev-lion-logo {
 width: 50px;
 height: 50px;
@@ -1198,6 +1202,20 @@ border: 2px solid #F4B400;
 box-shadow: 0 4px 10px rgba(244, 180, 0, 0.3);
 display: block;
 }
+.feedback-th { background-color: #D4A017; color: #000; }
+.feedback-name-btn { background: transparent; border: none; text-decoration: underline; font-size: 14px; }
+.status-implemented { color: #4a7c59 !important; }
+.status-rejected { color: var(--danger) !important; }
+.status-in-review { color: #D4A017 !important; }
+.version-history-wrapper { max-height: 400px; overflow-y: auto; }
+.version-history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.version-history-th { border: 1px solid #ccc; }
+.version-history-td { border: 1px solid #ccc; color: var(--modal-text); }
+.about-text-uppercase { text-transform: uppercase; }
+.about-text-primary { color: var(--primary); }
+.about-dashed-hr { border-top: 1px dashed var(--border-color); }
+.winner-chip-container { cursor: pointer; }
+.winner-chip-close { font-weight: bold; font-size: 14px; margin-left: 4px; }
 </style>
 </head>
 <body>
@@ -1312,9 +1330,9 @@ About
 <div class="banner-content-lock">
 <div class="logo-group">
 <img src="1000673554.png" alt="കഥാസാഗരം Logo" class="banner-logo">
-<div id="topicDisplay" class="banner-topic">*****</div>
+<div id="topicDisplay" class="banner-topic"></div>
 </div>
-<div id="monthDisplay" class="month-sub">*****</div>
+<div id="monthDisplay" class="month-sub"></div>
 </div>
 </div>
 <div class="container">
@@ -1348,7 +1366,6 @@ Menu
 <p>Form submissions, scoring, and mod tools are temporarily paused by administration.</p>
 </div>
 </div>
-
 <div id="userInterface">
 <div class="plain-section">
 <div class="d-flex justify-between align-center border-bottom pb-3 mb-4">
@@ -1403,7 +1420,6 @@ Menu
 <button type="button" id="goToFeedbackBtn" class="btn-accent w-max sys-lockable m-0">App Feedback</button>
 </div>
 </div>
-
 <div id="feedbackInterface" class="plain-section hidden">
 <h2>📝 App Feedback</h2>
 <p class="text-lg text-muted">Your feedback goes directly to the developer to help improve the platform.</p>
@@ -1420,7 +1436,6 @@ Menu
 <button type="button" id="cancelFeedbackBtn" class="shadow-none" style="background-color: var(--input-bg); color: var(--h3-color);">Cancel / Back</button>
 </div>
 </div>
-
 <div id="loginInterface" class="plain-section hidden">
 <h2 class="d-flex align-center gap-3">
 <svg viewBox="0 0 64 64" width="24" height="24" fill="currentColor" style="flex-shrink: 0;">
@@ -1438,183 +1453,168 @@ Authentication Panel
 </div>
 <button type="button" id="submitLoginBtn" class="btn-mod-action w-max">Authenticate</button>
 </div>
-
 <div id="modInterface" class="hidden premium-dashboard">
-    <div class="premium-content-lock">
-        
-        <div class="premium-header">
-            <h2>Moderator Dashboard</h2>
-            <p>Review. Manage. Improve.</p>
-        </div>
-
-        <div class="mod-premium-card add-story-card">
-            <div class="card-header-flex">
-                <div class="icon-circle">
-                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </div>
-                <div class="header-text">
-                    <h3>Add New Story</h3>
-                    <p>Enter a new story name to get started</p>
-                </div>
-                <div class="book-illustration">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                </div>
-            </div>
-            
-            <div class="card-input-row">
-                <input type="text" id="dashboardNewStoryInput" placeholder="Enter a new story name..." class="sys-lockable premium-input">
-                <button type="button" id="dashboardUpdateStoryBtn" class="sys-lockable premium-btn-square">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                </button>
-            </div>
-        </div>
-
-        <button type="button" id="openDailyUpdatesBtn" class="premium-action-card sys-lockable">
-            <div class="action-icon-left">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            </div>
-            <div class="action-text-center">
-                <h3>Daily Updates</h3>
-                <p>View and manage today's activity</p>
-            </div>
-            <div class="action-icon-right">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-        </button>
-
-        <div class="premium-stats-row">
-            <div class="premium-stat-card stat-card-1">
-                <div class="stat-icon-container stat-icon-1">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                </div>
-                <div>
-                    <h4 class="stat-number" id="totalStoriesStat">0</h4>
-                    <p class="stat-label">Total Stories</p>
-                </div>
-            </div>
-            <div class="premium-stat-card stat-card-2">
-                <div class="stat-icon-container stat-icon-2">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                </div>
-                <div>
-                    <h4 class="stat-number" id="totalReviewsStat">0</h4>
-                    <p class="stat-label">Total Reviews</p>
-                </div>
-            </div>
-            <div class="premium-stat-card stat-card-3">
-                <div class="stat-icon-container stat-icon-3">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                </div>
-                <div>
-                    <h4 class="stat-number" id="activeReviewersStat">0</h4>
-                    <p class="stat-label">Active Reviewers</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="submissions-premium-card mt-3">
-            <div class="submissions-header-row">
-                <div class="submissions-title-group">
-                    <div class="chart-icon-circle">
-                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    </div>
-                    <h3 class="premium-card-title m-0">Submissions</h3>
-                </div>
-                
-                <div class="submissions-controls-group">
-                    <div class="inline-select-container">
-                        <select id="adminStorySelect" class="sys-lockable"></select>
-                    </div>
-                    <div style="position:relative;">
-                        <button type="button" id="storyOptionsBtn" class="premium-icon-btn">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                        </button>
-                        <div id="storyOptionsMenu" class="hidden premium-dropdown-menu">
-                            <button type="button" id="editStoriesListBtn" class="premium-dropdown-item">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                Edit Stories
-                            </button>
-                            <button type="button" id="previewStoryReviewsBtn" class="premium-dropdown-item">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                Preview
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="webview-scroll-frame premium-table-container">
-                <table class="premium-table m-0">
-                    <thead id="submissionsTableHead">
-                        <tr>
-                            <th>Reviewer</th>
-                            <th>Date</th>
-                            <th>Rating</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dailyReviewsTableBody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<div class="premium-content-lock">
+<div class="premium-header">
+<h2>Moderator Dashboard</h2>
+<p>Review. Manage. Improve.</p>
 </div>
-
+<div class="mod-premium-card add-story-card">
+<div class="card-header-flex">
+<div class="icon-circle">
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+</div>
+<div class="header-text">
+<h3>Add New Story</h3>
+<p>Enter a new story name to get started</p>
+</div>
+<div class="book-illustration">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+</div>
+</div>
+<div class="card-input-row">
+<input type="text" id="dashboardNewStoryInput" placeholder="Enter a new story name..." class="sys-lockable premium-input">
+<button type="button" id="dashboardUpdateStoryBtn" class="sys-lockable premium-btn-square">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+</button>
+</div>
+</div>
+<button type="button" id="openDailyUpdatesBtn" class="premium-action-card sys-lockable">
+<div class="action-icon-left">
+<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+</div>
+<div class="action-text-center">
+<h3>Daily Updates</h3>
+<p>View and manage today's activity</p>
+</div>
+<div class="action-icon-right">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</div>
+</button>
+<div class="premium-stats-row">
+<div class="premium-stat-card stat-card-1">
+<div class="stat-icon-container stat-icon-1">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+</div>
+<div>
+<h4 class="stat-number" id="totalStoriesStat">0</h4>
+<p class="stat-label">Total Stories</p>
+</div>
+</div>
+<div class="premium-stat-card stat-card-2">
+<div class="stat-icon-container stat-icon-2">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+</div>
+<div>
+<h4 class="stat-number" id="totalReviewsStat">0</h4>
+<p class="stat-label">Total Reviews</p>
+</div>
+</div>
+<div class="premium-stat-card stat-card-3">
+<div class="stat-icon-container stat-icon-3">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+</div>
+<div>
+<h4 class="stat-number" id="activeReviewersStat">0</h4>
+<p class="stat-label">Active Reviewers</p>
+</div>
+</div>
+</div>
+<div class="submissions-premium-card mt-3">
+<div class="submissions-header-row">
+<div class="submissions-title-group">
+<div class="chart-icon-circle">
+<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+</div>
+<h3 class="premium-card-title m-0">Submissions</h3>
+</div>
+<div class="submissions-controls-group">
+<div class="inline-select-container">
+<select id="adminStorySelect" class="sys-lockable"></select>
+</div>
+<div style="position:relative;">
+<button type="button" id="storyOptionsBtn" class="premium-icon-btn">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+</button>
+<div id="storyOptionsMenu" class="hidden premium-dropdown-menu">
+<button type="button" id="editStoriesListBtn" class="premium-dropdown-item">
+<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+Edit Stories
+</button>
+<button type="button" id="previewStoryReviewsBtn" class="premium-dropdown-item">
+<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+Preview
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="webview-scroll-frame premium-table-container">
+<table class="premium-table m-0">
+<thead id="submissionsTableHead">
+<tr>
+<th>Reviewer</th>
+<th>Date</th>
+<th>Rating</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="dailyReviewsTableBody">
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 <div id="devInterface" class="hidden premium-dashboard">
-    <div class="premium-content-lock">
-        <div class="dev-advanced-card">
-            <div class="dev-header-grid">
-                <img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-logo">
-                <div class="dev-header-text">
-                    <h3>Developer Options</h3>
-                </div>
-            </div>
-            
-            <div class="build-exclusive-row">
-                <div class="build-text">Build: <span id="devVersionDisplay" class="build-value">Loading...</span></div>
-                <div class="d-flex align-center gap-3">
-                    <strong id="exclusiveModeText" class="text-white text-md">Exclusive Mode</strong>
-                    <label class="switch m-0 scale-80">
-                        <input type="checkbox" id="devPauseToggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div id="newBuildAlertContainer" class="hidden premium-inner-card p-4 mb-4" style="border-color: rgba(220, 38, 38, 0.4);">
-                <label class="text-danger text-lg font-bold block mb-1">⚠️ New Git Build Detected!</label>
-                <div class="text-sm color-gold-alt mb-3" style="color: #cbd5e1;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
-                <textarea id="devReleaseNotesInput" rows="2" placeholder="Enter release notes / developer updates for this version..." class="premium-textarea mb-3"></textarea>
-                <button type="button" id="btnPublishReleaseNotes" class="premium-btn-gold w-100 d-flex align-center justify-center gap-2 m-0" style="padding: 12px 0;">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Publish Update
-                </button>
-            </div>
-
-            <div class="dev-grid-2x2 mt-4">
-                <button type="button" id="devVersionHistoryBtn" class="dev-action-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    Version History
-                </button>
-                <button type="button" id="devLoadFeedbackBtn" class="dev-action-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                    User Feedback
-                </button>
-                <button type="button" id="devSeasonHistoryBtn" class="dev-action-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                    Season History
-                </button>
-                <button type="button" id="devSeasonResetBtn" class="dev-action-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-                    Season Reset
-                </button>
-            </div>
-            
-        </div>
-    </div>
+<div class="premium-content-lock">
+<div class="dev-advanced-card">
+<div class="dev-header-grid">
+<img src="BG_Lion.png" alt="Developer Logo" class="dev-lion-logo">
+<div class="dev-header-text">
+<h3>Developer Options</h3>
 </div>
-
+</div>
+<div class="build-exclusive-row">
+<div class="build-text">Build: <span id="devVersionDisplay" class="build-value">Loading...</span></div>
+<div class="d-flex align-center gap-3">
+<strong id="exclusiveModeText" class="text-white text-md">Exclusive Mode</strong>
+<label class="switch m-0 scale-80">
+<input type="checkbox" id="devPauseToggle">
+<span class="slider"></span>
+</label>
+</div>
+</div>
+<div id="newBuildAlertContainer" class="hidden premium-inner-card p-4 mb-4" style="border-color: rgba(220, 38, 38, 0.4);">
+<label class="text-danger text-lg font-bold block mb-1">⚠️ New Git Build Detected!</label>
+<div class="text-sm color-gold-alt mb-3" style="color: #cbd5e1;">Ready to deploy Build: <span id="newBuildTagDisplay" class="text-white font-bold"></span></div>
+<textarea id="devReleaseNotesInput" rows="2" placeholder="Enter release notes / developer updates for this version..." class="premium-textarea mb-3"></textarea>
+<button type="button" id="btnPublishReleaseNotes" class="premium-btn-gold w-100 d-flex align-center justify-center gap-2 m-0" style="padding: 12px 0;">
+<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+Publish Update
+</button>
+</div>
+<div class="dev-grid-2x2 mt-4">
+<button type="button" id="devVersionHistoryBtn" class="dev-action-btn">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+Version History
+</button>
+<button type="button" id="devLoadFeedbackBtn" class="dev-action-btn">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+User Feedback
+</button>
+<button type="button" id="devSeasonHistoryBtn" class="dev-action-btn">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+Season History
+</button>
+<button type="button" id="devSeasonResetBtn" class="dev-action-btn">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+Season Reset
+</button>
+</div>
+</div>
+</div>
+</div>
 <div class="system-navigation-footer-bar">
 <button type="button" id="navBtnReviewer" class="nav-split-trigger-btn active-panel-indicator">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -1625,7 +1625,6 @@ Authentication Panel
 <span>Moderator</span>
 </button>
 </div>
-
 <div id="customModalOverlay" class="hidden">
 <div class="custom-modal-box">
 <div id="customModalMessage"></div>
@@ -1648,7 +1647,7 @@ Authentication Panel
 </div>
 </div>
 </div>
-<div id="timeRestrictionsOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000004; backdrop-filter: blur(4px);">
+<div id="timeRestrictionsOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: var(--z-modal-4); backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 400px; padding: 25px; text-align: left;">
 <div class="d-flex justify-between align-center border-bottom pb-3 mb-4">
 <h3 class="m-0" style="color: var(--primary);">Enable Time restriction</h3>
@@ -1691,7 +1690,7 @@ Authentication Panel
 <button type="button" class="bg-transparent border-none text-muted cursor-pointer font-bold mt-2 close-modal-btn w-100 text-center" data-target="timeRestrictionsOverlay">Close</button>
 </div>
 </div>
-<div id="editStoriesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000003; backdrop-filter: blur(4px);">
+<div id="editStoriesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: var(--z-modal-3); backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 80vh;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <button type="button" id="esDeleteBtn" class="hidden bg-transparent border-none cursor-pointer p-1 m-0">
@@ -1710,7 +1709,7 @@ Authentication Panel
 <div id="editStoriesList" style="overflow-y: auto; flex-grow: 1;"></div>
 </div>
 </div>
-<div id="dailyUpdatesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000005; backdrop-filter: blur(4px);">
+<div id="dailyUpdatesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: var(--z-modal-5); backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 25px; text-align: left;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <select id="duStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
@@ -1786,7 +1785,7 @@ Download
 </div>
 </div>
 </div>
-<div id="detailedReviewOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000002; backdrop-filter: blur(4px);">
+<div id="detailedReviewOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: var(--z-modal-2); backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 400px; padding: 25px; text-align: left;">
 <h3 class="mt-0 border-bottom pb-2 mb-3" style="color: var(--primary);">Detailed Review</h3>
 <div class="mb-2"><strong style="color: var(--h3-color);">Reviewer:</strong> <span id="drModalName" style="color: var(--text-color);"></span></div>
@@ -1799,7 +1798,7 @@ Download
 </div>
 </div>
 </div>
-<div id="feedbackDetailOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000001; backdrop-filter: blur(4px);">
+<div id="feedbackDetailOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: var(--z-modal-1); backdrop-filter: blur(4px);">
 <div class="custom-modal-box bg-darker-alt border-gold-alt w-100 box-border" style="max-width: 500px; padding: 25px; text-align: left;">
 <h3 id="fdModalTitle" class="color-gold-alt mt-0 border-bottom-gold-alt pb-2 mb-3">Reviewer Feedback</h3>
 <div id="fdModalComments" class="mb-4 text-white text-md" style="max-height: 200px; overflow-y: auto;"></div>
@@ -1822,7 +1821,7 @@ Download
 </div>
 </div>
 </div>
-<div id="storyPreviewOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000006; backdrop-filter: blur(4px);">
+<div id="storyPreviewOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: var(--z-modal-6); backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 600px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 85vh;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <button type="button" id="spDownloadBtn" class="bg-transparent border-none cursor-pointer p-1" style="color: var(--primary);">
@@ -1849,7 +1848,7 @@ Download
 </div>
 </div>
 </div>
-<div id="seasonHistoryOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000008; backdrop-filter: blur(4px);">
+<div id="seasonHistoryOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: var(--z-modal-8); backdrop-filter: blur(4px);">
 <div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 80vh;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <h3 class="m-0" style="color: var(--primary);">Season History</h3>
@@ -1915,7 +1914,7 @@ this.setupEvents();
 }
 setupUI() {
 this.wrapper = document.createElement('div');
-this.wrapper.className = `custom-select-wrapper ${this.select.className}`;
+this.wrapper.className = custom-select-wrapper ${this.select.className};
 this.wrapper.setAttribute('role', 'combobox');
 this.wrapper.setAttribute('aria-expanded', 'false');
 this.wrapper.setAttribute('aria-haspopup', 'listbox');
@@ -1923,7 +1922,7 @@ this.select.parentNode.insertBefore(this.wrapper, this.select);
 this.wrapper.appendChild(this.select);
 this.select.style.display = 'none';
 this.trigger = document.createElement('div');
-this.trigger.className = `custom-select-trigger ${this.select.className}`;
+this.trigger.className = custom-select-trigger ${this.select.className};
 this.trigger.tabIndex = this.select.disabled ? -1 : 0;
 this.valueDisplay = document.createElement('span');
 this.valueDisplay.className = 'custom-select-value';
@@ -2167,9 +2166,9 @@ const hh12 = parts.find(part => part.type === 'hour').value.padStart(2, '0');
 const mm = parts.find(part => part.type === 'minute').value.padStart(2, '0');
 const ampm = parts.find(part => part.type === 'dayPeriod').value.toUpperCase();
 const hh24 = new Intl.DateTimeFormat("en-IN", { ...options, hour: "2-digit", hour12: false }).format(buildDate).padStart(2, '0').replace('24', '00');
-const GIT_BUILD_DATE = `${YYYY}-${MM}-${DD}`;
-const GIT_BUILD_TIME = `${hh12}:${mm} ${ampm} IST`;
-const GIT_BUILD_NUMBER = `4.2.${MM}${DD}.${hh24}${mm}`;
+const GIT_BUILD_DATE = ${YYYY}-${MM}-${DD};
+const GIT_BUILD_TIME = ${hh12}:${mm} ${ampm} IST;
+const GIT_BUILD_NUMBER = 4.2.${MM}${DD}.${hh24}${mm};
 const menuOpenBtn = getElementById('menuOpenBtn');
 const menuCloseBtn = getElementById('menuCloseBtn');
 const sideMenu = getElementById('sideMenu');
@@ -2189,7 +2188,7 @@ const day = String(today.getDate()).padStart(2, '0');
 const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 const month = monthNames[today.getMonth()];
 const year = today.getFullYear();
-dateElement.innerHTML = `<div class="calendar-month">${month}</div><div class="calendar-day">${day}</div><div class="calendar-year">${year}</div>`;
+dateElement.innerHTML = <div class="calendar-month">${month}</div><div class="calendar-day">${day}</div><div class="calendar-year">${year}</div>;
 }
 let currentTheme = localStorage.getItem('kathasagaram_theme') || 'light';
 function applyTheme() {
@@ -2219,12 +2218,9 @@ themeSelect.addEventListener('change', (event) => {
 currentTheme = event.target.value;
 localStorage.setItem('kathasagaram_theme', currentTheme);
 applyTheme();
-setTimeout(() => toggleMenu(false), 150); 
+setTimeout(() => toggleMenu(false), 150);
 });
-const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
-function sanitizeText(stringToSanitize) {
-if (stringToSanitize === null || stringToSanitize === undefined) return "";
-return String(stringToSanitize).replace(/[&<>"'`=/]/g, function (match) { return entityMap[match]; });
+const entityMap = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''', '/': '/', '': '&#x60;', '=': '&#x3D;' }; function sanitizeText(stringToSanitize) { if (stringToSanitize === null || stringToSanitize === undefined) return ""; return String(stringToSanitize).replace(/[&<>"'=/]/g, function (match) { return entityMap[match]; });
 }
 function setSafeText(element, text) {
 element.textContent = text;
@@ -2236,7 +2232,8 @@ const messageElement = getElementById('customModalMessage');
 const inputElement = getElementById('customModalInput');
 const buttonCancel = getElementById('customModalCancel');
 const buttonOk = getElementById('customModalOk');
-if(messageText.includes('<table') || messageText.includes('<div') || messageText.includes('<br>')) {
+if(messageText.includes('<table') || messageText.includes('<div') || messageText.includes('
+')) {
 messageElement.innerHTML = messageText;
 } else {
 setSafeText(messageElement, messageText);
@@ -2286,7 +2283,7 @@ appId: "1:494031666393:web:27b2f4a51f1f7271c792c8"
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app); 
+const auth = getAuth(app);
 async function updateGlobalConfig(payload, successMsg = null, errorMsg = "Error syncing configuration.") {
 try {
 await setDoc(doc(db, "app_state", "global_config"), payload, { merge: true });
@@ -2418,7 +2415,7 @@ if (!activeStorySnapshotDataCache) return;
 spTableHead.innerHTML = '';
 spTableBody.innerHTML = '';
 const currentStory = adminStorySelect.value;
-spHeading.textContent = `${currentStory}`;
+spHeading.textContent = ${currentStory};
 let rowsData = [];
 Object.keys(activeStorySnapshotDataCache).forEach(key => {
 if (['created', 'season', '_suggestions', '_suggesterName', '_guesses'].includes(key)) return;
@@ -2435,30 +2432,30 @@ const dateObject = new Date(dateStr);
 const day = String(dateObject.getDate()).padStart(2, '0');
 const month = String(dateObject.getMonth() + 1).padStart(2, '0');
 const year = String(dateObject.getFullYear()).slice(-2);
-displayDate = `${day}/${month}/${year}`;
+displayDate = ${day}/${month}/${year};
 } catch(e) {}
 }
 if (currentPreviewTab === 'all') {
-rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(displayDate)}</td><td>${sanitizeText(score)}</td></tr>`);
+rowsData.push(<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(displayDate)}</td><td>${sanitizeText(score)}</td></tr>);
 } else if (currentPreviewTab === 'detailed' && detailedReview && detailedReview.trim() !== "") {
-rowsData.push(`<tr><td>${sanitizeText(key)}</td><td class="text-left" style="white-space: pre-wrap;">${sanitizeText(detailedReview)}</td></tr>`);
+rowsData.push(<tr><td>${sanitizeText(key)}</td><td class="text-left" style="white-space: pre-wrap;">${sanitizeText(detailedReview)}</td></tr>);
 } else if (currentPreviewTab === 'author' && authorGuess && authorGuess !== "None" && authorGuess.trim() !== "") {
-rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(authorGuess)}</td></tr>`);
+rowsData.push(<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(authorGuess)}</td></tr>);
 } else if (currentPreviewTab === 'title' && suggestedTitle && suggestedTitle !== "None" && suggestedTitle.trim() !== "") {
-rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)}</td></tr>`);
+rowsData.push(<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)}</td></tr>);
 }
 });
 if (currentPreviewTab === 'all') {
-spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>`;
+spTableHead.innerHTML = <tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>;
 } else if (currentPreviewTab === 'detailed') {
-spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Detailed Review</th></tr>`;
+spTableHead.innerHTML = <tr><th>Reviewer</th><th>Detailed Review</th></tr>;
 } else if (currentPreviewTab === 'author') {
-spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Guess the author</th></tr>`;
+spTableHead.innerHTML = <tr><th>Reviewer</th><th>Guess the author</th></tr>;
 } else if (currentPreviewTab === 'title') {
-spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Title Suggestion</th></tr>`;
+spTableHead.innerHTML = <tr><th>Reviewer</th><th>Title Suggestion</th></tr>;
 }
 if (rowsData.length === 0) {
-spTableBody.innerHTML = `<tr><td colspan="3" class="text-center text-muted text-italic py-5">No records found.</td></tr>`;
+spTableBody.innerHTML = <tr><td colspan="3" class="text-center text-muted text-italic py-5">No records found.</td></tr>;
 } else {
 spTableBody.innerHTML = rowsData.join('');
 }
@@ -2504,33 +2501,33 @@ const dateObject = new Date(dateStr);
 const day = String(dateObject.getDate()).padStart(2, '0');
 const month = String(dateObject.getMonth() + 1).padStart(2, '0');
 const year = String(dateObject.getFullYear()).slice(-2);
-displayDate = `${day}/${month}/${year}`;
+displayDate = ${day}/${month}/${year};
 } catch(e) {}
 }
 if (currentPreviewTab === 'all') {
-rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(displayDate)}</td><td>${sanitizeText(score)}</td></tr>`;
+rowsHtml += <tr><td>${sanitizeText(key)}</td><td>${sanitizeText(displayDate)}</td><td>${sanitizeText(score)}</td></tr>;
 } else if (currentPreviewTab === 'detailed' && detailedReview && detailedReview.trim() !== "") {
-rowsHtml += `<tr><td>${sanitizeText(key)}</td><td style="white-space: pre-wrap;">${sanitizeText(detailedReview)}</td></tr>`;
+rowsHtml += <tr><td>${sanitizeText(key)}</td><td style="white-space: pre-wrap;">${sanitizeText(detailedReview)}</td></tr>;
 } else if (currentPreviewTab === 'author' && authorGuess && authorGuess !== "None" && authorGuess.trim() !== "") {
-rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(authorGuess)}</td></tr>`;
+rowsHtml += <tr><td>${sanitizeText(key)}</td><td>${sanitizeText(authorGuess)}</td></tr>;
 } else if (currentPreviewTab === 'title' && suggestedTitle && suggestedTitle !== "None" && suggestedTitle.trim() !== "") {
-rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)}</td></tr>`;
+rowsHtml += <tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)}</td></tr>;
 }
 });
 let theadHtml = '';
 if (currentPreviewTab === 'all') {
-theadHtml = `<tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>`;
+theadHtml = <tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>;
 } else if (currentPreviewTab === 'detailed') {
-theadHtml = `<tr><th>Reviewer</th><th>Detailed Review</th></tr>`;
+theadHtml = <tr><th>Reviewer</th><th>Detailed Review</th></tr>;
 } else if (currentPreviewTab === 'author') {
-theadHtml = `<tr><th>Reviewer</th><th>Guess the author</th></tr>`;
+theadHtml = <tr><th>Reviewer</th><th>Guess the author</th></tr>;
 } else if (currentPreviewTab === 'title') {
-theadHtml = `<tr><th>Reviewer</th><th>Title Suggestion</th></tr>`;
+theadHtml = <tr><th>Reviewer</th><th>Title Suggestion</th></tr>;
 }
-const htmlString = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reviews - ${sanitizeText(currentStory)}</title><style>body { font-family: sans-serif; margin: 20px; color: #333; }table { width: 100%; border-collapse: collapse; font-size: 14px; }th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }th { background-color: #f8f9fa; color: #2b4c7e; }tr:nth-child(even) { background-color: #f9f9f9; }</style></head><body><h2>${sanitizeText(currentStory)} - ${currentPreviewTab.toUpperCase()}</h2><table><thead>${theadHtml}</thead><tbody>${rowsHtml}</tbody></table></body></html>`;
+const htmlString = <!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reviews - ${sanitizeText(currentStory)}</title><style>body { font-family: sans-serif; margin: 20px; color: #333; }table { width: 100%; border-collapse: collapse; font-size: 14px; }th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }th { background-color: #f8f9fa; color: #2b4c7e; }tr:nth-child(even) { background-color: #f9f9f9; }</style></head><body><h2>${sanitizeText(currentStory)} - ${currentPreviewTab.toUpperCase()}</h2><table><thead>${theadHtml}</thead><tbody>${rowsHtml}</tbody></table></body></html>;
 const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
 const url = URL.createObjectURL(blob);
-const anchorElement = createEl('a', { href: url, download: `${currentStory}_${currentPreviewTab}.html` });
+const anchorElement = createEl('a', { href: url, download: ${currentStory}_${currentPreviewTab}.html });
 document.body.appendChild(anchorElement);
 anchorElement.click();
 document.body.removeChild(anchorElement);
@@ -2554,11 +2551,11 @@ let cachedFeedbackData = null;
 let cachedMaxCols = 0;
 let feedbackDevState = {};
 let isEditingStoryList = false;
-let currentVersionState = { 
-buildNumber: GIT_BUILD_NUMBER, 
+let currentVersionState = {
+buildNumber: GIT_BUILD_NUMBER,
 publishedDate: GIT_BUILD_DATE,
 publishedTime: GIT_BUILD_TIME,
-changesMade: [] 
+changesMade: []
 };
 getElementById('openDailyUpdatesBtn').addEventListener('click', async () => {
 if (arrayedStoriesList.length > 0) {
@@ -2580,7 +2577,7 @@ tableBody.innerHTML = '';
 const tableRow = createEl('tr');
 if (text === "No stories available." || text === "No reviews submitted for this story yet." || text === "Story data is empty or missing.") {
 const td = createEl('td', { colSpan: columnsSpan, className: "empty-state-cell p-0 border-none" });
-td.innerHTML = `<div class="premium-empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg></div><h4 class="empty-title">${text}</h4><p class="empty-subtitle">Add a new story to see submissions here.</p></div>`;
+td.innerHTML = <div class="premium-empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg></div><h4 class="empty-title">${text}</h4><p class="empty-subtitle">Add a new story to see submissions here.</p></div>;
 tableRow.appendChild(td);
 } else {
 tableRow.appendChild(createEl('td', { colSpan: columnsSpan, className: "text-center p-5 text-italic text-muted" }, text));
@@ -2589,9 +2586,9 @@ tableBody.appendChild(tableRow);
 }
 function handleLockedSuggestionInteraction(inputElement, lockTime, featureName) {
 if (inputElement.readOnly && !isDeveloperModeUnlocked) {
-inputElement.blur(); 
+inputElement.blur();
 const timeNow = new Date();
-const timeStringFormatted = `${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')}`;
+const timeStringFormatted = ${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')};
 const targetStory = storyDropdown.value;
 const activeStoryObject = arrayedStoriesList.find(story => story.id === targetStory);
 let isPreviousDay = false;
@@ -2601,7 +2598,7 @@ isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date(
 if (isPreviousDay || (masterTimeRestrictionToggle.checked && timeStringFormatted > lockTime)) {
 customAlert("Submission time exceeded for the story.");
 } else {
-customAlert(`The ${featureName} feature is currently disabled by the moderator.`);
+customAlert(The ${featureName} feature is currently disabled by the moderator.);
 }
 }
 }
@@ -2621,7 +2618,7 @@ devInterface.classList.toggle('hidden', isReviewer || !isDeveloperModeUnlocked);
 navBtnReviewer.addEventListener('click', () => switchTab(true));
 navBtnModerator.addEventListener('click', () => switchTab(false));
 ratingForm.addEventListener('submit', async (event) => {
-event.preventDefault(); 
+event.preventDefault();
 if (isSystemPaused && !isDeveloperModeUnlocked) {
 customAlert("System Maintenance Active. Submissions are temporarily paused.");
 return;
@@ -2640,9 +2637,9 @@ if (!friendName) {
 customAlert("Please enter your name.");
 return;
 }
-if (!isDeveloperModeUnlocked && localStorage.getItem(`rated_${targetStory}`) === "true") {
+if (!isDeveloperModeUnlocked && localStorage.getItem(rated_${targetStory}) === "true") {
 try {
-ratingRaw = JSON.parse(localStorage.getItem(`userdata_${targetStory}`)).score; 
+ratingRaw = JSON.parse(localStorage.getItem(userdata_${targetStory})).score;
 } catch (error) {}
 } else {
 if (isDeveloperModeUnlocked) {
@@ -2653,7 +2650,7 @@ if (isNaN(rating) || rating < 1 || rating > 10) {
 customAlert("Please enter a valid rating between 1 and 10.");
 return;
 }
-ratingRaw = rating; 
+ratingRaw = rating;
 }
 }
 submitRatingBtn.disabled = true;
@@ -2664,11 +2661,11 @@ await setDoc(doc(db, "competitions", targetStory), {
 [friendName]: { score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }
 }, { merge: true });
 if (!isDeveloperModeUnlocked) {
-localStorage.setItem(`rated_${targetStory}`, "true");
-localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({ name: friendName, score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }));
+localStorage.setItem(rated_${targetStory}, "true");
+localStorage.setItem(userdata_${targetStory}, JSON.stringify({ name: friendName, score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }));
 }
 customAlert("Review submitted successfully! Thank you.");
-evaluateLocalStorageRestrictions(); 
+evaluateLocalStorageRestrictions();
 } catch (error) {
 customAlert("An error occurred while submitting your review. Please check your connection.");
 submitRatingBtn.disabled = false;
@@ -2706,10 +2703,10 @@ submitFeedbackBtn.disabled = false;
 });
 function openFeedbackDetails(user, feedbacks) {
 currentFeedbackUser = user;
-setSafeText(fdModalTitle, `Feedback from: ${user}`);
+setSafeText(fdModalTitle, Feedback from: ${user});
 fdModalComments.innerHTML = '';
 feedbacks.forEach((feedbackText, index) => {
-fdModalComments.appendChild(createEl('p', { className: "bg-dark-alt p-2 radius-1 border-gold-alt mt-0 mb-2" }, `${index + 1}. ${feedbackText}`));
+fdModalComments.appendChild(createEl('p', { className: "bg-dark-alt p-2 radius-1 border-gold-alt mt-0 mb-2" }, ${index + 1}. ${feedbackText}));
 });
 if (feedbackDevState[user]) {
 fdModalNotes.value = feedbackDevState[user].notes || "";
@@ -2722,13 +2719,13 @@ if (currentFeedbackUser) {
 feedbackDevState[currentFeedbackUser].notes = fdModalNotes.value;
 feedbackDevState[currentFeedbackUser].status = fdModalStatus.value;
 const safeIdString = currentFeedbackUser.replace(/[^a-zA-Z0-9]/g, '-');
-const statusSpanElement = getElementById(`status-span-${safeIdString}`);
+const statusSpanElement = getElementById(status-span-${safeIdString});
 if (statusSpanElement) {
 setSafeText(statusSpanElement, fdModalStatus.value);
-statusSpanElement.style.color = '#fff';
-if(fdModalStatus.value === 'Implemented') statusSpanElement.style.color = '#4a7c59';
-else if(fdModalStatus.value === 'Rejected') statusSpanElement.style.color = 'var(--danger)';
-else if(fdModalStatus.value === 'In Review') statusSpanElement.style.color = '#D4A017';
+statusSpanElement.className = "text-white font-bold";
+if(fdModalStatus.value === 'Implemented') statusSpanElement.classList.add('status-implemented');
+else if(fdModalStatus.value === 'Rejected') statusSpanElement.classList.add('status-rejected');
+else if(fdModalStatus.value === 'In Review') statusSpanElement.classList.add('status-in-review');
 }
 }
 feedbackDetailOverlay.classList.add('hidden');
@@ -2757,10 +2754,10 @@ devDownloadFeedbackBtn.classList.remove('hidden');
 feedbackTableHead.innerHTML = '';
 const headFragment = document.createDocumentFragment();
 const headTableRow = createEl('tr');
-const tableHeaderOne = createEl('th', { className: "bg-gold text-black text-center p-3 border-bottom-gold-alt", style: { backgroundColor: "#D4A017", color: "#000" } });
+const tableHeaderOne = createEl('th', { className: "bg-gold text-black text-center p-3 border-bottom-gold-alt feedback-th" });
 tableHeaderOne.appendChild(createEl('b', {}, "Reviewer"));
 headTableRow.appendChild(tableHeaderOne);
-const tableHeaderTwo = createEl('th', { className: "text-center p-3 border-bottom-gold-alt", style: { backgroundColor: "#D4A017", color: "#000" } });
+const tableHeaderTwo = createEl('th', { className: "text-center p-3 border-bottom-gold-alt feedback-th" });
 tableHeaderTwo.appendChild(createEl('b', {}, "Status"));
 headTableRow.appendChild(tableHeaderTwo);
 headFragment.appendChild(headTableRow);
@@ -2773,16 +2770,16 @@ feedbackDevState[user] = { notes: "", status: "Pending" };
 }
 const tableRowElement = createEl('tr', { className: "hover-bg-alt" });
 const tableDataName = createEl('td', { className: "p-3 border-bottom" });
-const nameButton = createEl('button', { className: "text-white font-bold cursor-pointer m-0 p-0 hover-text-primary", style: { background: "transparent", border: "none", textDecoration: "underline", fontSize: "14px" } }, user);
+const nameButton = createEl('button', { className: "text-white font-bold cursor-pointer m-0 p-0 hover-text-primary feedback-name-btn" }, user);
 nameButton.onclick = () => openFeedbackDetails(user, data[user] || []);
 tableDataName.appendChild(nameButton);
 tableRowElement.appendChild(tableDataName);
 const tableDataStatus = createEl('td', { className: "p-3 border-bottom" });
 const safeIdValue = user.replace(/[^a-zA-Z0-9]/g, '-');
-const statusSpan = createEl('span', { className: "text-white font-bold", id: `status-span-${safeIdValue}` }, feedbackDevState[user].status);
-if (feedbackDevState[user].status === 'Implemented') statusSpan.style.color = '#4a7c59';
-else if (feedbackDevState[user].status === 'Rejected') statusSpan.style.color = 'var(--danger)';
-else if (feedbackDevState[user].status === 'In Review') statusSpan.style.color = '#D4A017';
+const statusSpan = createEl('span', { className: "text-white font-bold", id: status-span-${safeIdValue} }, feedbackDevState[user].status);
+if (feedbackDevState[user].status === 'Implemented') statusSpan.classList.add('status-implemented');
+else if (feedbackDevState[user].status === 'Rejected') statusSpan.classList.add('status-rejected');
+else if (feedbackDevState[user].status === 'In Review') statusSpan.classList.add('status-in-review');
 tableDataStatus.appendChild(statusSpan);
 tableRowElement.appendChild(tableDataStatus);
 bodyFragment.appendChild(tableRowElement);
@@ -2802,47 +2799,37 @@ setSafeText(devLoadFeedbackBtn, "User feedback preview");
 });
 devDownloadFeedbackBtn.addEventListener('click', () => {
 if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
-let tableHeadHtmlString = `<tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer</b></th>`;
+let tableHeadHtmlString = <tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer</b></th>;
 for(let increment = 1; increment <= cachedMaxCols; increment++) {
-tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${increment}</b></th>`;
+tableHeadHtmlString += <th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${increment}</b></th>;
 }
-tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Dev Notes</b></th>`;
-tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Status</b></th>`;
-tableHeadHtmlString += `</tr>`;
+tableHeadHtmlString += <th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Dev Notes</b></th>;
+tableHeadHtmlString += <th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Status</b></th>;
+tableHeadHtmlString += </tr>;
 let tableBodyHtmlString = "";
 Object.keys(cachedFeedbackData).forEach(user => {
-tableBodyHtmlString += `<tr><td style="border: 1px solid #ccc; text-align: center;"><strong>${sanitizeText(user)}</strong></td>`;
+tableBodyHtmlString += <tr><td style="border: 1px solid #ccc; text-align: center;"><strong>${sanitizeText(user)}</strong></td>;
 const userFeedbacksArray = cachedFeedbackData[user] || [];
 for(let loopIndex = 0; loopIndex < cachedMaxCols; loopIndex++) {
-tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${userFeedbacksArray[loopIndex] !== undefined ? sanitizeText(userFeedbacksArray[loopIndex]) : `-`}</td>`;
+tableBodyHtmlString += <td style="border: 1px solid #ccc; text-align: center;">${userFeedbacksArray[loopIndex] !== undefined ? sanitizeText(userFeedbacksArray[loopIndex]) : -}</td>;
 }
 const notesText = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].notes) : "-";
 const statusText = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].status) : "Pending";
-tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${notesText}</td>`;
-tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${statusText}</td>`;
-tableBodyHtmlString += `</tr>`;
+tableBodyHtmlString += <td style="border: 1px solid #ccc; text-align: center;">${notesText}</td>;
+tableBodyHtmlString += <td style="border: 1px solid #ccc; text-align: center;">${statusText}</td>;
+tableBodyHtmlString += </tr>;
 });
-const fullHtmlString = `
-<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-<head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: center; }</style></head>
-<body>
-<table>
-<thead>${tableHeadHtmlString}</thead>
-<tbody>${tableBodyHtmlString}</tbody>
-</table>
-</body>
-</html>
-`;
+const fullHtmlString = <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="[http://www.w3.org/TR/REC-html40](http://www.w3.org/TR/REC-html40)"> <head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: center; }</style></head> <body> <table> <thead>${tableHeadHtmlString}</thead> <tbody>${tableBodyHtmlString}</tbody> </table> </body> </html>;
 const blobObject = new Blob([fullHtmlString], { type: "application/vnd.ms-excel" });
 const downloadUrlPath = URL.createObjectURL(blobObject);
-const clientLinkElement = createEl('a', { href: downloadUrlPath, download: `Feedback_Master_Data_${new Date().toISOString().split('T')[0]}.xls` });
+const clientLinkElement = createEl('a', { href: downloadUrlPath, download: Feedback_Master_Data_${new Date().toISOString().split('T')[0]}.xls });
 document.body.appendChild(clientLinkElement);
 clientLinkElement.click();
 document.body.removeChild(clientLinkElement);
 customAlert("📥 Feedback table exported successfully.");
 });
 function evaluateSetupFlow() {
-if (isSystemPaused && !isDeveloperModeUnlocked) return; 
+if (isSystemPaused && !isDeveloperModeUnlocked) return;
 if (!isNameLockedByMod) {
 inputModName.disabled = false;
 saveModNameBtn.disabled = false;
@@ -2864,7 +2851,7 @@ inputModName.disabled = true;
 saveModNameBtn.disabled = true;
 inputTopic.disabled = false;
 inputMonth.disabled = false;
-startSeasonBtn.disabled = true; 
+startSeasonBtn.disabled = true;
 setSafeText(startSeasonBtn, "Start Season");
 advancedModOptions.classList.remove('hidden');
 }
@@ -2964,8 +2951,9 @@ customAlert("Please select at least one story to delete.");
 return;
 }
 const storiesToDelete = Array.from(checkboxes).map(cb => cb.value);
-const storyListString = storiesToDelete.map(s => `- ${s}`).join('<br>');
-const confirmMsg = `<div>Are you sure you want to delete the following stories and all their associated data?<br><br>${storyListString}<br><br>This action cannot be undone.</div>`;
+const storyListString = storiesToDelete.map(s => - ${s}).join('
+');
+const confirmMsg = <div>Are you sure you want to delete the following stories and all their associated data?<br><br>${storyListString}<br><br>This action cannot be undone.</div>;
 if (await customConfirm(confirmMsg)) {
 getElementById('esDeleteBtn').disabled = true;
 try {
@@ -2992,8 +2980,8 @@ let data = {};
 if (documentSnapshot.exists()) {
 data = documentSnapshot.data();
 }
-setSafeText(topicDisplay, data.topic || "*****");
-setSafeText(monthDisplay, data.month || "*****");
+setSafeText(topicDisplay, data.topic || "");
+setSafeText(monthDisplay, data.month || "");
 inputMonth.value = data.month || "";
 inputTopic.value = data.topic || "";
 const currentSeasonNameString = data.seasonName || "---";
@@ -3026,7 +3014,7 @@ isSeasonStarted = !!data.seasonStarted;
 isSystemPaused = !!data.systemPaused;
 devPauseToggle.checked = isSystemPaused;
 evaluateSystemFreezeState();
-evaluateSetupFlow(); 
+evaluateSetupFlow();
 } catch(error) {}
 });
 updateLockTimesBtn.addEventListener('click', () => {
@@ -3041,11 +3029,11 @@ currentVersionState.publishedDate = data.publishedDate || GIT_BUILD_DATE;
 currentVersionState.publishedTime = data.publishedTime || GIT_BUILD_TIME;
 currentVersionState.changesMade = Array.isArray(data.changesMade) ? data.changesMade : [];
 } else {
-currentVersionState = { 
-buildNumber: GIT_BUILD_NUMBER, 
+currentVersionState = {
+buildNumber: GIT_BUILD_NUMBER,
 publishedDate: GIT_BUILD_DATE,
 publishedTime: GIT_BUILD_TIME,
-changesMade: [] 
+changesMade: []
 };
 }
 if(devVersionDisplay) setSafeText(devVersionDisplay, GIT_BUILD_NUMBER);
@@ -3123,11 +3111,11 @@ const activeStoryObject = arrayedStoriesList.find(story => story.id === targetSt
 if (!activeStoryObject) return;
 const isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date().toDateString();
 const timeNow = new Date();
-const timeStringFormatted = `${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')}`;
+const timeStringFormatted = ${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')};
 const masterEnabled = masterTimeRestrictionToggle.checked;
 const pastAuthorGuessTime = masterEnabled && timeStringFormatted > cachedAuthorGuessLockTime;
 const pastTitleSuggestionTime = masterEnabled && timeStringFormatted > cachedTitleSuggestionLockTime;
-const hasRated = localStorage.getItem(`rated_${targetStory}`) === "true";
+const hasRated = localStorage.getItem(rated_${targetStory}) === "true";
 friendNameInput.disabled = hasRated;
 ratingValueInput.disabled = hasRated;
 if (detailedReviewInput) toggleInputLock(detailedReviewInput, hasRated);
@@ -3202,9 +3190,9 @@ const d = new Date(storyObject.created);
 const day = String(d.getDate()).padStart(2, '0');
 const month = String(d.getMonth() + 1).padStart(2, '0');
 const year = String(d.getFullYear()).slice(-2);
-dateStr = ` (${day}/${month}/${year})`;
+dateStr =  (${day}/${month}/${year});
 }
-storyDropdownFragment.appendChild(createEl('option', { value: storyObject.id }, `${storyObject.id}${dateStr}`));
+storyDropdownFragment.appendChild(createEl('option', { value: storyObject.id }, ${storyObject.id}${dateStr}));
 adminStorySelectFragment.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 if (duStorySelect) duStorySelectFragment.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
 });
@@ -3227,14 +3215,14 @@ evaluateLocalStorageRestrictions();
 dailyReviewsTableBody.addEventListener('click', (event) => {
 const buttonElement = event.target.closest('.btn-copy-row');
 if (buttonElement && !buttonElement.disabled) {
-const text = `${buttonElement.dataset.reviewer}, ${buttonElement.dataset.title}`;
-navigator.clipboard.writeText(text).then(() => customAlert(`📋 Copied:\n${text}`)).catch(() => customAlert("Clipboard write blocked by browser."));
+const text = ${buttonElement.dataset.reviewer}, ${buttonElement.dataset.title};
+navigator.clipboard.writeText(text).then(() => customAlert(📋 Copied:\n${text})).catch(() => customAlert("Clipboard write blocked by browser."));
 }
 });
 function autoFillPreviousUserInputs() {
 const targetStory = storyDropdown.value;
 if (!targetStory) return;
-const storedUserDataString = localStorage.getItem(`userdata_${targetStory}`);
+const storedUserDataString = localStorage.getItem(userdata_${targetStory});
 if (storedUserDataString) {
 try {
 const parsedDataObject = JSON.parse(storedUserDataString);
@@ -3313,9 +3301,9 @@ function renderAccumulatedWinnersChips() {
 winnersChipsContainer.innerHTML = '';
 const fragment = document.createDocumentFragment();
 accumulatedWinnersStateArray.forEach((nameString, index) => {
-const chip = createEl('div', { className: "winner-chip d-flex align-center gap-2", style: { cursor: "pointer" } });
+const chip = createEl('div', { className: "winner-chip d-flex align-center gap-2 winner-chip-container" });
 chip.appendChild(document.createTextNode(nameString));
-const closeIcon = createEl('span', { style: { fontWeight: "bold", fontSize: "14px", marginLeft: "4px" } }, "×");
+const closeIcon = createEl('span', { className: "winner-chip-close" }, "×");
 chip.appendChild(closeIcon);
 chip.onclick = () => {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
@@ -3364,7 +3352,7 @@ const dataObject = documentSnapshot.data();
 activeStorySnapshotDataCache = dataObject;
 let rawSavedHeadingMatchValue = dataObject._suggestions || "";
 let rawSavedSuggesterMatchValue = dataObject._suggesterName || "";
-if (dataObject._guesses && dataObject._guesses !== "*****") {
+if (dataObject._guesses && dataObject._guesses !== "") {
 accumulatedWinnersStateArray = dataObject._guesses.split(',').map(stringElement => stringElement.trim()).filter(stringElement => stringElement.length > 0);
 }
 const tableFragment = document.createDocumentFragment();
@@ -3408,7 +3396,7 @@ const dateObject = new Date(reviewDateValue);
 const day = String(dateObject.getDate()).padStart(2, '0');
 const month = String(dateObject.getMonth() + 1).padStart(2, '0');
 const year = String(dateObject.getFullYear()).slice(-2);
-displayDate = `${day}/${month}/${year}`;
+displayDate = ${day}/${month}/${year};
 } catch(error) {
 displayDate = "N/A";
 }
@@ -3468,7 +3456,7 @@ saveModNameBtn.addEventListener('click', async () => {
 if((isSystemPaused && !isDeveloperModeUnlocked) || isNameLockedByMod) return;
 const targetNameString = inputModName.value.trim();
 if(!targetNameString || targetNameString === "Mod") { customAlert("Enter a valid custom signature identifier handle."); return; }
-if(!(await customConfirm(`Are you sure you want to change the moderator name to "${targetNameString}"? This option cannot be modified again by a moderator once applied.`))) return;
+if(!(await customConfirm(Are you sure you want to change the moderator name to "${targetNameString}"? This option cannot be modified again by a moderator once applied.))) return;
 saveModNameBtn.disabled = true;
 const success = await updateGlobalConfig({ modName: targetNameString, isNameLocked: true }, "Moderator name locked and compiled successfully.", "Error processing profile modifications.");
 if (!success) saveModNameBtn.disabled = false;
@@ -3478,7 +3466,7 @@ if(isSystemPaused && !isDeveloperModeUnlocked) return;
 const monthValueString = inputMonth.value;
 if(!monthValueString) { customAlert("Please select a month to generate the season string."); return; }
 const generatedSeasonNameString = monthValueString.substring(0, 3) + new Date().getFullYear().toString().slice(-2);
-updateGlobalConfig({ month: monthValueString, topic: inputTopic.value.trim() || "*****", seasonName: generatedSeasonNameString, seasonStarted: true, authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59", titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59" }, `Season Configuration Saved.\nCurrent Season: ${generatedSeasonNameString}`, "Database error saving variables.");
+updateGlobalConfig({ month: monthValueString, topic: inputTopic.value.trim() || "", seasonName: generatedSeasonNameString, seasonStarted: true, authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59", titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59" }, Season Configuration Saved.\nCurrent Season: ${generatedSeasonNameString}, "Database error saving variables.");
 });
 async function handleStoryAddition(inputElement, actionButtonElement) {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
@@ -3489,7 +3477,7 @@ actionButtonElement.disabled = true;
 await setDoc(doc(db, "competitions", titleString), { created: Date.now(), season: globalSeasonCache }, { merge: true });
 dashboardNewStoryInput.value = '';
 actionButtonElement.disabled = false;
-customAlert(`Added: "${titleString}"`);
+customAlert(Added: "${titleString}");
 } catch (error) {
 customAlert("Error writing story.");
 actionButtonElement.disabled = false;
@@ -3507,10 +3495,10 @@ await setDoc(doc(db, "app_state", "version_control"), {
 buildNumber: GIT_BUILD_NUMBER,
 publishedDate: GIT_BUILD_DATE,
 publishedTime: GIT_BUILD_TIME,
-changesMade: arrayUnion(`${GIT_BUILD_NUMBER} | ${notesString}`)
+changesMade: arrayUnion(${GIT_BUILD_NUMBER} | ${notesString})
 }, { merge: true });
 devReleaseNotesInput.value = "";
-customAlert(`Release notes published successfully.\nVersion updated to Build ${GIT_BUILD_NUMBER}.`);
+customAlert(Release notes published successfully.\nVersion updated to Build ${GIT_BUILD_NUMBER}.);
 } catch (error) {
 customAlert("Error syncing version deployment metrics to Firestore storage collections.");
 } finally {
@@ -3521,12 +3509,12 @@ btnPublishReleaseNotes.innerHTML = '<svg width="16" height="16"><use href="#icon
 }
 if(devVersionHistoryBtn) {
 devVersionHistoryBtn.addEventListener('click', () => {
-const wrapperDivElement = createEl('div', { style: { maxHeight: "400px", overflowY: "auto" } });
-const tableElement = createEl('table', { style: { width: "100%", borderCollapse: "collapse", fontSize: "13px" } });
+const wrapperDivElement = createEl('div', { className: "version-history-wrapper" });
+const tableElement = createEl('table', { className: "version-history-table" });
 const tableHeadElement = createEl('thead');
 const tableRowElement = createEl('tr');
-tableRowElement.appendChild(createEl('th', { className: "bg-admin text-white p-3 border-none", style: { border: "1px solid #ccc" } }, "Build Version"));
-tableRowElement.appendChild(createEl('th', { className: "bg-admin text-white p-3 border-none", style: { border: "1px solid #ccc" } }, "Updates"));
+tableRowElement.appendChild(createEl('th', { className: "bg-admin text-white p-3 border-none version-history-th" }, "Build Version"));
+tableRowElement.appendChild(createEl('th', { className: "bg-admin text-white p-3 border-none version-history-th" }, "Updates"));
 tableHeadElement.appendChild(tableRowElement);
 tableElement.appendChild(tableHeadElement);
 const tableBodyElement = createEl('tbody');
@@ -3544,8 +3532,8 @@ versionString = stringPartsArray[0];
 updateTextString = stringPartsArray.slice(1).join(" | ");
 }
 const bodyRowElement = createEl('tr');
-bodyRowElement.appendChild(createEl('td', { className: "p-3 font-bold white-space-nowrap text-center", style: { border: "1px solid #ccc", color: "var(--modal-text)" } }, versionString));
-bodyRowElement.appendChild(createEl('td', { className: "p-3 text-left", style: { border: "1px solid #ccc", color: "var(--modal-text)" } }, updateTextString));
+bodyRowElement.appendChild(createEl('td', { className: "p-3 font-bold white-space-nowrap text-center version-history-td" }, versionString));
+bodyRowElement.appendChild(createEl('td', { className: "p-3 text-left version-history-td" }, updateTextString));
 tableBodyElement.appendChild(bodyRowElement);
 });
 }
@@ -3556,10 +3544,10 @@ showCustomModal('alert', wrapperDivElement.outerHTML);
 }
 sidebarAboutBtn.addEventListener('click', () => {
 const wrapDivElement = createEl('div', { className: "text-left" });
-wrapDivElement.appendChild(createEl('span', { className: "text-md font-bold text-muted", style: { textTransform: "uppercase" } }, "Git Build Information"));
-wrapDivElement.appendChild(createEl('div', { className: "text-xxl font-bold mt-1", style: { color: "var(--primary);" } }, `Build Version: ${GIT_BUILD_NUMBER}`));
-wrapDivElement.appendChild(createEl('div', { className: "text-sm text-muted mb-4 mt-1" }, `Published: ${GIT_BUILD_DATE} at ${GIT_BUILD_TIME}`));
-wrapDivElement.appendChild(createEl('hr', { className: "border-none border-dashed mb-3 mt-3 m-0", style: { borderTop: "1px dashed var(--border-color)" } }));
+wrapDivElement.appendChild(createEl('span', { className: "text-md font-bold text-muted about-text-uppercase" }, "Git Build Information"));
+wrapDivElement.appendChild(createEl('div', { className: "text-xxl font-bold mt-1 about-text-primary" }, Build Version: ${GIT_BUILD_NUMBER}));
+wrapDivElement.appendChild(createEl('div', { className: "text-sm text-muted mb-4 mt-1" }, Published: ${GIT_BUILD_DATE} at ${GIT_BUILD_TIME}));
+wrapDivElement.appendChild(createEl('hr', { className: "border-none border-dashed mb-3 mt-3 m-0 about-dashed-hr" }));
 wrapDivElement.appendChild(createEl('label', { className: "text-lg font-bold mb-1 block", style: { color: "var(--h3-color)" } }, "Latest Developer Updates:"));
 const unorderedListElement = createEl('ul', { className: "about-list" });
 if (currentVersionState.changesMade.length > 0) {
@@ -3588,7 +3576,7 @@ item.appendChild(createEl('span', { className: 'text-md font-bold', style: { col
 const delBtn = createEl('button', { className: 'bg-transparent border-none cursor-pointer p-1 m-0' });
 delBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
 delBtn.onclick = async () => {
-const userInput = await customPrompt(`Type 'Delete' to confirm deletion of season ${season}.`, "");
+const userInput = await customPrompt(Type 'Delete' to confirm deletion of season ${season}., "");
 if (userInput === "Delete") {
 delBtn.disabled = true;
 try {
@@ -3596,7 +3584,7 @@ const storiesToDelete = arrayedStoriesList.filter(s => s.season === season).map(
 for (const storyId of storiesToDelete) {
 await deleteDoc(doc(db, "competitions", storyId));
 }
-customAlert(`Season ${season} deleted successfully.`);
+customAlert(Season ${season} deleted successfully.);
 item.remove();
 globalSeasonsSet.delete(season);
 } catch (e) {
@@ -3617,8 +3605,8 @@ seasonHistoryOverlay.classList.remove('hidden');
 async function compileMasterDataMatrix(seasonFilterString = "All") {
 const querySnapshotObject = await getDocs(collection(db, "competitions"));
 const today = new Date();
-const currentDateFormattedString = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getFullYear()).slice(-2)}`;
-let spreadsheetStringTemplateArr = [`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }</style></head><body><table>`];
+const currentDateFormattedString = ${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getFullYear()).slice(-2)};
+let spreadsheetStringTemplateArr = [<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="[http://www.w3.org/TR/REC-html40](http://www.w3.org/TR/REC-html40)"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }</style></head><body><table>];
 let tempTableBodyContentStringArr = [];
 let storiesArray = [];
 querySnapshotObject.forEach(documentItem => {
@@ -3630,14 +3618,14 @@ storiesArray.push({ id: documentItem.id, data: dataObject });
 });
 storiesArray.sort((elementA, elementB) => (elementB.data.created || 0) - (elementA.data.created || 0));
 if (storiesArray.length === 0) {
-const emptyMessageString = `<tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilterString}</td></tr>`;
-return { rawHtmlTemplate: spreadsheetStringTemplateArr[0] + `</table></body></html>`, tableBodyRows: emptyMessageString };
+const emptyMessageString = <tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilterString}</td></tr>;
+return { rawHtmlTemplate: spreadsheetStringTemplateArr[0] + </table></body></html>, tableBodyRows: emptyMessageString };
 }
 storiesArray.forEach((storyObject) => {
 const dataObject = storyObject.data;
 const storyTitleString = sanitizeText(storyObject.id);
-spreadsheetStringTemplateArr.push(`<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>`);
-tempTableBodyContentStringArr.push(`<tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitleString}</th></tr><tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>`);
+spreadsheetStringTemplateArr.push(<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>);
+tempTableBodyContentStringArr.push(<tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitleString}</th></tr><tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>);
 let reviewRowsArray = [];
 Object.keys(dataObject).forEach(keyString => {
 if (keyString !== 'created' && keyString !== '_suggestions' && keyString !== '_suggesterName' && keyString !== '_guesses' && keyString !== '_authorGivenHeading' && keyString !== 'season') {
@@ -3659,18 +3647,18 @@ guess: "None"
 }
 });
 if (reviewRowsArray.length === 0) {
-const emptyRowString = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">No reviews submitted yet</td></tr>`;
+const emptyRowString = <tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">No reviews submitted yet</td></tr>;
 spreadsheetStringTemplateArr.push(emptyRowString);
 tempTableBodyContentStringArr.push(emptyRowString);
 } else {
 reviewRowsArray.forEach(reviewObject => {
-const rowHtmlString = `<tr><td>${currentDateFormattedString}</td><td>${reviewObject.reviewer}</td><td>${reviewObject.score}</td><td>${reviewObject.guess}</td><td>${reviewObject.title}</td></tr>`;
+const rowHtmlString = <tr><td>${currentDateFormattedString}</td><td>${reviewObject.reviewer}</td><td>${reviewObject.score}</td><td>${reviewObject.guess}</td><td>${reviewObject.title}</td></tr>;
 spreadsheetStringTemplateArr.push(rowHtmlString);
 tempTableBodyContentStringArr.push(rowHtmlString);
 });
 }
 });
-spreadsheetStringTemplateArr.push(`</table></body></html>`);
+spreadsheetStringTemplateArr.push(</table></body></html>);
 return { rawHtmlTemplate: spreadsheetStringTemplateArr.join(''), tableBodyRows: tempTableBodyContentStringArr.join('') };
 }
 async function loadPreviewTable() {
@@ -3691,7 +3679,7 @@ previewBtn.addEventListener('click', async () => {
 toggleMenu(false);
 getElementById('fullscreenPreviewOverlay').classList.remove('hidden');
 document.body.style.overflow = "hidden";
-await loadPreviewTable(); 
+await loadPreviewTable();
 });
 getElementById('previewSeasonSelect').addEventListener('change', loadPreviewTable);
 const triggerDownloadModalFlow = () => {
@@ -3710,7 +3698,7 @@ const targetSeasonString = getElementById('downloadSeasonSelect').value;
 const matrixDataObject = await compileMasterDataMatrix(targetSeasonString);
 const blobObject = new Blob([matrixDataObject.rawHtmlTemplate], { type: "text/html;charset=utf-8" });
 const downloadUrlPath = URL.createObjectURL(blobObject);
-const clientLinkElement = createEl('a', { href: downloadUrlPath, download: `Competition_Master_Data_${targetSeasonString}_${new Date().toISOString().split('T')[0]}.html` });
+const clientLinkElement = createEl('a', { href: downloadUrlPath, download: Competition_Master_Data_${targetSeasonString}_${new Date().toISOString().split('T')[0]}.html });
 document.body.appendChild(clientLinkElement);
 clientLinkElement.click();
 document.body.removeChild(clientLinkElement);
