@@ -2529,6 +2529,7 @@ customAlert(`The ${featureName} feature is currently disabled by the moderator.`
 authorGuessInput.addEventListener(event, () => handleLockedSuggestionInteraction(authorGuessInput, cachedAuthorGuessLockTime, "Author Guess"));
 titleSuggestionInput.addEventListener(event, () => handleLockedSuggestionInteraction(titleSuggestionInput, cachedTitleSuggestionLockTime, "Title Suggestion"));
 });
+
 const switchTab = (isReviewer) => {
 navBtnReviewer.classList.toggle('active-panel-indicator', isReviewer);
 navBtnModerator.classList.toggle('active-panel-indicator', !isReviewer);
@@ -2537,7 +2538,9 @@ feedbackInterface.classList.add('hidden');
 loginInterface.classList.toggle('hidden', isReviewer || isModeratorAuthenticated);
 modInterface.classList.toggle('hidden', isReviewer || !isModeratorAuthenticated);
 devInterface.classList.toggle('hidden', isReviewer || !isDeveloperModeUnlocked);
+if (logoutBtn) logoutBtn.classList.toggle('hidden', isReviewer || !isModeratorAuthenticated);
 };
+
 navBtnReviewer.addEventListener('click', () => switchTab(true));
 navBtnModerator.addEventListener('click', () => switchTab(false));
 ratingForm.addEventListener('submit', async (event) => {
@@ -3203,13 +3206,13 @@ submitLoginBtn.disabled = false;
 setSafeText(submitLoginBtn, "Authenticate");
 }
 });
+
 onAuthStateChanged(auth, (userObject) => {
 if (userObject) {
 const isDev = ["dev@admin.com", "dev@kathasagaram.com"].includes(userObject.email);
 isModeratorAuthenticated = true;
 isDeveloperModeUnlocked = isDev;
 sidebarModOptions.classList.remove('hidden');
-if (logoutBtn) logoutBtn.classList.remove('hidden');
 navBtnModerator.click();
 evaluateLocalStorageRestrictions();
 evaluateSystemFreezeState();
@@ -3217,11 +3220,11 @@ evaluateSystemFreezeState();
 isModeratorAuthenticated = false;
 isDeveloperModeUnlocked = false;
 sidebarModOptions.classList.add('hidden');
-if (logoutBtn) logoutBtn.classList.add('hidden');
 navBtnReviewer.click();
 evaluateLocalStorageRestrictions();
 }
 });
+
 function renderAccumulatedWinnersChips() {
 winnersChipsContainer.innerHTML = '';
 const fragment = document.createDocumentFragment();
