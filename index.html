@@ -1214,6 +1214,49 @@ display: flex;
 flex-direction: column;
 max-height: 90vh;
 overflow-y: auto;
+text-align: center;
+}
+.custom-modal-btn-row {
+display: flex;
+justify-content: center;
+gap: 12px;
+margin-top: 24px;
+}
+#customModalOk, #confirmDownloadBtn {
+background: var(--primary);
+color: #fff;
+border: none;
+padding: 12px 32px;
+border-radius: 12px;
+font-weight: 700;
+cursor: pointer;
+font-size: 15px;
+transition: filter 0.2s;
+}
+#customModalOk:hover, #confirmDownloadBtn:hover {
+filter: brightness(1.1);
+}
+#customModalCancel, #cancelDownloadBtn {
+background: var(--modal-btn-cancel-bg);
+color: var(--modal-btn-cancel-text);
+border: var(--modal-btn-cancel-border);
+padding: 12px 32px;
+border-radius: 12px;
+font-weight: 700;
+cursor: pointer;
+font-size: 15px;
+transition: background 0.2s;
+}
+#customModalCancel:hover, #cancelDownloadBtn:hover {
+background: rgba(255,255,255,0.15);
+}
+#customModalMessage {
+font-size: 16px;
+line-height: 1.5;
+margin-bottom: 8px;
+}
+#customModalInput {
+margin-top: 15px;
 }
 .manual-wrapper-box {
 background: var(--modal-bg);
@@ -1228,29 +1271,10 @@ color: var(--modal-text);
 box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
 box-sizing: border-box;
 }
-.custom-modal-btn-row {
-display: flex;
-justify-content: flex-end;
-gap: 12px;
-margin-top: 20px;
-}
-#customModalOk, #confirmDownloadBtn {
-background: var(--primary);
-color: #fff;
-border: none;
-padding: 12px 24px;
-border-radius: 12px;
-font-weight: 700;
-cursor: pointer;
-}
-#customModalCancel, #cancelDownloadBtn {
-background: rgba(255,255,255,0.08);
-color: #fff;
-border: 1px solid rgba(255,255,255,0.1);
-padding: 12px 24px;
-border-radius: 12px;
-font-weight: 700;
-cursor: pointer;
+.manual-header-row {
+border-bottom: 1px solid var(--border-color);
+padding-bottom: 16px;
+margin-bottom: 20px;
 }
 .manual-close-trigger {
 background: transparent;
@@ -1258,15 +1282,8 @@ border: none;
 color: var(--danger);
 font-size: 24px;
 cursor: pointer;
-}
-#customModalMessage {
-font-size: 16px;
-line-height: 1.5;
-margin-bottom: 10px;
-text-align: left;
-}
-#customModalInput {
-margin-top: 10px;
+padding: 0;
+line-height: 1;
 }
 </style>
 </head>
