@@ -616,28 +616,22 @@ transform: translateY(-1px);
 .btn-submit-review:active {
 transform: scale(0.98);
 }
-
-#modInterface.premium-dashboard {
+.premium-dashboard {
 width: 100vw;
 position: relative;
 left: 50%;
 transform: translateX(-50%);
-background: #00141C;
-padding: 36px 0 0 0; 
 color: #F5F7F8;
 font-family: 'Inter', "SF Pro Display", -apple-system, sans-serif;
 box-sizing: border-box;
 }
+#modInterface.premium-dashboard {
+background: #00141C;
+padding: 36px 0 0 0; 
+}
 #devInterface.premium-dashboard {
-width: 100vw;
-position: relative;
-left: 50%;
-transform: translateX(-50%);
 background: #111111;
 padding: 36px 0 120px 0;
-color: #F5F7F8;
-font-family: 'Inter', "SF Pro Display", -apple-system, sans-serif;
-box-sizing: border-box;
 }
 .premium-content-lock {
 max-width: 800px;
@@ -1886,6 +1880,30 @@ const resetSelect = (element, placeholder) => {
 element.innerHTML = '';
 element.appendChild(createEl('option', { value: "" }, placeholder));
 };
+const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
+function sanitizeText(stringToSanitize) {
+if (stringToSanitize === null || stringToSanitize === undefined) return "";
+return String(stringToSanitize).replace(/[&<>"'`=/]/g, function (match) { return entityMap[match]; });
+}
+function setSafeText(element, text) {
+element.textContent = text;
+}
+const normalizeReview = (key, review) => {
+const isObj = typeof review === 'object' && review !== null;
+const score = isObj ? (review.score ?? "N/A") : review;
+const authorGuess = isObj ? (review.authorGuess ?? "None") : "None";
+const suggestedTitle = isObj ? (review.suggestedTitle ?? "None") : "None";
+const detailedReview = isObj ? (review.detailedReview ?? "") : "";
+const dateStr = isObj ? (review.date ?? "N/A") : "N/A";
+let displayDate = "N/A";
+if (dateStr && dateStr !== "N/A") {
+try {
+const d = new Date(dateStr);
+displayDate = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+} catch(e) {}
+}
+return { reviewer: key, score, authorGuess, suggestedTitle, detailedReview, dateStr, displayDate };
+};
 class CustomDropdown {
 constructor(nativeSelect) {
 this.select = nativeSelect;
@@ -2190,14 +2208,6 @@ menuOverlay.classList.remove('visible');
 menuOpenBtn.addEventListener('click', () => toggleMenu(true));
 menuCloseBtn.addEventListener('click', () => toggleMenu(false));
 menuOverlay.addEventListener('click', () => toggleMenu(false));
-const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
-function sanitizeText(stringToSanitize) {
-if (stringToSanitize === null || stringToSanitize === undefined) return "";
-return String(stringToSanitize).replace(/[&<>"'`=/]/g, function (match) { return entityMap[match]; });
-}
-function setSafeText(element, text) {
-element.textContent = text;
-}
 function showCustomModal(type, messageText, defaultValue = "") {
 return new Promise((resolve) => {
 const overlay = getElementById('customModalOverlay');
@@ -2382,55 +2392,42 @@ if (!storyOptionsBtn.contains(event.target) && !storyOptionsMenu.contains(event.
 storyOptionsMenu.classList.add('hidden');
 }
 });
-function renderPreviewTable() {
-if (!activeStorySnapshotDataCache) return;
-spTableHead.innerHTML = '';
-spTableBody.innerHTML = '';
-const currentStory = adminStorySelect.value;
-spHeading.textContent = `${currentStory}`;
-let rowsData = [];
+function buildPreviewTableHTML(tabType, currentStory) {
+let rowsHtml = '';
 Object.keys(activeStorySnapshotDataCache).forEach(key => {
 if (['created', 'season', '_suggestions', '_suggesterName', '_guesses'].includes(key)) return;
-const review = activeStorySnapshotDataCache[key];
-const score = (typeof review === 'object') ? (review.score ?? "N/A") : review;
-const authorGuess = (typeof review === 'object') ? (review.authorGuess ?? "None") : "None";
-const suggestedTitle = (typeof review === 'object') ? (review.suggestedTitle ?? "None") : "None";
-const detailedReview = (typeof review === 'object') ? (review.detailedReview ?? "") : "";
-const dateStr = (typeof review === 'object') ? (review.date ?? "N/A") : "N/A";
-let displayDate = "N/A";
-if (dateStr && dateStr !== "N/A") {
-try {
-const dateObject = new Date(dateStr);
-const day = String(dateObject.getDate()).padStart(2, '0');
-const month = String(dateObject.getMonth() + 1).padStart(2, '0');
-const year = String(dateObject.getFullYear()).slice(-2);
-displayDate = `${day}/${month}/${year}`;
-} catch(e) {}
-}
-if (currentPreviewTab === 'all') {
-rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(displayDate)}</td><td>${sanitizeText(score)}</td></tr>`);
-} else if (currentPreviewTab === 'detailed' && detailedReview && detailedReview.trim() !== "") {
-rowsData.push(`<tr><td>${sanitizeText(key)}</td><td class="text-left" style="white-space: pre-wrap;">${sanitizeText(detailedReview)}</td></tr>`);
-} else if (currentPreviewTab === 'author' && authorGuess && authorGuess !== "None" && authorGuess.trim() !== "") {
-rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(authorGuess)}</td></tr>`);
-} else if (currentPreviewTab === 'title' && suggestedTitle && suggestedTitle !== "None" && suggestedTitle.trim() !== "") {
-rowsData.push(`<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)}</td></tr>`);
+const rev = normalizeReview(key, activeStorySnapshotDataCache[key]);
+if (tabType === 'all') {
+rowsHtml += `<tr><td>${sanitizeText(rev.reviewer)}</td><td>${sanitizeText(rev.displayDate)}</td><td>${sanitizeText(rev.score)}</td></tr>`;
+} else if (tabType === 'detailed' && rev.detailedReview && rev.detailedReview.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(rev.reviewer)}</td><td class="text-left" style="white-space: pre-wrap;">${sanitizeText(rev.detailedReview)}</td></tr>`;
+} else if (tabType === 'author' && rev.authorGuess && rev.authorGuess !== "None" && rev.authorGuess.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(rev.reviewer)}</td><td>${sanitizeText(rev.authorGuess)}</td></tr>`;
+} else if (tabType === 'title' && rev.suggestedTitle && rev.suggestedTitle !== "None" && rev.suggestedTitle.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(rev.reviewer)}</td><td>${sanitizeText(rev.suggestedTitle)}</td></tr>`;
 }
 });
-if (currentPreviewTab === 'all') {
-spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>`;
-} else if (currentPreviewTab === 'detailed') {
-spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Detailed Review</th></tr>`;
-} else if (currentPreviewTab === 'author') {
-spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Guess the author</th></tr>`;
-} else if (currentPreviewTab === 'title') {
-spTableHead.innerHTML = `<tr><th>Reviewer</th><th>Title Suggestion</th></tr>`;
+let theadHtml = '';
+if (tabType === 'all') {
+theadHtml = `<tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>`;
+} else if (tabType === 'detailed') {
+theadHtml = `<tr><th>Reviewer</th><th>Detailed Review</th></tr>`;
+} else if (tabType === 'author') {
+theadHtml = `<tr><th>Reviewer</th><th>Guess the author</th></tr>`;
+} else if (tabType === 'title') {
+theadHtml = `<tr><th>Reviewer</th><th>Title Suggestion</th></tr>`;
 }
-if (rowsData.length === 0) {
-spTableBody.innerHTML = `<tr><td colspan="3" class="text-center text-muted text-italic py-5">No records found.</td></tr>`;
-} else {
-spTableBody.innerHTML = rowsData.join('');
+if (rowsHtml === '') {
+rowsHtml = `<tr><td colspan="3" class="text-center text-muted text-italic py-5">No records found.</td></tr>`;
 }
+return { theadHtml, rowsHtml };
+}
+function renderPreviewTable() {
+if (!activeStorySnapshotDataCache) return;
+spHeading.textContent = `${adminStorySelect.value}`;
+const { theadHtml, rowsHtml } = buildPreviewTableHTML(currentPreviewTab, adminStorySelect.value);
+spTableHead.innerHTML = theadHtml;
+spTableBody.innerHTML = rowsHtml;
 }
 spTabs.forEach(tab => {
 tab.addEventListener('click', (e) => {
@@ -2457,44 +2454,9 @@ storyPreviewOverlay.classList.remove('hidden');
 spDownloadBtn.addEventListener('click', () => {
 if (!activeStorySnapshotDataCache) return;
 const currentStory = adminStorySelect.value;
-let rowsHtml = '';
-Object.keys(activeStorySnapshotDataCache).forEach(key => {
-if (['created', 'season', '_suggestions', '_suggesterName', '_guesses'].includes(key)) return;
-const review = activeStorySnapshotDataCache[key];
-const score = (typeof review === 'object') ? (review.score ?? "N/A") : review;
-const authorGuess = (typeof review === 'object') ? (review.authorGuess ?? "None") : "None";
-const suggestedTitle = (typeof review === 'object') ? (review.suggestedTitle ?? "None") : "None";
-const detailedReview = (typeof review === 'object') ? (review.detailedReview ?? "") : "";
-const dateStr = (typeof review === 'object') ? (review.date ?? "N/A") : "N/A";
-let displayDate = "N/A";
-if (dateStr && dateStr !== "N/A") {
-try {
-const dateObject = new Date(dateStr);
-const day = String(dateObject.getDate()).padStart(2, '0');
-const month = String(dateObject.getMonth() + 1).padStart(2, '0');
-const year = String(dateObject.getFullYear()).slice(-2);
-displayDate = `${day}/${month}/${year}`;
-} catch(e) {}
-}
-if (currentPreviewTab === 'all') {
-rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(displayDate)}</td><td>${sanitizeText(score)}</td></tr>`;
-} else if (currentPreviewTab === 'detailed' && detailedReview && detailedReview.trim() !== "") {
-rowsHtml += `<tr><td>${sanitizeText(key)}</td><td style="white-space: pre-wrap;">${sanitizeText(detailedReview)}</td></tr>`;
-} else if (currentPreviewTab === 'author' && authorGuess && authorGuess !== "None" && authorGuess.trim() !== "") {
-rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(authorGuess)}</td></tr>`;
-} else if (currentPreviewTab === 'title' && suggestedTitle && suggestedTitle !== "None" && suggestedTitle.trim() !== "") {
-rowsHtml += `<tr><td>${sanitizeText(key)}</td><td>${sanitizeText(suggestedTitle)}</td></tr>`;
-}
-});
-let theadHtml = '';
-if (currentPreviewTab === 'all') {
-theadHtml = `<tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>`;
-} else if (currentPreviewTab === 'detailed') {
-theadHtml = `<tr><th>Reviewer</th><th>Detailed Review</th></tr>`;
-} else if (currentPreviewTab === 'author') {
-theadHtml = `<tr><th>Reviewer</th><th>Guess the author</th></tr>`;
-} else if (currentPreviewTab === 'title') {
-theadHtml = `<tr><th>Reviewer</th><th>Title Suggestion</th></tr>`;
+let { theadHtml, rowsHtml } = buildPreviewTableHTML(currentPreviewTab, currentStory);
+if (rowsHtml.includes("No records found.")) {
+rowsHtml = ""; 
 }
 const htmlString = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reviews - ${sanitizeText(currentStory)}</title><style>body { font-family: sans-serif; margin: 20px; color: #333; }table { width: 100%; border-collapse: collapse; font-size: 14px; }th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }th { background-color: #f8f9fa; color: #2b4c7e; }tr:nth-child(even) { background-color: #f9f9f9; }</style></head><body><h2>${sanitizeText(currentStory)} - ${currentPreviewTab.toUpperCase()}</h2><table><thead>${theadHtml}</thead><tbody>${rowsHtml}</tbody></table></body></html>`;
 const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
@@ -2723,40 +2685,36 @@ return;
 cachedFeedbackData = data;
 cachedMaxCols = maximumColumns;
 devDownloadFeedbackBtn.classList.remove('hidden');
-feedbackTableHead.innerHTML = '';
-const headFragment = document.createDocumentFragment();
-const headTableRow = createEl('tr');
-const tableHeaderOne = createEl('th', { className: "bg-gold text-black text-center p-3 border-bottom-gold-alt", style: { backgroundColor: "#D4A017", color: "#000" } });
-tableHeaderOne.appendChild(createEl('b', {}, "Reviewer"));
-headTableRow.appendChild(tableHeaderOne);
-const tableHeaderTwo = createEl('th', { className: "text-center p-3 border-bottom-gold-alt", style: { backgroundColor: "#D4A017", color: "#000" } });
-tableHeaderTwo.appendChild(createEl('b', {}, "Status"));
-headTableRow.appendChild(tableHeaderTwo);
-headFragment.appendChild(headTableRow);
-feedbackTableHead.appendChild(headFragment);
-feedbackTableBody.innerHTML = '';
-const bodyFragment = document.createDocumentFragment();
+feedbackTableHead.innerHTML = `<tr>
+<th class="bg-gold text-black text-center p-3 border-bottom-gold-alt" style="background-color: #D4A017; color: #000;"><b>Reviewer</b></th>
+<th class="text-center p-3 border-bottom-gold-alt" style="background-color: #D4A017; color: #000;"><b>Status</b></th>
+</tr>`;
+let bodyHtml = '';
 Object.keys(data).forEach(user => {
 if(!feedbackDevState[user]) {
 feedbackDevState[user] = { notes: "", status: "Pending" };
 }
-const tableRowElement = createEl('tr', { className: "hover-bg-alt" });
-const tableDataName = createEl('td', { className: "p-3 border-bottom" });
-const nameButton = createEl('button', { className: "text-white font-bold cursor-pointer m-0 p-0 hover-text-primary", style: { background: "transparent", border: "none", textDecoration: "underline", fontSize: "14px" } }, user);
-nameButton.onclick = () => openFeedbackDetails(user, data[user] || []);
-tableDataName.appendChild(nameButton);
-tableRowElement.appendChild(tableDataName);
-const tableDataStatus = createEl('td', { className: "p-3 border-bottom" });
 const safeIdValue = user.replace(/[^a-zA-Z0-9]/g, '-');
-const statusSpan = createEl('span', { className: "text-white font-bold", id: `status-span-${safeIdValue}` }, feedbackDevState[user].status);
-if (feedbackDevState[user].status === 'Implemented') statusSpan.style.color = '#4a7c59';
-else if (feedbackDevState[user].status === 'Rejected') statusSpan.style.color = 'var(--danger)';
-else if (feedbackDevState[user].status === 'In Review') statusSpan.style.color = '#D4A017';
-tableDataStatus.appendChild(statusSpan);
-tableRowElement.appendChild(tableDataStatus);
-bodyFragment.appendChild(tableRowElement);
+let statusColor = '';
+if (feedbackDevState[user].status === 'Implemented') statusColor = 'color: #4a7c59;';
+else if (feedbackDevState[user].status === 'Rejected') statusColor = 'color: var(--danger);';
+else if (feedbackDevState[user].status === 'In Review') statusColor = 'color: #D4A017;';
+bodyHtml += `<tr class="hover-bg-alt">
+<td class="p-3 border-bottom">
+<button class="text-white font-bold cursor-pointer m-0 p-0 hover-text-primary feedback-user-btn" data-user="${sanitizeText(user)}" style="background: transparent; border: none; text-decoration: underline; font-size: 14px;">${sanitizeText(user)}</button>
+</td>
+<td class="p-3 border-bottom">
+<span class="text-white font-bold" id="status-span-${safeIdValue}" style="${statusColor}">${sanitizeText(feedbackDevState[user].status)}</span>
+</td>
+</tr>`;
 });
-feedbackTableBody.appendChild(bodyFragment);
+feedbackTableBody.innerHTML = bodyHtml;
+document.querySelectorAll('.feedback-user-btn').forEach(btn => {
+btn.addEventListener('click', (e) => {
+const userName = e.target.getAttribute('data-user');
+openFeedbackDetails(userName, data[userName] || []);
+});
+});
 getElementById('fullscreenFeedbackOverlay').classList.remove('hidden');
 document.body.style.overflow = "hidden";
 } else {
@@ -2858,22 +2816,20 @@ getElementById('timeRestrictionsOverlay').classList.remove('hidden');
 });
 function renderEditStoriesList() {
 const listContainer = getElementById('editStoriesList');
-listContainer.innerHTML = '';
-const fragment = document.createDocumentFragment();
+let html = '';
 arrayedStoriesList.forEach(story => {
-const item = createEl('div', { className: 'p-3 border-bottom d-flex align-center gap-3', 'data-id': story.id });
 if (isEditingStoryList) {
-const checkbox = createEl('input', { type: 'checkbox', className: 'es-delete-checkbox m-0 cursor-pointer flex-none', value: story.id, style: {width: '18px', height: '18px'} });
-item.appendChild(checkbox);
-const input = createEl('input', { type: 'text', value: story.id, className: 'flex-1 p-2 radius-1 border-admin', 'data-old-id': story.id });
-item.appendChild(input);
+html += `<div class="p-3 border-bottom d-flex align-center gap-3" data-id="${sanitizeText(story.id)}">
+<input type="checkbox" class="es-delete-checkbox m-0 cursor-pointer flex-none" value="${sanitizeText(story.id)}" style="width: 18px; height: 18px;">
+<input type="text" value="${sanitizeText(story.id)}" class="flex-1 p-2 radius-1 border-admin" data-old-id="${sanitizeText(story.id)}">
+</div>`;
 } else {
-const textSpan = createEl('span', { className: 'text-md font-bold' }, story.id);
-item.appendChild(textSpan);
+html += `<div class="p-3 border-bottom d-flex align-center gap-3" data-id="${sanitizeText(story.id)}">
+<span class="text-md font-bold">${sanitizeText(story.id)}</span>
+</div>`;
 }
-fragment.appendChild(item);
 });
-listContainer.appendChild(fragment);
+listContainer.innerHTML = html;
 }
 getElementById('editStoriesListBtn').addEventListener('click', () => {
 if (isSystemPaused && !isDeveloperModeUnlocked) return;
@@ -3163,7 +3119,6 @@ const storyDropdownFragment = document.createDocumentFragment();
 const adminStorySelectFragment = document.createDocumentFragment();
 const duStorySelectFragment = document.createDocumentFragment();
 let totalReviewsCount = 0;
-let reviewersSet = new Set();
 arrayedStoriesList.forEach(storyObject => {
 let dateStr = "";
 if (storyObject.created) {
@@ -3342,48 +3297,22 @@ const correctGuessesFragment = document.createDocumentFragment();
 Object.keys(dataObject).forEach(reviewerKeyString => {
 if (reviewerKeyString !== 'created' && reviewerKeyString !== '_suggestions' && reviewerKeyString !== '_suggesterName' && reviewerKeyString !== '_guesses' && reviewerKeyString !== 'season') {
 reviewCountInteger++;
-let scoreValue = "N/A";
-let titleValue = "None";
-let guessValue = "None";
-let reviewDateValue = "N/A";
-if (typeof dataObject[reviewerKeyString] === 'object' && dataObject[reviewerKeyString] !== null) {
-scoreValue = dataObject[reviewerKeyString].score ?? "N/A";
-titleValue = dataObject[reviewerKeyString].suggestedTitle || "None";
-guessValue = dataObject[reviewerKeyString].authorGuess || "None";
-reviewDateValue = dataObject[reviewerKeyString].date ?? "N/A";
-const currentSuggestedTitle = dataObject[reviewerKeyString].suggestedTitle ?? "";
-const currentAuthorGuess = dataObject[reviewerKeyString].authorGuess ?? "";
-if(currentSuggestedTitle && currentSuggestedTitle !== "None" && currentSuggestedTitle.trim() !== "") {
-headingToReviewerMap[currentSuggestedTitle] = reviewerKeyString;
-readerSuggestionsFragment.appendChild(createEl('option', { value: currentSuggestedTitle }, currentSuggestedTitle));
+const rev = normalizeReview(reviewerKeyString, dataObject[reviewerKeyString]);
+if(rev.suggestedTitle && rev.suggestedTitle !== "None" && rev.suggestedTitle.trim() !== "") {
+headingToReviewerMap[rev.suggestedTitle] = reviewerKeyString;
+readerSuggestionsFragment.appendChild(createEl('option', { value: rev.suggestedTitle }, rev.suggestedTitle));
 }
-if (currentAuthorGuess && currentAuthorGuess !== "None" && currentAuthorGuess.trim() !== "") {
+if (rev.authorGuess && rev.authorGuess !== "None" && rev.authorGuess.trim() !== "") {
 correctGuessesFragment.appendChild(createEl('option', { value: reviewerKeyString }, reviewerKeyString));
-}
-} else {
-scoreValue = dataObject[reviewerKeyString];
-titleValue = "Legacy";
 }
 const tableRowElement = createEl('tr', { className: "hover-bg-alt", style: { cursor: "pointer" } });
 const tableDataName = createEl('td', { className: "font-bold text-admin hover-text-primary", style: { textDecoration: "underline" } }, reviewerKeyString);
 tableRowElement.onclick = () => {
-openDetailedReviewModal(reviewerKeyString, scoreValue, guessValue, titleValue, reviewDateValue);
+openDetailedReviewModal(reviewerKeyString, rev.score, rev.authorGuess, rev.suggestedTitle, rev.dateStr);
 };
 tableRowElement.appendChild(tableDataName);
-let displayDate = "N/A";
-if (reviewDateValue && reviewDateValue !== "N/A") {
-try {
-const dateObject = new Date(reviewDateValue);
-const day = String(dateObject.getDate()).padStart(2, '0');
-const month = String(dateObject.getMonth() + 1).padStart(2, '0');
-const year = String(dateObject.getFullYear()).slice(-2);
-displayDate = `${day}/${month}/${year}`;
-} catch(error) {
-displayDate = "N/A";
-}
-}
-tableRowElement.appendChild(createEl('td', {}, displayDate));
-tableRowElement.appendChild(createEl('td', {}, scoreValue));
+tableRowElement.appendChild(createEl('td', {}, rev.displayDate));
+tableRowElement.appendChild(createEl('td', {}, rev.score));
 tableRowElement.appendChild(createEl('td', {}, "-"));
 tableFragment.appendChild(tableRowElement);
 }
@@ -3490,19 +3419,9 @@ btnPublishReleaseNotes.innerHTML = '<svg width="16" height="16"><use href="#icon
 }
 if(devVersionHistoryBtn) {
 devVersionHistoryBtn.addEventListener('click', () => {
-const wrapperDivElement = createEl('div', { style: { maxHeight: "400px", overflowY: "auto" } });
-const tableElement = createEl('table', { style: { width: "100%", borderCollapse: "collapse", fontSize: "13px" } });
-const tableHeadElement = createEl('thead');
-const tableRowElement = createEl('tr');
-tableRowElement.appendChild(createEl('th', { className: "bg-admin text-white p-3 border-none", style: { border: "1px solid #ccc" } }, "Build Version"));
-tableRowElement.appendChild(createEl('th', { className: "bg-admin text-white p-3 border-none", style: { border: "1px solid #ccc" } }, "Updates"));
-tableHeadElement.appendChild(tableRowElement);
-tableElement.appendChild(tableHeadElement);
-const tableBodyElement = createEl('tbody');
+let rowsHtml = '';
 if (currentVersionState.changesMade.length === 0) {
-const bodyRowElement = createEl('tr');
-bodyRowElement.appendChild(createEl('td', { colSpan: 2, className: "text-center p-3 text-muted" }, "No version history available."));
-tableBodyElement.appendChild(bodyRowElement);
+rowsHtml = `<tr><td colspan="2" class="text-center p-3 text-muted">No version history available.</td></tr>`;
 } else {
 [...currentVersionState.changesMade].reverse().forEach(logString => {
 let versionString = "Legacy";
@@ -3512,72 +3431,88 @@ const stringPartsArray = logString.split(" | ");
 versionString = stringPartsArray[0];
 updateTextString = stringPartsArray.slice(1).join(" | ");
 }
-const bodyRowElement = createEl('tr');
-bodyRowElement.appendChild(createEl('td', { className: "p-3 font-bold white-space-nowrap text-center", style: { border: "1px solid #ccc", color: "var(--modal-text)" } }, versionString));
-bodyRowElement.appendChild(createEl('td', { className: "p-3 text-left", style: { border: "1px solid #ccc", color: "var(--modal-text)" } }, updateTextString));
-tableBodyElement.appendChild(bodyRowElement);
+rowsHtml += `<tr>
+<td class="p-3 font-bold white-space-nowrap text-center" style="border: 1px solid #ccc; color: var(--modal-text);">${sanitizeText(versionString)}</td>
+<td class="p-3 text-left" style="border: 1px solid #ccc; color: var(--modal-text);">${sanitizeText(updateTextString)}</td>
+</tr>`;
 });
 }
-tableElement.appendChild(tableBodyElement);
-wrapperDivElement.appendChild(tableElement);
-showCustomModal('alert', wrapperDivElement.outerHTML);
+const html = `<div style="max-height: 400px; overflow-y: auto;">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<thead>
+<tr>
+<th class="bg-admin text-white p-3 border-none" style="border: 1px solid #ccc;">Build Version</th>
+<th class="bg-admin text-white p-3 border-none" style="border: 1px solid #ccc;">Updates</th>
+</tr>
+</thead>
+<tbody>${rowsHtml}</tbody>
+</table>
+</div>`;
+showCustomModal('alert', html);
 });
 }
 sidebarAboutBtn.addEventListener('click', () => {
-const wrapDivElement = createEl('div', { className: "text-left" });
-wrapDivElement.appendChild(createEl('span', { className: "text-md font-bold text-muted", style: { textTransform: "uppercase" } }, "Git Build Information"));
-wrapDivElement.appendChild(createEl('div', { className: "text-xxl font-bold mt-1", style: { color: "var(--primary);" } }, `Build Version: ${GIT_BUILD_NUMBER}`));
-wrapDivElement.appendChild(createEl('div', { className: "text-sm text-muted mb-4 mt-1" }, `Published: ${GIT_BUILD_DATE} at ${GIT_BUILD_TIME}`));
-wrapDivElement.appendChild(createEl('hr', { className: "border-none border-dashed mb-3 mt-3 m-0", style: { borderTop: "1px dashed var(--border-color)" } }));
-wrapDivElement.appendChild(createEl('label', { className: "text-lg font-bold mb-1 block", style: { color: "var(--h3-color)" } }, "Latest Developer Updates:"));
-const unorderedListElement = createEl('ul', { className: "about-list" });
+let listHtml = '';
 if (currentVersionState.changesMade.length > 0) {
 [...currentVersionState.changesMade].reverse().slice(0, 5).forEach(logString => {
-unorderedListElement.appendChild(createEl('li', {}, logString.includes(" | ") ? logString.split(" | ").slice(1).join(" | ") : logString));
+const text = logString.includes(" | ") ? logString.split(" | ").slice(1).join(" | ") : logString;
+listHtml += `<li>${sanitizeText(text)}</li>`;
 });
 } else {
-unorderedListElement.appendChild(createEl('li', {}, "Initial base system framework architecture initialized."));
+listHtml += `<li>Initial base system framework architecture initialized.</li>`;
 }
-wrapDivElement.appendChild(unorderedListElement);
+const html = `<div class="text-left">
+<span class="text-md font-bold text-muted" style="text-transform: uppercase;">Git Build Information</span>
+<div class="text-xxl font-bold mt-1" style="color: var(--primary);">${sanitizeText(`Build Version: ${GIT_BUILD_NUMBER}`)}</div>
+<div class="text-sm text-muted mb-4 mt-1">${sanitizeText(`Published: ${GIT_BUILD_DATE} at${GIT_BUILD_TIME}`)}</div>
+<hr class="border-none border-dashed mb-3 mt-3 m-0" style="border-top: 1px dashed var(--border-color);">
+<label class="text-lg font-bold mb-1 block" style="color: var(--h3-color);">Latest Developer Updates:</label>
+<ul class="about-list">${listHtml}</ul>
+</div>`;
 toggleMenu(false);
-showCustomModal('alert', wrapDivElement.outerHTML);
+showCustomModal('alert', html);
 });
 if(devSeasonHistoryBtn) {
 devSeasonHistoryBtn.addEventListener('click', () => {
-seasonHistoryList.innerHTML = '';
 const allSeasons = new Set([...globalSeasonsSet]);
 if (globalSeasonCache && globalSeasonCache !== "---") allSeasons.add(globalSeasonCache);
 if (allSeasons.size === 0) {
-seasonHistoryList.appendChild(createEl('div', {className: 'p-3 text-center text-muted'}, 'No season history found.'));
+seasonHistoryList.innerHTML = `<div class="p-3 text-center text-muted">No season history found.</div>`;
 } else {
+let html = '';
 allSeasons.forEach(season => {
-if(season === "Legacy" || season === "All") return;
-const item = createEl('div', { className: 'p-3 border-bottom d-flex justify-between align-center gap-3' });
-item.appendChild(createEl('span', { className: 'text-md font-bold', style: { color: 'var(--modal-text)' } }, season));
-const delBtn = createEl('button', { className: 'bg-transparent border-none cursor-pointer p-1 m-0' });
-delBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
-delBtn.onclick = async () => {
+if (season !== "Legacy" && season !== "All") {
+html += `<div class="p-3 border-bottom d-flex justify-between align-center gap-3" id="sh-item-${sanitizeText(season)}">
+<span class="text-md font-bold" style="color: var(--modal-text);">${sanitizeText(season)}</span>
+<button class="bg-transparent border-none cursor-pointer p-1 m-0 sh-del-btn" data-season="${sanitizeText(season)}">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+</button>
+</div>`;
+}
+});
+seasonHistoryList.innerHTML = html;
+document.querySelectorAll('.sh-del-btn').forEach(btn => {
+btn.addEventListener('click', async (e) => {
+const season = e.currentTarget.getAttribute('data-season');
 const userInput = await customPrompt(`Type 'Delete' to confirm deletion of season ${season}.`, "");
 if (userInput === "Delete") {
-delBtn.disabled = true;
+e.currentTarget.disabled = true;
 try {
 const storiesToDelete = arrayedStoriesList.filter(s => s.season === season).map(s => s.id);
 for (const storyId of storiesToDelete) {
 await deleteDoc(doc(db, "competitions", storyId));
 }
 customAlert(`Season ${season} deleted successfully.`);
-item.remove();
+getElementById(`sh-item-${season}`).remove();
 globalSeasonsSet.delete(season);
-} catch (e) {
+} catch (error) {
 customAlert("Error deleting season.");
-delBtn.disabled = false;
+e.currentTarget.disabled = false;
 }
 } else if (userInput !== null) {
 customAlert("Deletion cancelled.");
 }
-};
-item.appendChild(delBtn);
-seasonHistoryList.appendChild(item);
+});
 });
 }
 seasonHistoryOverlay.classList.remove('hidden');
@@ -3610,21 +3545,13 @@ tempTableBodyContentStringArr.push(`<tr><th colspan="5" style="background-color:
 let reviewRowsArray = [];
 Object.keys(dataObject).forEach(keyString => {
 if (keyString !== 'created' && keyString !== '_suggestions' && keyString !== '_suggesterName' && keyString !== '_guesses' && keyString !== '_authorGivenHeading' && keyString !== 'season') {
-if (typeof dataObject[keyString] === 'object' && dataObject[keyString] !== null) {
+const rev = normalizeReview(keyString, dataObject[keyString]);
 reviewRowsArray.push({
-reviewer: sanitizeText(keyString),
-score: sanitizeText(dataObject[keyString].score ?? "N/A"),
-title: sanitizeText(dataObject[keyString].suggestedTitle ?? "None"),
-guess: sanitizeText(dataObject[keyString].authorGuess ?? "None")
+reviewer: sanitizeText(rev.reviewer),
+score: sanitizeText(rev.score),
+title: sanitizeText(rev.suggestedTitle !== "None" ? rev.suggestedTitle : (typeof dataObject[keyString] === 'object' ? "None" : "Legacy")),
+guess: sanitizeText(rev.authorGuess)
 });
-} else {
-reviewRowsArray.push({
-reviewer: sanitizeText(keyString),
-score: sanitizeText(dataObject[keyString]),
-title: "Legacy",
-guess: "None"
-});
-}
 }
 });
 if (reviewRowsArray.length === 0) {
