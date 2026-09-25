@@ -1182,7 +1182,7 @@ box-shadow: 0 4px 10px rgba(244, 180, 0, 0.3);
 display: block;
 }
 
-#customModalOverlay, #downloadSeasonModal, .fullscreen-manual-view {
+.master-modal-overlay, #customModalOverlay {
 position: fixed;
 top: 0;
 left: 0;
@@ -1197,7 +1197,7 @@ justify-content: center;
 box-sizing: border-box;
 padding: 20px;
 }
-#customModalOverlay.hidden, #downloadSeasonModal.hidden, .fullscreen-manual-view.hidden {
+.master-modal-overlay.hidden, #customModalOverlay.hidden {
 display: none !important;
 }
 .custom-modal-box {
@@ -1402,13 +1402,6 @@ About
 </svg>
 Menu
 </button>
-<button type="button" id="logoutBtn" class="btn-logout hidden m-0">
-<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-<polyline points="16 17 21 12 16 7"></polyline>
-<line x1="21" y1="12" x2="9" y2="12"></line>
-</svg>
-</button>
 </div>
 <div id="pausedBanner" class="status-alert hidden">
 <div class="status-icon-box">
@@ -1517,9 +1510,18 @@ Authentication Panel
 <div id="modInterface" class="hidden premium-dashboard">
     <div class="premium-content-lock">
         
-        <div class="premium-header">
-            <h2>Moderator Dashboard</h2>
-            <p>Review. Manage. Improve.</p>
+        <div class="premium-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <h2>Moderator Dashboard</h2>
+                <p>Review. Manage. Improve.</p>
+            </div>
+            <button type="button" id="logoutBtn" class="btn-logout hidden m-0" style="background: transparent; border: none; color: var(--danger); cursor: pointer; padding: 8px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </button>
         </div>
 
         <div class="mod-premium-card add-story-card">
@@ -1711,20 +1713,20 @@ Authentication Panel
 </div>
 </div>
 </div>
-<div id="downloadSeasonModal" class="hidden">
-<div class="custom-modal-box">
+
+<div id="masterOverlay" class="master-modal-overlay hidden">
+<div id="downloadSeasonBox" class="custom-modal-box hidden text-left" style="max-width:420px;">
 <h3 class="mt-0">Select Season to Download</h3>
 <select id="downloadSeasonSelect" class="w-100 p-3 mb-5 radius-2 border-none bg-admin text-white" style="background: var(--modal-input-bg); color: var(--modal-text); border: var(--border);">
 <option value="All">All Seasons</option>
 </select>
 <div class="custom-modal-btn-row">
-<button id="cancelDownloadBtn" class="close-modal-btn" data-target="downloadSeasonModal">Cancel</button>
+<button id="cancelDownloadBtn" class="close-modal-btn">Cancel</button>
 <button id="confirmDownloadBtn" class="bg-admin text-white" style="background: var(--primary);">Download</button>
 </div>
 </div>
-</div>
-<div id="timeRestrictionsOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000004; backdrop-filter: blur(4px);">
-<div class="custom-modal-box w-100 box-border" style="max-width: 400px; padding: 25px; text-align: left;">
+
+<div id="timeRestrictionsBox" class="custom-modal-box hidden text-left" style="max-width: 400px; padding: 25px;">
 <div class="d-flex justify-between align-center border-bottom pb-3 mb-4">
 <h3 class="m-0" style="color: var(--primary);">Enable Time restriction</h3>
 <label class="switch scale-80 m-0">
@@ -1763,11 +1765,10 @@ Authentication Panel
 <button type="button" id="updateLockTimesBtn" class="btn-mod-action w-max padding-6-12 text-md sys-lockable">Update</button>
 </div>
 </div>
-<button type="button" class="bg-transparent border-none text-muted cursor-pointer font-bold mt-2 close-modal-btn w-100 text-center" data-target="timeRestrictionsOverlay">Close</button>
+<button type="button" class="bg-transparent border-none text-muted cursor-pointer font-bold mt-2 close-modal-btn w-100 text-center">Close</button>
 </div>
-</div>
-<div id="editStoriesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000003; backdrop-filter: blur(4px);">
-<div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 80vh;">
+
+<div id="editStoriesBox" class="custom-modal-box hidden text-left" style="max-width: 500px; padding: 20px;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <button type="button" id="esDeleteBtn" class="hidden bg-transparent border-none cursor-pointer p-1 m-0">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
@@ -1777,19 +1778,18 @@ Authentication Panel
 <svg id="esPencilIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
 <svg id="esSaveIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
 </button>
-<button type="button" id="esCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="editStoriesOverlay">
+<button type="button" id="esCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
 </div>
 <div id="editStoriesList" style="overflow-y: auto; flex-grow: 1;"></div>
 </div>
-</div>
-<div id="dailyUpdatesOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000005; backdrop-filter: blur(4px);">
-<div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 25px; text-align: left;">
+
+<div id="dailyUpdatesBox" class="custom-modal-box hidden text-left" style="max-width: 500px; padding: 25px;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <select id="duStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
-<button type="button" id="closeDailyUpdatesBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn ml-3" data-target="dailyUpdatesOverlay">
+<button type="button" id="closeDailyUpdatesBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn ml-3">
 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
@@ -1817,9 +1817,8 @@ Authentication Panel
 <button type="button" id="saveNotesBtn" class="btn-mod-action w-max padding-10-40 sys-lockable">Save</button>
 </div>
 </div>
-</div>
-<div id="fullscreenPreviewOverlay" class="fullscreen-manual-view hidden">
-<div class="manual-wrapper-box max-w-900 w-100">
+
+<div id="fullscreenPreviewBox" class="manual-wrapper-box hidden">
 <div class="manual-header-row d-flex justify-between align-center border-bottom pt-0 pb-2 mb-5" style="border-bottom: 2px solid var(--primary);">
 <div class="d-flex align-center gap-4">
 <h2 class="manual-title border-none m-0 p-0">Season Preview</h2>
@@ -1828,7 +1827,7 @@ Authentication Panel
 </select>
 <span id="previewLoadingBadge" class="text-admin text-sm hidden" style="display: none;">⏳ Loading...</span>
 </div>
-<button type="button" id="previewCloseBtn" class="manual-close-trigger close-modal-btn" data-target="fullscreenPreviewOverlay">✕</button>
+<button type="button" id="previewCloseBtn" class="manual-close-trigger close-modal-btn">✕</button>
 </div>
 <div class="webview-container m-0 mt-0">
 <div class="webview-scroll-frame max-h-70vh">
@@ -1838,9 +1837,8 @@ Authentication Panel
 </div>
 </div>
 </div>
-</div>
-<div id="fullscreenFeedbackOverlay" class="fullscreen-manual-view hidden">
-<div class="manual-wrapper-box max-w-900 w-100">
+
+<div id="fullscreenFeedbackBox" class="manual-wrapper-box hidden">
 <div class="manual-header-row d-flex justify-between align-center border-bottom pt-0 pb-2 mb-5" style="border-bottom: 2px solid #D4A017;">
 <div class="d-flex align-center gap-4">
 <h2 class="manual-title border-none m-0 p-0 color-gold-alt shadow-text-gold">Platform Feedback</h2>
@@ -1849,7 +1847,7 @@ Authentication Panel
 Download
 </button>
 </div>
-<button type="button" id="feedbackCloseBtn" class="manual-close-trigger close-modal-btn" data-target="fullscreenFeedbackOverlay">✕</button>
+<button type="button" id="feedbackCloseBtn" class="manual-close-trigger close-modal-btn">✕</button>
 </div>
 <div class="m-0 mt-0">
 <div class="webview-scroll-frame max-h-70vh" style="border: none; background: transparent; overflow-x: auto;">
@@ -1860,9 +1858,8 @@ Download
 </div>
 </div>
 </div>
-</div>
-<div id="detailedReviewOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000002; backdrop-filter: blur(4px);">
-<div class="custom-modal-box w-100 box-border" style="max-width: 400px; padding: 25px; text-align: left;">
+
+<div id="detailedReviewBox" class="custom-modal-box hidden text-left" style="max-width: 400px; padding: 25px;">
 <h3 class="mt-0 border-bottom pb-2 mb-3" style="color: var(--primary);">Detailed Review</h3>
 <div class="mb-2"><strong style="color: var(--h3-color);">Reviewer:</strong> <span id="drModalName" style="color: var(--text-color);"></span></div>
 <div class="mb-2"><strong style="color: var(--h3-color);">Date:</strong> <span id="drModalDate" style="color: var(--text-color);"></span></div>
@@ -1870,21 +1867,20 @@ Download
 <div class="mb-2"><strong style="color: var(--h3-color);">Author Guess:</strong> <span id="drModalGuess" style="color: var(--text-color);"></span></div>
 <div class="mb-4"><strong style="color: var(--h3-color);">Suggested Title:</strong> <span id="drModalSuggTitle" style="color: var(--text-color);"></span></div>
 <div class="d-flex justify-end gap-3 mt-4">
-<button type="button" id="drModalCloseBtn" class="bg-admin text-white padding-6-12 radius-1 shadow-none cursor-pointer border-none font-bold text-md close-modal-btn" data-target="detailedReviewOverlay">Close</button>
+<button type="button" id="drModalCloseBtn" class="bg-admin text-white padding-6-12 radius-1 shadow-none cursor-pointer border-none font-bold text-md close-modal-btn">Close</button>
 </div>
 </div>
-</div>
-<div id="feedbackDetailOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000001; backdrop-filter: blur(4px);">
-<div class="custom-modal-box bg-darker-alt border-gold-alt w-100 box-border" style="max-width: 500px; padding: 25px; text-align: left;">
-<h3 id="fdModalTitle" class="color-gold-alt mt-0 border-bottom-gold-alt pb-2 mb-3">Reviewer Feedback</h3>
+
+<div id="feedbackDetailBox" class="custom-modal-box hidden text-left" style="max-width: 500px; padding: 25px; background: #0b1a20; border-color: #D4A017;">
+<h3 id="fdModalTitle" class="color-gold-alt mt-0 border-bottom-gold-alt pb-2 mb-3" style="color: #D4A017;">Reviewer Feedback</h3>
 <div id="fdModalComments" class="mb-4 text-white text-md" style="max-height: 200px; overflow-y: auto;"></div>
 <div class="form-group mb-3">
-<label class="color-gold-alt text-sm mb-1 block">Developer Notes</label>
-<input type="text" id="fdModalNotes" class="p-2 border-gold-alt radius-1 box-border bg-dark-alt text-white w-100">
+<label class="color-gold-alt text-sm mb-1 block" style="color: #D4A017;">Developer Notes</label>
+<input type="text" id="fdModalNotes" class="p-2 border-gold-alt radius-1 box-border text-white w-100" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">
 </div>
 <div class="form-group mb-4">
-<label class="color-gold-alt text-sm mb-1 block">Status</label>
-<select id="fdModalStatus" class="p-2 border-gold-alt radius-1 bg-dark-alt text-white w-100 box-border cursor-pointer">
+<label class="color-gold-alt text-sm mb-1 block" style="color: #D4A017;">Status</label>
+<select id="fdModalStatus" class="p-2 border-gold-alt radius-1 text-white w-100 box-border cursor-pointer" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">
 <option value="Pending">Pending</option>
 <option value="In Review">In Review</option>
 <option value="Implemented">Implemented</option>
@@ -1892,19 +1888,18 @@ Download
 </select>
 </div>
 <div class="d-flex justify-end gap-3 mt-2">
-<button type="button" id="fdModalCloseBtn" class="bg-dark-alt text-white border-gold-alt padding-6-12 radius-1 shadow-none cursor-pointer close-modal-btn" data-target="feedbackDetailOverlay">Cancel</button>
-<button type="button" id="fdModalSaveBtn" class="dev-btn-gold padding-6-12 radius-1 cursor-pointer">Save Changes</button>
+<button type="button" id="fdModalCloseBtn" class="text-white padding-6-12 radius-1 shadow-none cursor-pointer close-modal-btn" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">Cancel</button>
+<button type="button" id="fdModalSaveBtn" class="premium-btn-gold padding-6-12 radius-1 cursor-pointer">Save Changes</button>
 </div>
 </div>
-</div>
-<div id="storyPreviewOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000006; backdrop-filter: blur(4px);">
-<div class="custom-modal-box w-100 box-border" style="max-width: 600px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 85vh;">
+
+<div id="storyPreviewBox" class="custom-modal-box hidden text-left" style="max-width: 600px; padding: 20px;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <button type="button" id="spDownloadBtn" class="bg-transparent border-none cursor-pointer p-1" style="color: var(--primary);">
 <svg width="24" height="24"><use href="#icon-download"></use></svg>
 </button>
 <h3 id="spHeading" class="m-0 text-center flex-1" style="color: var(--primary);">Story Preview</h3>
-<button type="button" id="spCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="storyPreviewOverlay">
+<button type="button" id="spCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
@@ -1923,18 +1918,19 @@ Download
 </table>
 </div>
 </div>
-</div>
-<div id="seasonHistoryOverlay" class="hidden d-flex align-center justify-center w-100 h-100 box-border" style="position: fixed; top: 0; left: 0; background: var(--modal-overlay); z-index: 1000008; backdrop-filter: blur(4px);">
-<div class="custom-modal-box w-100 box-border" style="max-width: 500px; padding: 20px; text-align: left; display: flex; flex-direction: column; max-height: 80vh;">
+
+<div id="seasonHistoryBox" class="custom-modal-box hidden text-left" style="max-width: 500px; padding: 20px;">
 <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
 <h3 class="m-0" style="color: var(--primary);">Season History</h3>
-<button type="button" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn" data-target="seasonHistoryOverlay">
+<button type="button" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
 <div id="seasonHistoryList" style="overflow-y: auto; flex-grow: 1;"></div>
 </div>
+
 </div>
+
 <script type="module">
 const getElementById = id => document.getElementById(id);
 function createEl(tag, attributes = {}, text = "") {
@@ -1947,23 +1943,66 @@ else element.setAttribute(key, attributes[key]);
 if (text) element.textContent = text;
 return element;
 }
+
 document.addEventListener('click', (event) => {
 const closeBtn = event.target.closest('.close-modal-btn');
 if (closeBtn) {
-getElementById(closeBtn.dataset.target).classList.add('hidden');
+if(closeBtn.id === 'customModalCancel' || closeBtn.id === 'customModalOk') return;
+getElementById('masterOverlay').classList.add('hidden');
 document.body.style.overflow = "";
 if (closeBtn.id === 'fdModalCloseBtn') currentFeedbackUser = null;
 }
+
 const openWrappers = document.querySelectorAll('.custom-select-wrapper.open');
 for (let i = 0; i < openWrappers.length; i++) {
 if (!openWrappers[i].contains(event.target)) {
 const selectElement = openWrappers[i].querySelector('select');
-if (selectElement && selectElement._customDropdown) {
-selectElement._customDropdown.close();
+if (selectElement && selectElement._customDropdown) selectElement._customDropdown.close();
 }
 }
+
+const spTab = event.target.closest('.sp-tab-btn');
+if (spTab) {
+document.querySelectorAll('.sp-tab-btn').forEach(t => { t.style.background = 'var(--input-bg)'; t.style.color = 'var(--text-color)'; });
+spTab.style.background = 'var(--accent)';
+spTab.style.color = 'var(--btn-accent-text)';
+currentPreviewTab = spTab.dataset.tab;
+renderPreviewTable();
+}
+
+const shDelBtn = event.target.closest('.sh-del-btn');
+if (shDelBtn) {
+const season = shDelBtn.dataset.season;
+customPrompt(`Type 'Delete' to confirm deletion of season ${season}.`, "").then(async userInput => {
+if (userInput === "Delete") {
+shDelBtn.disabled = true;
+try {
+const storiesToDelete = arrayedStoriesList.filter(s => s.season === season).map(s => s.id);
+for (const storyId of storiesToDelete) await deleteDoc(doc(db, "competitions", storyId));
+customAlert(`Season ${season} deleted successfully.`);
+getElementById(`sh-item-${season}`).remove();
+globalSeasonsSet.delete(season);
+} catch (error) {
+customAlert("Error deleting season.");
+shDelBtn.disabled = false;
+}
+} else if (userInput !== null) customAlert("Deletion cancelled.");
+});
+}
+
+const fbUserBtn = event.target.closest('.feedback-user-btn');
+if (fbUserBtn) {
+const userName = fbUserBtn.dataset.user;
+openFeedbackDetails(userName, cachedFeedbackData[userName] || []);
+}
+
+const btnCopy = event.target.closest('.btn-copy-row');
+if (btnCopy && !btnCopy.disabled) {
+const text = `${btnCopy.dataset.reviewer}, ${btnCopy.dataset.title}`;
+navigator.clipboard.writeText(text).then(() => customAlert(`📋 Copied:\n${text}`)).catch(() => customAlert("Clipboard write blocked by browser."));
 }
 });
+
 const toggleInputLock = (element, isLocked) => {
 element.readOnly = isLocked;
 element.style.opacity = isLocked ? "0.5" : "1";
@@ -2122,14 +2161,6 @@ checkMark.className = 'custom-select-check';
 checkMark.innerHTML = '<svg width="16" height="16"><use href="#icon-check"></use></svg>';
 optionElement.appendChild(checkMark);
 }
-optionElement.addEventListener('click', (event) => {
-event.stopPropagation();
-this.selectValue(index);
-this.close();
-});
-optionElement.addEventListener('mouseenter', () => {
-this.setFocusIndex(index);
-});
 this.panel.appendChild(optionElement);
 });
 }
@@ -2188,6 +2219,20 @@ setupEvents() {
 this.trigger.addEventListener('click', (event) => {
 event.stopPropagation();
 this.toggle();
+});
+this.panel.addEventListener('click', (e) => {
+const opt = e.target.closest('.custom-select-option');
+if(!opt) return;
+e.stopPropagation();
+const index = Array.from(this.panel.children).indexOf(opt);
+this.selectValue(index);
+this.close();
+});
+this.panel.addEventListener('mouseover', (e) => {
+const opt = e.target.closest('.custom-select-option');
+if(!opt) return;
+const index = Array.from(this.panel.children).indexOf(opt);
+this.setFocusIndex(index);
 });
 this.trigger.addEventListener('keydown', (event) => {
 if (this.select.disabled) return;
@@ -2289,6 +2334,14 @@ const month = monthNames[today.getMonth()];
 const year = today.getFullYear();
 dateElement.innerHTML = `<div class="calendar-month">${month}</div><div class="calendar-day">${day}</div><div class="calendar-year">${year}</div>`;
 }
+
+function openOverlay(boxId) {
+document.querySelectorAll('#masterOverlay > div').forEach(el => el.classList.add('hidden'));
+getElementById(boxId).classList.remove('hidden');
+getElementById('masterOverlay').classList.remove('hidden');
+document.body.style.overflow = "hidden";
+}
+
 function toggleMenu(show) {
 if (show) {
 sideMenu.classList.add('open');
@@ -2345,6 +2398,24 @@ else resolve(false);
 };
 });
 }
+
+async function handleAsyncAction(btn, loadTxt, origTxt, action, onErr) {
+btn.disabled = true;
+if(loadTxt) setSafeText(btn, loadTxt);
+try {
+await action();
+} catch (e) {
+if(onErr) onErr(e);
+else customAlert("Operation failed. Please check your connection.");
+} finally {
+btn.disabled = false;
+if(origTxt) {
+if(origTxt.includes('<svg')) btn.innerHTML = origTxt;
+else setSafeText(btn, origTxt);
+}
+}
+}
+
 const customAlert = (messageText) => showCustomModal('alert', messageText);
 const customConfirm = (messageText) => showCustomModal('confirm', messageText);
 const customPrompt = (messageText, defaultValue) => showCustomModal('prompt', messageText, defaultValue);
@@ -2434,13 +2505,11 @@ const navBtnReviewer = getElementById('navBtnReviewer');
 const navBtnModerator = getElementById('navBtnModerator');
 const logoutBtn = getElementById('logoutBtn');
 const previewStoryReviewsBtn = getElementById('previewStoryReviewsBtn');
-const storyPreviewOverlay = getElementById('storyPreviewOverlay');
 const spTableHead = getElementById('spTableHead');
 const spTableBody = getElementById('spTableBody');
 const spHeading = getElementById('spHeading');
 const spTabs = document.querySelectorAll('.sp-tab-btn');
 const spDownloadBtn = getElementById('spDownloadBtn');
-const feedbackDetailOverlay = getElementById('feedbackDetailOverlay');
 const fdModalTitle = getElementById('fdModalTitle');
 const fdModalComments = getElementById('fdModalComments');
 const fdModalNotes = getElementById('fdModalNotes');
@@ -2448,14 +2517,12 @@ const fdModalStatus = getElementById('fdModalStatus');
 const fdModalSaveBtn = getElementById('fdModalSaveBtn');
 const duStorySelect = getElementById('duStorySelect');
 const devSeasonHistoryBtn = getElementById('devSeasonHistoryBtn');
-const seasonHistoryOverlay = getElementById('seasonHistoryOverlay');
 const seasonHistoryList = getElementById('seasonHistoryList');
 const totalStoriesStat = getElementById('totalStoriesStat');
 const totalReviewsStat = getElementById('totalReviewsStat');
 const activeReviewersStat = getElementById('activeReviewersStat');
 let currentFeedbackUser = null;
 let currentPreviewTab = 'all';
-const detailedReviewOverlay = getElementById('detailedReviewOverlay');
 const drModalName = getElementById('drModalName');
 const drModalDate = getElementById('drModalDate');
 const drModalRating = getElementById('drModalRating');
@@ -2472,18 +2539,13 @@ setSafeText(drModalDate, formattedDate || "N/A");
 setSafeText(drModalRating, rating);
 setSafeText(drModalGuess, guess);
 setSafeText(drModalSuggTitle, suggTitle);
-detailedReviewOverlay.classList.remove('hidden');
+openOverlay('detailedReviewBox');
 }
 const storyOptionsBtn = getElementById('storyOptionsBtn');
 const storyOptionsMenu = getElementById('storyOptionsMenu');
 storyOptionsBtn.addEventListener('click', (event) => {
 event.stopPropagation();
 storyOptionsMenu.classList.toggle('hidden');
-});
-document.addEventListener('click', (event) => {
-if (!storyOptionsBtn.contains(event.target) && !storyOptionsMenu.contains(event.target)) {
-storyOptionsMenu.classList.add('hidden');
-}
 });
 function buildPreviewTableHTML(tabType, currentStory) {
 let rowsHtml = '';
@@ -2522,15 +2584,6 @@ const { theadHtml, rowsHtml } = buildPreviewTableHTML(currentPreviewTab, adminSt
 spTableHead.innerHTML = theadHtml;
 spTableBody.innerHTML = rowsHtml;
 }
-spTabs.forEach(tab => {
-tab.addEventListener('click', (e) => {
-spTabs.forEach(t => { t.style.background = 'var(--input-bg)'; t.style.color = 'var(--text-color)'; });
-e.target.style.background = 'var(--accent)';
-e.target.style.color = 'var(--btn-accent-text)';
-currentPreviewTab = e.target.dataset.tab;
-renderPreviewTable();
-});
-});
 previewStoryReviewsBtn.addEventListener('click', () => {
 storyOptionsMenu.classList.add('hidden');
 if (!activeStorySnapshotDataCache) {
@@ -2542,7 +2595,7 @@ spTabs.forEach(t => { t.style.background = 'var(--input-bg)'; t.style.color = 'v
 spTabs[0].style.background = 'var(--accent)';
 spTabs[0].style.color = 'var(--btn-accent-text)';
 renderPreviewTable();
-storyPreviewOverlay.classList.remove('hidden');
+openOverlay('storyPreviewBox');
 });
 spDownloadBtn.addEventListener('click', () => {
 if (!activeStorySnapshotDataCache) return;
@@ -2593,7 +2646,7 @@ adminStorySelect.value = latestStoryId;
 await loadCurrentStoryNotes(latestStoryId);
 }
 }
-getElementById('dailyUpdatesOverlay').classList.remove('hidden');
+openOverlay('dailyUpdatesBox');
 });
 duStorySelect.addEventListener('change', () => {
 adminStorySelect.value = duStorySelect.value;
@@ -2647,6 +2700,7 @@ if (logoutBtn) logoutBtn.classList.toggle('hidden', isReviewer || !isModeratorAu
 
 navBtnReviewer.addEventListener('click', () => switchTab(true));
 navBtnModerator.addEventListener('click', () => switchTab(false));
+
 ratingForm.addEventListener('submit', async (event) => {
 event.preventDefault(); 
 if (isSystemPaused && !isDeveloperModeUnlocked) {
@@ -2683,25 +2737,19 @@ return;
 ratingRaw = rating; 
 }
 }
-submitRatingBtn.disabled = true;
-setSafeText(submitRatingBtn, "Submitting...");
-const currentISODate = new Date().toISOString();
-try {
+handleAsyncAction(submitRatingBtn, "Submitting...", "Submit", async () => {
 await setDoc(doc(db, "competitions", targetStory), {
-[friendName]: { score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }
+[friendName]: { score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: new Date().toISOString() }
 }, { merge: true });
 if (!isDeveloperModeUnlocked) {
 localStorage.setItem(`rated_${targetStory}`, "true");
-localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({ name: friendName, score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: currentISODate }));
+localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({ name: friendName, score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: new Date().toISOString() }));
 }
 customAlert("Review submitted successfully! Thank you.");
 evaluateLocalStorageRestrictions(); 
-} catch (error) {
-customAlert("An error occurred while submitting your review. Please check your connection.");
-submitRatingBtn.disabled = false;
-setSafeText(submitRatingBtn, "Submit");
-}
+}, () => customAlert("An error occurred while submitting your review. Please check your connection."));
 });
+
 goToFeedbackBtn.addEventListener('click', () => {
 feedbackNameInput.value = "";
 feedbackTextInput.value = "";
@@ -2712,25 +2760,23 @@ cancelFeedbackBtn.addEventListener('click', () => {
 feedbackInterface.classList.add('hidden');
 userInterface.classList.remove('hidden');
 });
+
 submitFeedbackBtn.addEventListener('click', async () => {
 if(isSystemPaused && !isDeveloperModeUnlocked) { customAlert("System Maintenance"); return; }
 const currentName = feedbackNameInput.value.trim();
 const feedback = feedbackTextInput.value.trim();
 if(!currentName) { customAlert("Please enter your name."); return; }
 if(!feedback) { customAlert("Feedback box cannot be empty."); return; }
-submitFeedbackBtn.disabled = true;
-try {
+handleAsyncAction(submitFeedbackBtn, "Submitting...", "Submit Feedback", async () => {
 await setDoc(doc(db, "app_feedback", "user_submissions"), {
 [currentName]: arrayUnion(feedback)
 }, { merge: true });
 customAlert("Feedback submitted successfully! Thank you for helping us improve.");
 feedbackInterface.classList.add('hidden');
 userInterface.classList.remove('hidden');
-} catch(error) {
-customAlert("Error submitting feedback. Check your connection.");
-}
-submitFeedbackBtn.disabled = false;
+}, () => customAlert("Error submitting feedback. Check your connection."));
 });
+
 function openFeedbackDetails(user, feedbacks) {
 currentFeedbackUser = user;
 setSafeText(fdModalTitle, `Feedback from: ${user}`);
@@ -2742,8 +2788,9 @@ if (feedbackDevState[user]) {
 fdModalNotes.value = feedbackDevState[user].notes || "";
 fdModalStatus.value = feedbackDevState[user].status || "Pending";
 }
-feedbackDetailOverlay.classList.remove('hidden');
+openOverlay('feedbackDetailBox');
 }
+
 fdModalSaveBtn.addEventListener('click', () => {
 if (currentFeedbackUser) {
 feedbackDevState[currentFeedbackUser].notes = fdModalNotes.value;
@@ -2758,13 +2805,12 @@ else if(fdModalStatus.value === 'Rejected') statusSpanElement.style.color = 'var
 else if(fdModalStatus.value === 'In Review') statusSpanElement.style.color = '#D4A017';
 }
 }
-feedbackDetailOverlay.classList.add('hidden');
+getElementById('masterOverlay').classList.add('hidden');
 currentFeedbackUser = null;
 });
+
 devLoadFeedbackBtn.addEventListener('click', async () => {
-try {
-devLoadFeedbackBtn.disabled = true;
-setSafeText(devLoadFeedbackBtn, "Loading Platform Data...");
+handleAsyncAction(devLoadFeedbackBtn, "Loading Platform Data...", "User feedback preview", async () => {
 const documentSnapshot = await getDoc(doc(db, "app_feedback", "user_submissions"));
 if (documentSnapshot.exists()) {
 const data = documentSnapshot.data();
@@ -2805,24 +2851,13 @@ bodyHtml += `<tr class="hover-bg-alt">
 </tr>`;
 });
 feedbackTableBody.innerHTML = bodyHtml;
-document.querySelectorAll('.feedback-user-btn').forEach(btn => {
-btn.addEventListener('click', (e) => {
-const userName = e.target.getAttribute('data-user');
-openFeedbackDetails(userName, data[userName] || []);
-});
-});
-getElementById('fullscreenFeedbackOverlay').classList.remove('hidden');
-document.body.style.overflow = "hidden";
+openOverlay('fullscreenFeedbackBox');
 } else {
 customAlert("No feedback records have been found in the database yet.");
 }
-} catch(error) {
-customAlert("Error parsing feedback metrics.");
-} finally {
-devLoadFeedbackBtn.disabled = false;
-setSafeText(devLoadFeedbackBtn, "User feedback preview");
-}
+}, () => customAlert("Error parsing feedback metrics."));
 });
+
 devDownloadFeedbackBtn.addEventListener('click', () => {
 if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
 let tableHeadHtmlString = `<tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer</b></th>`;
@@ -2864,6 +2899,7 @@ clientLinkElement.click();
 document.body.removeChild(clientLinkElement);
 customAlert("📥 Feedback table exported successfully.");
 });
+
 function evaluateSetupFlow() {
 if (isSystemPaused && !isDeveloperModeUnlocked) return; 
 if (!isNameLockedByMod) {
@@ -2908,7 +2944,7 @@ updateGlobalConfig({ enableMasterTimeRestriction: masterTimeRestrictionToggle.ch
 }
 });
 getElementById('openTimeRestrictionsBtn').addEventListener('click', () => {
-getElementById('timeRestrictionsOverlay').classList.remove('hidden');
+openOverlay('timeRestrictionsBox');
 });
 function renderEditStoriesList() {
 const listContainer = getElementById('editStoriesList');
@@ -2934,7 +2970,7 @@ getElementById('esPencilIcon').classList.remove('hidden');
 getElementById('esSaveIcon').classList.add('hidden');
 getElementById('esDeleteBtn').classList.add('hidden');
 renderEditStoriesList();
-getElementById('editStoriesOverlay').classList.remove('hidden');
+openOverlay('editStoriesBox');
 });
 getElementById('esToggleEditBtn').addEventListener('click', async () => {
 if (isSystemPaused && !isDeveloperModeUnlocked) return;
@@ -2955,8 +2991,7 @@ updates.push({ oldId, newId });
 }
 });
 if (updates.length > 0) {
-getElementById('esToggleEditBtn').disabled = true;
-try {
+handleAsyncAction(getElementById('esToggleEditBtn'), null, null, async () => {
 for (const update of updates) {
 const oldDocRef = doc(db, "competitions", update.oldId);
 const oldDocSnap = await getDoc(oldDocRef);
@@ -2966,10 +3001,13 @@ await deleteDoc(oldDocRef);
 }
 }
 customAlert("Stories updated successfully.");
-} catch (error) {
-customAlert("Error updating stories.");
-}
-getElementById('esToggleEditBtn').disabled = false;
+isEditingStoryList = false;
+getElementById('esPencilIcon').classList.remove('hidden');
+getElementById('esSaveIcon').classList.add('hidden');
+getElementById('esDeleteBtn').classList.add('hidden');
+renderEditStoriesList();
+}, () => customAlert("Error updating stories."));
+return;
 }
 isEditingStoryList = false;
 getElementById('esPencilIcon').classList.remove('hidden');
@@ -2988,8 +3026,7 @@ const storiesToDelete = Array.from(checkboxes).map(cb => cb.value);
 const storyListString = storiesToDelete.map(s => `- ${s}`).join('<br>');
 const confirmMsg = `<div>Are you sure you want to delete the following stories and all their associated data?<br><br>${storyListString}<br><br>This action cannot be undone.</div>`;
 if (await customConfirm(confirmMsg)) {
-getElementById('esDeleteBtn').disabled = true;
-try {
+handleAsyncAction(getElementById('esDeleteBtn'), null, null, async () => {
 for (const storyId of storiesToDelete) {
 await deleteDoc(doc(db, "competitions", storyId));
 }
@@ -3001,10 +3038,7 @@ getElementById('esSaveIcon').classList.add('hidden');
 getElementById('esDeleteBtn').classList.add('hidden');
 renderEditStoriesList();
 }, 500);
-} catch (error) {
-customAlert("Error deleting stories.");
-}
-getElementById('esDeleteBtn').disabled = false;
+}, () => customAlert("Error deleting stories."));
 }
 });
 onSnapshot(doc(db, "app_state", "global_config"), (documentSnapshot) => {
@@ -3214,7 +3248,6 @@ if (duStorySelect) duStorySelect.innerHTML = '';
 const storyDropdownFragment = document.createDocumentFragment();
 const adminStorySelectFragment = document.createDocumentFragment();
 const duStorySelectFragment = document.createDocumentFragment();
-let totalReviewsCount = 0;
 arrayedStoriesList.forEach(storyObject => {
 let dateStr = "";
 if (storyObject.created) {
@@ -3244,13 +3277,7 @@ appendEmptyRow(dailyReviewsTableBody, 4, "No stories available.");
 }
 evaluateLocalStorageRestrictions();
 });
-dailyReviewsTableBody.addEventListener('click', (event) => {
-const buttonElement = event.target.closest('.btn-copy-row');
-if (buttonElement && !buttonElement.disabled) {
-const text = `${buttonElement.dataset.reviewer}, ${buttonElement.dataset.title}`;
-navigator.clipboard.writeText(text).then(() => customAlert(`📋 Copied:\n${text}`)).catch(() => customAlert("Clipboard write blocked by browser."));
-}
-});
+
 function autoFillPreviousUserInputs() {
 const targetStory = storyDropdown.value;
 if (!targetStory) return;
@@ -3295,20 +3322,15 @@ if (!emailString || !passwordString) {
 customAlert("Please enter both email and password.");
 return;
 }
-submitLoginBtn.disabled = true;
-setSafeText(submitLoginBtn, "Authenticating...");
-try {
+handleAsyncAction(submitLoginBtn, "Authenticating...", "Authenticate", async () => {
 await signInWithEmailAndPassword(auth, emailString, passwordString);
 customAlert("Authentication Successful");
 localEmailInput.value = "";
 localPassInput.value = "";
-} catch (error) {
+}, () => {
 customAlert("Authentication failed. Please check your credentials.");
 localPassInput.value = "";
-} finally {
-submitLoginBtn.disabled = false;
-setSafeText(submitLoginBtn, "Authenticate");
-}
+});
 });
 
 onAuthStateChanged(auth, (userObject) => {
@@ -3329,108 +3351,6 @@ evaluateLocalStorageRestrictions();
 }
 });
 
-function renderAccumulatedWinnersChips() {
-winnersChipsContainer.innerHTML = '';
-const fragment = document.createDocumentFragment();
-accumulatedWinnersStateArray.forEach((nameString, index) => {
-const chip = createEl('div', { className: "winner-chip d-flex align-center gap-2", style: { cursor: "pointer" } });
-chip.appendChild(document.createTextNode(nameString));
-const closeIcon = createEl('span', { style: { fontWeight: "bold", fontSize: "14px", marginLeft: "4px" } }, "×");
-chip.appendChild(closeIcon);
-chip.onclick = () => {
-if(isSystemPaused && !isDeveloperModeUnlocked) return;
-accumulatedWinnersStateArray.splice(index, 1);
-renderAccumulatedWinnersChips();
-};
-fragment.appendChild(chip);
-});
-winnersChipsContainer.appendChild(fragment);
-correctGuesses.value = "";
-}
-correctGuesses.addEventListener('change', () => {
-const selectedWinnerValue = correctGuesses.value;
-if (!selectedWinnerValue) return;
-if (!accumulatedWinnersStateArray.includes(selectedWinnerValue)) {
-accumulatedWinnersStateArray.push(selectedWinnerValue);
-renderAccumulatedWinnersChips();
-}
-});
-clearWinnersBtn.addEventListener('click', () => {
-if(isSystemPaused && !isDeveloperModeUnlocked) return;
-accumulatedWinnersStateArray = [];
-renderAccumulatedWinnersChips();
-});
-async function loadCurrentStoryNotes(targetSelectedStory) {
-dailyReviewsTableBody.innerHTML = '';
-appendEmptyRow(dailyReviewsTableBody, 4, "Loading reviews...");
-if (!targetSelectedStory) {
-appendEmptyRow(dailyReviewsTableBody, 4, "Select a story to load submissions");
-return;
-}
-if(storyDropdown.value !== targetSelectedStory) storyDropdown.value = targetSelectedStory;
-if(adminStorySelect.value !== targetSelectedStory) adminStorySelect.value = targetSelectedStory;
-if(duStorySelect && duStorySelect.value !== targetSelectedStory) duStorySelect.value = targetSelectedStory;
-try {
-const documentSnapshot = await getDoc(doc(db, "competitions", targetSelectedStory));
-resetSelect(readerSuggestions, "-- Title --");
-headingSuggesterInput.value = "";
-resetSelect(correctGuesses, "-- Select Winner --");
-accumulatedWinnersStateArray = [];
-headingToReviewerMap = {};
-let reviewCountInteger = 0;
-dailyReviewsTableBody.innerHTML = '';
-if (documentSnapshot.exists()) {
-const dataObject = documentSnapshot.data();
-activeStorySnapshotDataCache = dataObject;
-let rawSavedHeadingMatchValue = dataObject._suggestions || "";
-let rawSavedSuggesterMatchValue = dataObject._suggesterName || "";
-if (dataObject._guesses && dataObject._guesses !== "*****") {
-accumulatedWinnersStateArray = dataObject._guesses.split(',').map(stringElement => stringElement.trim()).filter(stringElement => stringElement.length > 0);
-}
-const tableFragment = document.createDocumentFragment();
-const readerSuggestionsFragment = document.createDocumentFragment();
-const correctGuessesFragment = document.createDocumentFragment();
-Object.keys(dataObject).forEach(reviewerKeyString => {
-if (reviewerKeyString !== 'created' && reviewerKeyString !== '_suggestions' && reviewerKeyString !== '_suggesterName' && reviewerKeyString !== '_guesses' && reviewerKeyString !== 'season') {
-reviewCountInteger++;
-const rev = normalizeReview(reviewerKeyString, dataObject[reviewerKeyString]);
-if(rev.suggestedTitle && rev.suggestedTitle !== "None" && rev.suggestedTitle.trim() !== "") {
-headingToReviewerMap[rev.suggestedTitle] = reviewerKeyString;
-readerSuggestionsFragment.appendChild(createEl('option', { value: rev.suggestedTitle }, rev.suggestedTitle));
-}
-if (rev.authorGuess && rev.authorGuess !== "None" && rev.authorGuess.trim() !== "") {
-correctGuessesFragment.appendChild(createEl('option', { value: reviewerKeyString }, reviewerKeyString));
-}
-const tableRowElement = createEl('tr', { className: "hover-bg-alt", style: { cursor: "pointer" } });
-const tableDataName = createEl('td', { className: "font-bold text-admin hover-text-primary", style: { textDecoration: "underline" } }, reviewerKeyString);
-tableRowElement.onclick = () => {
-openDetailedReviewModal(reviewerKeyString, rev.score, rev.authorGuess, rev.suggestedTitle, rev.dateStr);
-};
-tableRowElement.appendChild(tableDataName);
-tableRowElement.appendChild(createEl('td', {}, rev.displayDate));
-tableRowElement.appendChild(createEl('td', {}, rev.score));
-tableRowElement.appendChild(createEl('td', {}, "-"));
-tableFragment.appendChild(tableRowElement);
-}
-});
-readerSuggestions.appendChild(readerSuggestionsFragment);
-correctGuesses.appendChild(correctGuessesFragment);
-dailyReviewsTableBody.appendChild(tableFragment);
-if(rawSavedHeadingMatchValue) readerSuggestions.value = rawSavedHeadingMatchValue;
-if(rawSavedSuggesterMatchValue) headingSuggesterInput.value = rawSavedSuggesterMatchValue;
-renderAccumulatedWinnersChips();
-if(reviewCountInteger === 0) {
-appendEmptyRow(dailyReviewsTableBody, 4, "No reviews submitted for this story yet.");
-}
-} else {
-activeStorySnapshotDataCache = null;
-renderAccumulatedWinnersChips();
-appendEmptyRow(dailyReviewsTableBody, 4, "Story data is empty or missing.");
-}
-} catch(error) {
-appendEmptyRow(dailyReviewsTableBody, 4, "Error loading reviews.");
-}
-}
 saveNotesBtn.addEventListener('click', async () => {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
 const targetStory = duStorySelect.value;
@@ -3441,22 +3361,15 @@ return;
 const suggesterName = headingSuggesterInput.value.trim();
 const suggestions = readerSuggestions.value;
 const guessesString = accumulatedWinnersStateArray.join(', ');
-saveNotesBtn.disabled = true;
-setSafeText(saveNotesBtn, "Saving...");
-try {
+handleAsyncAction(saveNotesBtn, "Saving...", "Save", async () => {
 await setDoc(doc(db, "competitions", targetStory), {
 _suggesterName: suggesterName,
 _suggestions: suggestions,
 _guesses: guessesString
 }, { merge: true });
 customAlert("Daily updates saved successfully.");
-getElementById('dailyUpdatesOverlay').classList.add('hidden');
-} catch (error) {
-customAlert("Error saving daily updates.");
-} finally {
-saveNotesBtn.disabled = false;
-setSafeText(saveNotesBtn, "Save");
-}
+getElementById('masterOverlay').classList.add('hidden');
+}, () => customAlert("Error saving daily updates."));
 });
 saveModNameBtn.addEventListener('click', async () => {
 if((isSystemPaused && !isDeveloperModeUnlocked) || isNameLockedByMod) return;
@@ -3474,29 +3387,21 @@ if(!monthValueString) { customAlert("Please select a month to generate the seaso
 const generatedSeasonNameString = monthValueString.substring(0, 3) + new Date().getFullYear().toString().slice(-2);
 updateGlobalConfig({ month: monthValueString, topic: inputTopic.value.trim() || "*****", seasonName: generatedSeasonNameString, seasonStarted: true, authorGuessLockTime: authorGuessLockTime.value.trim() || "23:59", titleSuggestionLockTime: titleSuggestionLockTime.value.trim() || "23:59" }, `Season Configuration Saved.\nCurrent Season: ${generatedSeasonNameString}`, "Database error saving variables.");
 });
-async function handleStoryAddition(inputElement, actionButtonElement) {
+dashboardUpdateStoryBtn.addEventListener('click', () => {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
-const titleString = inputElement.value.trim();
+const titleString = dashboardNewStoryInput.value.trim();
 if (!titleString) { customAlert("Enter a valid story title."); return; }
-try {
-actionButtonElement.disabled = true;
+handleAsyncAction(dashboardUpdateStoryBtn, null, null, async () => {
 await setDoc(doc(db, "competitions", titleString), { created: Date.now(), season: globalSeasonCache }, { merge: true });
 dashboardNewStoryInput.value = '';
-actionButtonElement.disabled = false;
 customAlert(`Added: "${titleString}"`);
-} catch (error) {
-customAlert("Error writing story.");
-actionButtonElement.disabled = false;
-}
-}
-dashboardUpdateStoryBtn.addEventListener('click', () => handleStoryAddition(dashboardNewStoryInput, dashboardUpdateStoryBtn));
+}, () => customAlert("Error writing story."));
+});
 if(btnPublishReleaseNotes) {
 btnPublishReleaseNotes.addEventListener('click', async () => {
 const notesString = devReleaseNotesInput.value.trim();
 if (!notesString) { customAlert("Please enter release notes before publishing this update."); return; }
-btnPublishReleaseNotes.disabled = true;
-setSafeText(btnPublishReleaseNotes, "Publishing...");
-try {
+handleAsyncAction(btnPublishReleaseNotes, "Publishing...", '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Publish Update', async () => {
 await setDoc(doc(db, "app_state", "version_control"), {
 buildNumber: GIT_BUILD_NUMBER,
 publishedDate: GIT_BUILD_DATE,
@@ -3505,12 +3410,7 @@ changesMade: arrayUnion(`${GIT_BUILD_NUMBER} | ${notesString}`)
 }, { merge: true });
 devReleaseNotesInput.value = "";
 customAlert(`Release notes published successfully.\nVersion updated to Build ${GIT_BUILD_NUMBER}.`);
-} catch (error) {
-customAlert("Error syncing version deployment metrics to Firestore storage collections.");
-} finally {
-btnPublishReleaseNotes.disabled = false;
-btnPublishReleaseNotes.innerHTML = '<svg width="16" height="16"><use href="#icon-download"></use></svg> Publish';
-}
+}, () => customAlert("Error syncing version deployment metrics to Firestore storage collections."));
 });
 }
 if(devVersionHistoryBtn) {
@@ -3587,31 +3487,8 @@ html += `<div class="p-3 border-bottom d-flex justify-between align-center gap-3
 }
 });
 seasonHistoryList.innerHTML = html;
-document.querySelectorAll('.sh-del-btn').forEach(btn => {
-btn.addEventListener('click', async (e) => {
-const season = e.currentTarget.getAttribute('data-season');
-const userInput = await customPrompt(`Type 'Delete' to confirm deletion of season ${season}.`, "");
-if (userInput === "Delete") {
-e.currentTarget.disabled = true;
-try {
-const storiesToDelete = arrayedStoriesList.filter(s => s.season === season).map(s => s.id);
-for (const storyId of storiesToDelete) {
-await deleteDoc(doc(db, "competitions", storyId));
 }
-customAlert(`Season ${season} deleted successfully.`);
-getElementById(`sh-item-${season}`).remove();
-globalSeasonsSet.delete(season);
-} catch (error) {
-customAlert("Error deleting season.");
-e.currentTarget.disabled = false;
-}
-} else if (userInput !== null) {
-customAlert("Deletion cancelled.");
-}
-});
-});
-}
-seasonHistoryOverlay.classList.remove('hidden');
+openOverlay('seasonHistoryBox');
 });
 }
 async function compileMasterDataMatrix(seasonFilterString = "All") {
@@ -3681,23 +3558,18 @@ badgeElement.style.display = "none";
 }
 previewBtn.addEventListener('click', async () => {
 toggleMenu(false);
-getElementById('fullscreenPreviewOverlay').classList.remove('hidden');
-document.body.style.overflow = "hidden";
+openOverlay('fullscreenPreviewBox');
 await loadPreviewTable(); 
 });
 getElementById('previewSeasonSelect').addEventListener('change', loadPreviewTable);
-const triggerDownloadModalFlow = () => {
-toggleMenu(false);
-getElementById('downloadSeasonModal').classList.remove('hidden');
-};
 if (downloadBtn) {
-downloadBtn.addEventListener('click', triggerDownloadModalFlow);
+downloadBtn.addEventListener('click', () => {
+toggleMenu(false);
+openOverlay('downloadSeasonBox');
+});
 }
 getElementById('confirmDownloadBtn').addEventListener('click', async () => {
-const buttonElement = getElementById('confirmDownloadBtn');
-buttonElement.disabled = true;
-setSafeText(buttonElement, "Processing...");
-try {
+handleAsyncAction(getElementById('confirmDownloadBtn'), "Processing...", "Download", async () => {
 const targetSeasonString = getElementById('downloadSeasonSelect').value;
 const matrixDataObject = await compileMasterDataMatrix(targetSeasonString);
 const blobObject = new Blob([matrixDataObject.rawHtmlTemplate], { type: "text/html;charset=utf-8" });
@@ -3706,14 +3578,9 @@ const clientLinkElement = createEl('a', { href: downloadUrlPath, download: `Comp
 document.body.appendChild(clientLinkElement);
 clientLinkElement.click();
 document.body.removeChild(clientLinkElement);
-getElementById('downloadSeasonModal').classList.add('hidden');
+getElementById('masterOverlay').classList.add('hidden');
 customAlert("📊 Data payload compressed and exported securely.");
-} catch (error) {
-customAlert("Error exporting document file streams.");
-} finally {
-buttonElement.disabled = false;
-setSafeText(buttonElement, "Download");
-}
+}, () => customAlert("Error exporting document file streams."));
 });
 devSeasonResetBtn.addEventListener('click', async () => {
 if(await customConfirm("Are you sure you want to perform a Season Reset? This will reset the Moderator Name, Month to January, clear the Subject, and set Season to Jan00.")) {
