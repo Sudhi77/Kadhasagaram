@@ -1216,6 +1216,19 @@ max-height: 90vh;
 overflow-y: auto;
 text-align: center;
 }
+.manual-wrapper-box {
+background: var(--modal-bg);
+border: var(--modal-border);
+border-radius: 24px;
+padding: 24px;
+width: 100%;
+max-width: 900px;
+max-height: 90vh;
+overflow-y: auto;
+color: var(--modal-text);
+box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+box-sizing: border-box;
+}
 .custom-modal-btn-row {
 display: flex;
 justify-content: center;
@@ -1257,19 +1270,6 @@ margin-bottom: 8px;
 }
 #customModalInput {
 margin-top: 15px;
-}
-.manual-wrapper-box {
-background: var(--modal-bg);
-border: var(--modal-border);
-border-radius: 24px;
-padding: 24px;
-width: 100%;
-max-width: 900px;
-max-height: 90vh;
-overflow-y: auto;
-color: var(--modal-text);
-box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-box-sizing: border-box;
 }
 .manual-header-row {
 border-bottom: 1px solid var(--border-color);
@@ -1711,221 +1711,240 @@ Authentication Panel
 </div>
 </div>
 
+<!-- FEATURE 3: DYNAMIC MODAL ENGINE & HIDDEN STORAGE -->
 <div id="masterOverlay" class="master-modal-overlay hidden">
-<div id="downloadSeasonBox" class="custom-modal-box hidden text-left" style="max-width:420px;">
-<h3 class="mt-0">Select Season to Download</h3>
-<select id="downloadSeasonSelect" class="w-100 p-3 mb-5 radius-2 border-none bg-admin text-white" style="background: var(--modal-input-bg); color: var(--modal-text); border: var(--border);">
-<option value="All">All Seasons</option>
-</select>
-<div class="custom-modal-btn-row">
-<button id="cancelDownloadBtn" class="close-modal-btn">Cancel</button>
-<button id="confirmDownloadBtn" class="bg-admin text-white" style="background: var(--primary);">Download</button>
-</div>
-</div>
+    
+    <!-- Dynamic Shell Wrapper -->
+    <div id="dynamicMasterModal" class="hidden"></div>
+    
+    <!-- Hidden Node Storage Array -->
+    <div id="modalNodeStorage" class="hidden">
+        
+        <!-- downloadSeasonBox -->
+        <div id="content_downloadSeasonBox" data-class="custom-modal-box text-left" style="max-width:420px;">
+            <h3 class="mt-0">Select Season to Download</h3>
+            <select id="downloadSeasonSelect" class="w-100 p-3 mb-5 radius-2 border-none bg-admin text-white" style="background: var(--modal-input-bg); color: var(--modal-text); border: var(--border);">
+            <option value="All">All Seasons</option>
+            </select>
+            <div class="custom-modal-btn-row">
+            <button id="cancelDownloadBtn" class="close-modal-btn">Cancel</button>
+            <button id="confirmDownloadBtn" class="bg-admin text-white" style="background: var(--primary);">Download</button>
+            </div>
+        </div>
 
-<div id="timeRestrictionsBox" class="custom-modal-box hidden text-left" style="max-width: 400px; padding: 25px;">
-<div class="d-flex justify-between align-center border-bottom pb-3 mb-4">
-<h3 class="m-0" style="color: var(--primary);">Enable Time restriction</h3>
-<label class="switch scale-80 m-0">
-<input type="checkbox" id="masterTimeRestrictionToggle" checked>
-<span class="slider"></span>
-</label>
-</div>
-<div id="timeRestrictionContent" style="transition: all 0.3s;">
-<div class="switch-container p-3 mb-3 flex-wrap gap-2">
-<div class="d-flex align-center justify-between w-100">
-<div><strong class="text-md">Guess Author</strong></div>
-<label class="switch scale-80 margin-neg-5">
-<input type="checkbox" id="toggleAuthorGuessBtn" class="sys-lockable">
-<span class="slider"></span>
-</label>
-</div>
-<div class="d-flex align-center w-100 mt-1 justify-end">
-<span class="text-xs opacity-80">Lock Time:</span>
-<input type="text" id="authorGuessLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
-</div>
-</div>
-<div class="switch-container p-3 mb-3 flex-wrap gap-2">
-<div class="d-flex align-center justify-between w-100">
-<div><strong class="text-md">Title Suggestion</strong></div>
-<label class="switch scale-80 margin-neg-5">
-<input type="checkbox" id="toggleTitleSuggestionBtn" class="sys-lockable">
-<span class="slider"></span>
-</label>
-</div>
-<div class="d-flex align-center w-100 mt-1 justify-end">
-<span class="text-xs opacity-80">Lock Time:</span>
-<input type="text" id="titleSuggestionLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
-</div>
-</div>
-<div class="d-flex justify-end w-100 mb-2 mt-4">
-<button type="button" id="updateLockTimesBtn" class="btn-mod-action w-max padding-6-12 text-md sys-lockable">Update</button>
-</div>
-</div>
-<button type="button" class="bg-transparent border-none text-muted cursor-pointer font-bold mt-2 close-modal-btn w-100 text-center">Close</button>
-</div>
+        <!-- timeRestrictionsBox -->
+        <div id="content_timeRestrictionsBox" data-class="custom-modal-box text-left" style="max-width: 400px; padding: 25px;">
+            <div class="d-flex justify-between align-center border-bottom pb-3 mb-4">
+            <h3 class="m-0" style="color: var(--primary);">Enable Time restriction</h3>
+            <label class="switch scale-80 m-0">
+            <input type="checkbox" id="masterTimeRestrictionToggle" checked>
+            <span class="slider"></span>
+            </label>
+            </div>
+            <div id="timeRestrictionContent" style="transition: all 0.3s;">
+            <div class="switch-container p-3 mb-3 flex-wrap gap-2">
+            <div class="d-flex align-center justify-between w-100">
+            <div><strong class="text-md">Guess Author</strong></div>
+            <label class="switch scale-80 margin-neg-5">
+            <input type="checkbox" id="toggleAuthorGuessBtn" class="sys-lockable">
+            <span class="slider"></span>
+            </label>
+            </div>
+            <div class="d-flex align-center w-100 mt-1 justify-end">
+            <span class="text-xs opacity-80">Lock Time:</span>
+            <input type="text" id="authorGuessLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
+            </div>
+            </div>
+            <div class="switch-container p-3 mb-3 flex-wrap gap-2">
+            <div class="d-flex align-center justify-between w-100">
+            <div><strong class="text-md">Title Suggestion</strong></div>
+            <label class="switch scale-80 margin-neg-5">
+            <input type="checkbox" id="toggleTitleSuggestionBtn" class="sys-lockable">
+            <span class="slider"></span>
+            </label>
+            </div>
+            <div class="d-flex align-center w-100 mt-1 justify-end">
+            <span class="text-xs opacity-80">Lock Time:</span>
+            <input type="text" id="titleSuggestionLockTime" class="time-lock-input sys-lockable input-reduced" placeholder="23:59">
+            </div>
+            </div>
+            <div class="d-flex justify-end w-100 mb-2 mt-4">
+            <button type="button" id="updateLockTimesBtn" class="btn-mod-action w-max padding-6-12 text-md sys-lockable">Update</button>
+            </div>
+            </div>
+            <button type="button" class="bg-transparent border-none text-muted cursor-pointer font-bold mt-2 close-modal-btn w-100 text-center">Close</button>
+        </div>
 
-<div id="editStoriesBox" class="custom-modal-box hidden text-left" style="max-width: 500px; padding: 20px;">
-<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
-<button type="button" id="esDeleteBtn" class="hidden bg-transparent border-none cursor-pointer p-1 m-0">
-<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-</button>
-<div class="d-flex gap-2 align-center ml-auto">
-<button type="button" id="esToggleEditBtn" class="bg-transparent border-none cursor-pointer p-1">
-<svg id="esPencilIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#28a745" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-<svg id="esSaveIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-</button>
-<button type="button" id="esCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
-<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-</button>
-</div>
-</div>
-<div id="editStoriesList" style="overflow-y: auto; flex-grow: 1;"></div>
-</div>
+        <!-- editStoriesBox -->
+        <div id="content_editStoriesBox" data-class="custom-modal-box text-left" style="max-width: 500px; padding: 20px;">
+            <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+            <button type="button" id="esDeleteBtn" class="hidden bg-transparent border-none cursor-pointer p-1 m-0">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
+            <div class="d-flex gap-2 align-center ml-auto">
+            <button type="button" id="esToggleEditBtn" class="bg-transparent border-none cursor-pointer p-1">
+            <svg id="esPencilIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#28a745" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            <svg id="esSaveIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            </button>
+            <button type="button" id="esCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            </div>
+            </div>
+            <div id="editStoriesList" style="overflow-y: auto; flex-grow: 1;"></div>
+        </div>
 
-<div id="dailyUpdatesBox" class="custom-modal-box hidden text-left" style="max-width: 500px; padding: 25px;">
-<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
-<select id="duStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
-<button type="button" id="closeDailyUpdatesBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn ml-3">
-<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-</button>
-</div>
-<h4 class="m-0 mb-3 mt-4" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">Title Suggestion</h4>
-<div class="form-group">
-<select id="readerSuggestions" class="w-100 sys-lockable input-reduced"></select>
-</div>
-<div class="form-group">
-<label for="headingSuggesterInput">Reviewer</label>
-<input type="text" id="headingSuggesterInput" class="w-100 sys-lockable input-reduced" readonly style="background-color: var(--input-bg); opacity: 0.8; cursor: not-allowed;">
-</div>
-<div class="form-group mt-4">
-<label for="correctGuesses" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px; display: block; font-size: 16px;">Guess the Author</label>
-<div class="d-flex gap-4 align-center mt-3">
-<select id="correctGuesses" class="flex-1 m-0 sys-lockable input-reduced"></select>
-<button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable btn-icon-reduced">
-<svg viewBox="0 0 24 24">
-<path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
-</svg>
-</button>
-</div>
-<div id="winnersChipsContainer" class="winners-tags-container mt-2"></div>
-</div>
-<div class="d-flex justify-end mt-4">
-<button type="button" id="saveNotesBtn" class="btn-mod-action w-max padding-10-40 sys-lockable">Save</button>
-</div>
-</div>
+        <!-- dailyUpdatesBox -->
+        <div id="content_dailyUpdatesBox" data-class="custom-modal-box text-left" style="max-width: 500px; padding: 25px;">
+            <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+            <select id="duStorySelect" class="flex-1 m-0 text-lg border-admin sys-lockable input-reduced"></select>
+            <button type="button" id="closeDailyUpdatesBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn ml-3">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            </div>
+            <h4 class="m-0 mb-3 mt-4" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">Title Suggestion</h4>
+            <div class="form-group">
+            <select id="readerSuggestions" class="w-100 sys-lockable input-reduced"></select>
+            </div>
+            <div class="form-group">
+            <label for="headingSuggesterInput">Reviewer</label>
+            <input type="text" id="headingSuggesterInput" class="w-100 sys-lockable input-reduced" readonly style="background-color: var(--input-bg); opacity: 0.8; cursor: not-allowed;">
+            </div>
+            <div class="form-group mt-4">
+            <label for="correctGuesses" style="color: var(--h3-color); border-bottom: 1px solid var(--border-color); padding-bottom: 4px; display: block; font-size: 16px;">Guess the Author</label>
+            <div class="d-flex gap-4 align-center mt-3">
+            <select id="correctGuesses" class="flex-1 m-0 sys-lockable input-reduced"></select>
+            <button type="button" id="clearWinnersBtn" class="btn-clear-inline sys-lockable btn-icon-reduced">
+            <svg viewBox="0 0 24 24">
+            <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+            </svg>
+            </button>
+            </div>
+            <div id="winnersChipsContainer" class="winners-tags-container mt-2"></div>
+            </div>
+            <div class="d-flex justify-end mt-4">
+            <button type="button" id="saveNotesBtn" class="btn-mod-action w-max padding-10-40 sys-lockable">Save</button>
+            </div>
+        </div>
 
-<div id="fullscreenPreviewBox" class="manual-wrapper-box hidden">
-<div class="manual-header-row d-flex justify-between align-center border-bottom pt-0 pb-2 mb-5" style="border-bottom: 2px solid var(--primary);">
-<div class="d-flex align-center gap-4">
-<h2 class="manual-title border-none m-0 p-0">Season Preview</h2>
-<select id="previewSeasonSelect" class="p-2 radius-1 text-lg border-none" style="border: var(--border); background: var(--input-bg); color: var(--text-color);">
-<option value="All">All Seasons</option>
-</select>
-<span id="previewLoadingBadge" class="text-admin text-sm hidden" style="display: none;">⏳ Loading...</span>
-</div>
-<button type="button" id="previewCloseBtn" class="manual-close-trigger close-modal-btn">✕</button>
-</div>
-<div class="webview-container m-0 mt-0">
-<div class="webview-scroll-frame max-h-70vh">
-<table class="webview-table m-0 table-condensed">
-<tbody id="previewTableBody"></tbody>
-</table>
-</div>
-</div>
-</div>
+        <!-- fullscreenPreviewBox -->
+        <div id="content_fullscreenPreviewBox" data-class="manual-wrapper-box text-left">
+            <div class="manual-header-row d-flex justify-between align-center border-bottom pt-0 pb-2 mb-5" style="border-bottom: 2px solid var(--primary);">
+            <div class="d-flex align-center gap-4">
+            <h2 class="manual-title border-none m-0 p-0">Season Preview</h2>
+            <select id="previewSeasonSelect" class="p-2 radius-1 text-lg border-none" style="border: var(--border); background: var(--input-bg); color: var(--text-color);">
+            <option value="All">All Seasons</option>
+            </select>
+            <span id="previewLoadingBadge" class="text-admin text-sm hidden" style="display: none;">⏳ Loading...</span>
+            </div>
+            <button type="button" id="previewCloseBtn" class="manual-close-trigger close-modal-btn">✕</button>
+            </div>
+            <div class="webview-container m-0 mt-0">
+            <div class="webview-scroll-frame max-h-70vh">
+            <table class="webview-table m-0 table-condensed">
+            <tbody id="previewTableBody"></tbody>
+            </table>
+            </div>
+            </div>
+        </div>
 
-<div id="fullscreenFeedbackBox" class="manual-wrapper-box hidden">
-<div class="manual-header-row d-flex justify-between align-center border-bottom pt-0 pb-2 mb-5" style="border-bottom: 2px solid #D4A017;">
-<div class="d-flex align-center gap-4">
-<h2 class="manual-title border-none m-0 p-0 color-gold-alt shadow-text-gold">Platform Feedback</h2>
-<button type="button" id="devDownloadFeedbackBtn" class="dev-btn-gold hidden p-2 px-3 text-sm d-flex align-center gap-2">
-<svg width="14" height="14"><use href="#icon-download"></use></svg>
-Download
-</button>
-</div>
-<button type="button" id="feedbackCloseBtn" class="manual-close-trigger close-modal-btn">✕</button>
-</div>
-<div class="m-0 mt-0">
-<div class="webview-scroll-frame max-h-70vh" style="border: none; background: transparent; overflow-x: auto;">
-<table class="webview-table white-space-nowrap w-100 table-condensed" style="background: transparent;">
-<thead id="feedbackTableHead"></thead>
-<tbody id="feedbackTableBody"></tbody>
-</table>
-</div>
-</div>
-</div>
+        <!-- fullscreenFeedbackBox -->
+        <div id="content_fullscreenFeedbackBox" data-class="manual-wrapper-box text-left">
+            <div class="manual-header-row d-flex justify-between align-center border-bottom pt-0 pb-2 mb-5" style="border-bottom: 2px solid #D4A017;">
+            <div class="d-flex align-center gap-4">
+            <h2 class="manual-title border-none m-0 p-0 color-gold-alt shadow-text-gold">Platform Feedback</h2>
+            <button type="button" id="devDownloadFeedbackBtn" class="dev-btn-gold hidden p-2 px-3 text-sm d-flex align-center gap-2">
+            <svg width="14" height="14"><use href="#icon-download"></use></svg>
+            Download
+            </button>
+            </div>
+            <button type="button" id="feedbackCloseBtn" class="manual-close-trigger close-modal-btn">✕</button>
+            </div>
+            <div class="m-0 mt-0">
+            <div class="webview-scroll-frame max-h-70vh" style="border: none; background: transparent; overflow-x: auto;">
+            <table class="webview-table white-space-nowrap w-100 table-condensed" style="background: transparent;">
+            <thead id="feedbackTableHead"></thead>
+            <tbody id="feedbackTableBody"></tbody>
+            </table>
+            </div>
+            </div>
+        </div>
 
-<div id="detailedReviewBox" class="custom-modal-box hidden text-left" style="max-width: 400px; padding: 25px;">
-<h3 class="mt-0 border-bottom pb-2 mb-3" style="color: var(--primary);">Detailed Review</h3>
-<div class="mb-2"><strong style="color: var(--h3-color);">Reviewer:</strong> <span id="drModalName" style="color: var(--text-color);"></span></div>
-<div class="mb-2"><strong style="color: var(--h3-color);">Date:</strong> <span id="drModalDate" style="color: var(--text-color);"></span></div>
-<div class="mb-2"><strong style="color: var(--h3-color);">Rating:</strong> <span id="drModalRating" style="color: var(--text-color);"></span></div>
-<div class="mb-2"><strong style="color: var(--h3-color);">Author Guess:</strong> <span id="drModalGuess" style="color: var(--text-color);"></span></div>
-<div class="mb-4"><strong style="color: var(--h3-color);">Suggested Title:</strong> <span id="drModalSuggTitle" style="color: var(--text-color);"></span></div>
-<div class="d-flex justify-end gap-3 mt-4">
-<button type="button" id="drModalCloseBtn" class="bg-admin text-white padding-6-12 radius-1 shadow-none cursor-pointer border-none font-bold text-md close-modal-btn">Close</button>
-</div>
-</div>
+        <!-- detailedReviewBox -->
+        <div id="content_detailedReviewBox" data-class="custom-modal-box text-left" style="max-width: 400px; padding: 25px;">
+            <h3 class="mt-0 border-bottom pb-2 mb-3" style="color: var(--primary);">Detailed Review</h3>
+            <div class="mb-2"><strong style="color: var(--h3-color);">Reviewer:</strong> <span id="drModalName" style="color: var(--text-color);"></span></div>
+            <div class="mb-2"><strong style="color: var(--h3-color);">Date:</strong> <span id="drModalDate" style="color: var(--text-color);"></span></div>
+            <div class="mb-2"><strong style="color: var(--h3-color);">Rating:</strong> <span id="drModalRating" style="color: var(--text-color);"></span></div>
+            <div class="mb-2"><strong style="color: var(--h3-color);">Author Guess:</strong> <span id="drModalGuess" style="color: var(--text-color);"></span></div>
+            <div class="mb-4"><strong style="color: var(--h3-color);">Suggested Title:</strong> <span id="drModalSuggTitle" style="color: var(--text-color);"></span></div>
+            <div class="d-flex justify-end gap-3 mt-4">
+            <button type="button" id="drModalCloseBtn" class="bg-admin text-white padding-6-12 radius-1 shadow-none cursor-pointer border-none font-bold text-md close-modal-btn">Close</button>
+            </div>
+        </div>
 
-<div id="feedbackDetailBox" class="custom-modal-box hidden text-left" style="max-width: 500px; padding: 25px; background: #0b1a20; border-color: #D4A017;">
-<h3 id="fdModalTitle" class="color-gold-alt mt-0 border-bottom-gold-alt pb-2 mb-3" style="color: #D4A017;">Reviewer Feedback</h3>
-<div id="fdModalComments" class="mb-4 text-white text-md" style="max-height: 200px; overflow-y: auto;"></div>
-<div class="form-group mb-3">
-<label class="color-gold-alt text-sm mb-1 block" style="color: #D4A017;">Developer Notes</label>
-<input type="text" id="fdModalNotes" class="p-2 border-gold-alt radius-1 box-border text-white w-100" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">
-</div>
-<div class="form-group mb-4">
-<label class="color-gold-alt text-sm mb-1 block" style="color: #D4A017;">Status</label>
-<select id="fdModalStatus" class="p-2 border-gold-alt radius-1 text-white w-100 box-border cursor-pointer" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">
-<option value="Pending">Pending</option>
-<option value="In Review">In Review</option>
-<option value="Implemented">Implemented</option>
-<option value="Rejected">Rejected</option>
-</select>
-</div>
-<div class="d-flex justify-end gap-3 mt-2">
-<button type="button" id="fdModalCloseBtn" class="text-white padding-6-12 radius-1 shadow-none cursor-pointer close-modal-btn" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">Cancel</button>
-<button type="button" id="fdModalSaveBtn" class="premium-btn-gold padding-6-12 radius-1 cursor-pointer">Save Changes</button>
-</div>
-</div>
+        <!-- feedbackDetailBox -->
+        <div id="content_feedbackDetailBox" data-class="custom-modal-box text-left" style="max-width: 500px; padding: 25px; background: #0b1a20; border-color: #D4A017;">
+            <h3 id="fdModalTitle" class="color-gold-alt mt-0 border-bottom-gold-alt pb-2 mb-3" style="color: #D4A017;">Reviewer Feedback</h3>
+            <div id="fdModalComments" class="mb-4 text-white text-md" style="max-height: 200px; overflow-y: auto;"></div>
+            <div class="form-group mb-3">
+            <label class="color-gold-alt text-sm mb-1 block" style="color: #D4A017;">Developer Notes</label>
+            <input type="text" id="fdModalNotes" class="p-2 border-gold-alt radius-1 box-border text-white w-100" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">
+            </div>
+            <div class="form-group mb-4">
+            <label class="color-gold-alt text-sm mb-1 block" style="color: #D4A017;">Status</label>
+            <select id="fdModalStatus" class="p-2 border-gold-alt radius-1 text-white w-100 box-border cursor-pointer" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">
+            <option value="Pending">Pending</option>
+            <option value="In Review">In Review</option>
+            <option value="Implemented">Implemented</option>
+            <option value="Rejected">Rejected</option>
+            </select>
+            </div>
+            <div class="d-flex justify-end gap-3 mt-2">
+            <button type="button" id="fdModalCloseBtn" class="text-white padding-6-12 radius-1 shadow-none cursor-pointer close-modal-btn" style="background: rgba(0,0,0,0.5); border: 1px solid #D4A017;">Cancel</button>
+            <button type="button" id="fdModalSaveBtn" class="premium-btn-gold padding-6-12 radius-1 cursor-pointer">Save Changes</button>
+            </div>
+        </div>
 
-<div id="storyPreviewBox" class="custom-modal-box hidden text-left" style="max-width: 600px; padding: 20px;">
-<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
-<button type="button" id="spDownloadBtn" class="bg-transparent border-none cursor-pointer p-1" style="color: var(--primary);">
-<svg width="24" height="24"><use href="#icon-download"></use></svg>
-</button>
-<h3 id="spHeading" class="m-0 text-center flex-1" style="color: var(--primary);">Story Preview</h3>
-<button type="button" id="spCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
-<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-</button>
-</div>
-<div class="d-flex gap-2 mb-3 overflow-x-auto pb-1" style="flex-wrap: wrap; justify-content: center;">
-<button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="all">All Reviews</button>
-<button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="detailed" style="background: var(--input-bg); color: var(--text-color);">Detailed Reviews</button>
-<button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="author" style="background: var(--input-bg); color: var(--text-color);">Guess the author</button>
-<button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="title" style="background: var(--input-bg); color: var(--text-color);">Title Suggestion</button>
-</div>
-<div class="webview-scroll-frame radius-2" style="border: var(--border); flex-grow: 1;">
-<table class="webview-table m-0 table-condensed">
-<thead id="spTableHead">
-</thead>
-<tbody id="spTableBody">
-</tbody>
-</table>
-</div>
-</div>
+        <!-- storyPreviewBox -->
+        <div id="content_storyPreviewBox" data-class="custom-modal-box text-left" style="max-width: 600px; padding: 20px;">
+            <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+            <button type="button" id="spDownloadBtn" class="bg-transparent border-none cursor-pointer p-1" style="color: var(--primary);">
+            <svg width="24" height="24"><use href="#icon-download"></use></svg>
+            </button>
+            <h3 id="spHeading" class="m-0 text-center flex-1" style="color: var(--primary);">Story Preview</h3>
+            <button type="button" id="spCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            </div>
+            <div class="d-flex gap-2 mb-3 overflow-x-auto pb-1" style="flex-wrap: wrap; justify-content: center;">
+            <button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="all">All Reviews</button>
+            <button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="detailed" style="background: var(--input-bg); color: var(--text-color);">Detailed Reviews</button>
+            <button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="author" style="background: var(--input-bg); color: var(--text-color);">Guess the author</button>
+            <button type="button" class="sp-tab-btn btn-accent text-sm padding-6-12 m-0 flex-1" data-tab="title" style="background: var(--input-bg); color: var(--text-color);">Title Suggestion</button>
+            </div>
+            <div class="webview-scroll-frame radius-2" style="border: var(--border); flex-grow: 1;">
+            <table class="webview-table m-0 table-condensed">
+            <thead id="spTableHead">
+            </thead>
+            <tbody id="spTableBody">
+            </tbody>
+            </table>
+            </div>
+        </div>
 
-<div id="seasonHistoryBox" class="custom-modal-box hidden text-left" style="max-width: 500px; padding: 20px;">
-<div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
-<h3 class="m-0" style="color: var(--primary);">Season History</h3>
-<button type="button" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
-<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-</button>
-</div>
-<div id="seasonHistoryList" style="overflow-y: auto; flex-grow: 1;"></div>
-</div>
+        <!-- seasonHistoryBox -->
+        <div id="content_seasonHistoryBox" data-class="custom-modal-box text-left" style="max-width: 500px; padding: 20px;">
+            <div class="d-flex justify-between align-center border-bottom pb-2 mb-3">
+            <h3 class="m-0" style="color: var(--primary);">Season History</h3>
+            <button type="button" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            </div>
+            <div id="seasonHistoryList" style="overflow-y: auto; flex-grow: 1;"></div>
+        </div>
 
+    </div>
 </div>
 
 <script type="module">
@@ -1949,6 +1968,40 @@ if (isNaN(d.getTime())) return fallback;
 return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
 } catch(e) { return fallback; }
 };
+
+// FEATURE 3 CORE LOGIC: Dynamically structure the modal overlay from stored nodes
+function openOverlay(boxId) {
+    const wrapper = getElementById('dynamicMasterModal');
+    
+    // 1. Move old content back to its storage div
+    if (wrapper.dataset.currentBox && wrapper.dataset.currentBox !== boxId) {
+        const oldStorage = getElementById('content_' + wrapper.dataset.currentBox);
+        if (oldStorage) {
+            while (wrapper.firstChild) {
+                oldStorage.appendChild(wrapper.firstChild);
+            }
+        }
+    }
+    
+    // 2. Setup wrapper for new content
+    if (wrapper.dataset.currentBox !== boxId) {
+        wrapper.dataset.currentBox = boxId;
+        const newStorage = getElementById('content_' + boxId);
+        if (!newStorage) return;
+        
+        wrapper.className = newStorage.getAttribute('data-class') || '';
+        wrapper.style.cssText = newStorage.getAttribute('style') || '';
+        
+        // 3. Move new content into wrapper
+        while (newStorage.firstChild) {
+            wrapper.appendChild(newStorage.firstChild);
+        }
+    }
+    
+    // 4. Show overlay
+    getElementById('masterOverlay').classList.remove('hidden');
+    document.body.style.overflow = "hidden";
+}
 
 document.addEventListener('click', (event) => {
 const closeBtn = event.target.closest('.close-modal-btn');
@@ -2333,13 +2386,6 @@ const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP
 const month = monthNames[today.getMonth()];
 const year = today.getFullYear();
 dateElement.innerHTML = `<div class="calendar-month">${month}</div><div class="calendar-day">${day}</div><div class="calendar-year">${year}</div>`;
-}
-
-function openOverlay(boxId) {
-document.querySelectorAll('#masterOverlay > div').forEach(el => el.classList.add('hidden'));
-getElementById(boxId).classList.remove('hidden');
-getElementById('masterOverlay').classList.remove('hidden');
-document.body.style.overflow = "hidden";
 }
 
 function toggleMenu(show) {
@@ -3352,6 +3398,89 @@ navBtnReviewer.click();
 evaluateLocalStorageRestrictions();
 }
 });
+
+function renderAccumulatedWinnersChips() {
+winnersChipsContainer.innerHTML = '';
+accumulatedWinnersStateArray.forEach(winner => {
+const chip = createEl('div', { className: 'winner-chip m-0' }, winner);
+const removeBtn = createEl('span', { className: 'cursor-pointer ml-2 text-danger font-bold', style: { marginLeft: '8px', fontSize: '14px' } }, '×');
+removeBtn.onclick = () => {
+accumulatedWinnersStateArray = accumulatedWinnersStateArray.filter(w => w !== winner);
+renderAccumulatedWinnersChips();
+};
+chip.appendChild(removeBtn);
+winnersChipsContainer.appendChild(chip);
+});
+}
+
+correctGuesses.addEventListener('change', () => {
+const selectedWinner = correctGuesses.value;
+if (selectedWinner && !accumulatedWinnersStateArray.includes(selectedWinner)) {
+accumulatedWinnersStateArray.push(selectedWinner);
+renderAccumulatedWinnersChips();
+}
+correctGuesses.value = "";
+});
+
+clearWinnersBtn.addEventListener('click', () => {
+accumulatedWinnersStateArray = [];
+renderAccumulatedWinnersChips();
+});
+
+async function loadCurrentStoryNotes(storyIdParam) {
+if (!storyIdParam) return;
+clearDailyUpdatesUI();
+dailyReviewsTableBody.innerHTML = '';
+if (totalReviewsStat) totalReviewsStat.textContent = "0";
+if (activeReviewersStat) activeReviewersStat.textContent = "0";
+const docSnapshotData = await getDoc(doc(db, "competitions", storyIdParam));
+if (docSnapshotData.exists()) {
+const dataObject = docSnapshotData.data();
+activeStorySnapshotDataCache = dataObject;
+const reviewersSetData = new Set();
+let reviewCountNumber = 0;
+let tableRowsHtmlString = '';
+let guessOptionsHtmlString = '<option value="" disabled selected>-- Select Winner --</option>';
+let titleOptionsHtmlString = '<option value="" disabled selected>-- Title --</option>';
+headingToReviewerMap = {};
+Object.keys(dataObject).forEach(keyString => {
+if (keyString !== 'created' && keyString !== 'season' && !keyString.startsWith('_')) {
+const reviewObj = dataObject[keyString];
+const rev = normalizeReview(keyString, reviewObj);
+reviewersSetData.add(keyString);
+reviewCountNumber++;
+guessOptionsHtmlString += `<option value="${sanitizeText(keyString)}">${sanitizeText(keyString)}</option>`;
+if (rev.suggestedTitle && rev.suggestedTitle !== "None") {
+titleOptionsHtmlString += `<option value="${sanitizeText(rev.suggestedTitle)}">${sanitizeText(rev.suggestedTitle)}</option>`;
+headingToReviewerMap[rev.suggestedTitle] = keyString;
+}
+tableRowsHtmlString += `<tr>
+<td><span class="font-bold" style="color: var(--text-color);">${sanitizeText(rev.reviewer)}</span></td>
+<td>${sanitizeText(rev.displayDate)}</td>
+<td><span class="font-bold" style="color: var(--primary);">${sanitizeText(rev.score)}</span></td>
+<td><button class="btn-clear-inline btn-icon-reduced m-0" onclick="openDetailedReviewModal('${sanitizeText(rev.reviewer)}', '${sanitizeText(rev.score)}', '${sanitizeText(rev.authorGuess)}', '${sanitizeText(rev.suggestedTitle)}', '${sanitizeText(rev.dateStr)}')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg></button></td>
+</tr>`;
+}
+});
+if (totalReviewsStat) totalReviewsStat.textContent = reviewCountNumber;
+if (activeReviewersStat) activeReviewersStat.textContent = reviewersSetData.size;
+if (reviewCountNumber > 0) {
+dailyReviewsTableBody.innerHTML = tableRowsHtmlString;
+correctGuesses.innerHTML = guessOptionsHtmlString;
+readerSuggestions.innerHTML = titleOptionsHtmlString;
+} else {
+appendEmptyRow(dailyReviewsTableBody, 4, "No reviews submitted for this story yet.");
+}
+if (dataObject._suggesterName) headingSuggesterInput.value = dataObject._suggesterName;
+if (dataObject._suggestions) readerSuggestions.value = dataObject._suggestions;
+if (dataObject._guesses) {
+accumulatedWinnersStateArray = dataObject._guesses.split(', ').filter(Boolean);
+renderAccumulatedWinnersChips();
+}
+} else {
+appendEmptyRow(dailyReviewsTableBody, 4, "Story data is empty or missing.");
+}
+}
 
 saveNotesBtn.addEventListener('click', async () => {
 if(isSystemPaused && !isDeveloperModeUnlocked) return;
