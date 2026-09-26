@@ -1944,6 +1944,15 @@ if (text) element.textContent = text;
 return element;
 }
 
+const getFormattedDate = (timestamp, fallback = "N/A") => {
+if (!timestamp || timestamp === "N/A") return fallback;
+try {
+const d = new Date(timestamp);
+if (isNaN(d.getTime())) return fallback;
+return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+} catch(e) { return fallback; }
+};
+
 document.addEventListener('click', (event) => {
 const closeBtn = event.target.closest('.close-modal-btn');
 if (closeBtn) {
@@ -2027,13 +2036,7 @@ const authorGuess = isObj ? (review.authorGuess ?? "None") : "None";
 const suggestedTitle = isObj ? (review.suggestedTitle ?? "None") : "None";
 const detailedReview = isObj ? (review.detailedReview ?? "") : "";
 const dateStr = isObj ? (review.date ?? "N/A") : "N/A";
-let displayDate = "N/A";
-if (dateStr && dateStr !== "N/A") {
-try {
-const d = new Date(dateStr);
-displayDate = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
-} catch(e) {}
-}
+const displayDate = getFormattedDate(dateStr);
 return { reviewer: key, score, authorGuess, suggestedTitle, detailedReview, dateStr, displayDate };
 };
 class CustomDropdown {
@@ -2860,29 +2863,25 @@ customAlert("No feedback records have been found in the database yet.");
 
 devDownloadFeedbackBtn.addEventListener('click', () => {
 if (!cachedFeedbackData) { customAlert("No feedback data loaded to download."); return; }
-let tableHeadHtmlString = `<tr><th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Reviewer</b></th>`;
+let tableHeadHtmlString = `<tr><th class="hdr">Reviewer</th>`;
 for(let increment = 1; increment <= cachedMaxCols; increment++) {
-tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Feedback Entry ${increment}</b></th>`;
+tableHeadHtmlString += `<th class="hdr">Feedback Entry ${increment}</th>`;
 }
-tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Dev Notes</b></th>`;
-tableHeadHtmlString += `<th style="background-color: #D4A017; color: #000000; border: 1px solid #ccc; text-align: center;"><b>Status</b></th>`;
-tableHeadHtmlString += `</tr>`;
+tableHeadHtmlString += `<th class="hdr">Dev Notes</th><th class="hdr">Status</th></tr>`;
 let tableBodyHtmlString = "";
 Object.keys(cachedFeedbackData).forEach(user => {
-tableBodyHtmlString += `<tr><td style="border: 1px solid #ccc; text-align: center;"><strong>${sanitizeText(user)}</strong></td>`;
+tableBodyHtmlString += `<tr><td><strong>${sanitizeText(user)}</strong></td>`;
 const userFeedbacksArray = cachedFeedbackData[user] || [];
 for(let loopIndex = 0; loopIndex < cachedMaxCols; loopIndex++) {
-tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${userFeedbacksArray[loopIndex] !== undefined ? sanitizeText(userFeedbacksArray[loopIndex]) : `-`}</td>`;
+tableBodyHtmlString += `<td>${userFeedbacksArray[loopIndex] !== undefined ? sanitizeText(userFeedbacksArray[loopIndex]) : `-`}</td>`;
 }
 const notesText = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].notes) : "-";
 const statusText = feedbackDevState[user] ? sanitizeText(feedbackDevState[user].status) : "Pending";
-tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${notesText}</td>`;
-tableBodyHtmlString += `<td style="border: 1px solid #ccc; text-align: center;">${statusText}</td>`;
-tableBodyHtmlString += `</tr>`;
+tableBodyHtmlString += `<td>${notesText}</td><td>${statusText}</td></tr>`;
 });
 const fullHtmlString = `
 <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-<head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: center; }</style></head>
+<head><meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { padding: 8px; text-align: center; border: 1px solid #ccc; } .hdr { background-color: #D4A017; color: #000000; font-weight: bold; text-align: center; border: 1px solid #ccc; }</style></head>
 <body>
 <table>
 <thead>${tableHeadHtmlString}</thead>
@@ -3251,11 +3250,8 @@ const duStorySelectFragment = document.createDocumentFragment();
 arrayedStoriesList.forEach(storyObject => {
 let dateStr = "";
 if (storyObject.created) {
-const d = new Date(storyObject.created);
-const day = String(d.getDate()).padStart(2, '0');
-const month = String(d.getMonth() + 1).padStart(2, '0');
-const year = String(d.getFullYear()).slice(-2);
-dateStr = ` (${day}/${month}/${year})`;
+const fd = getFormattedDate(storyObject.created, "");
+if (fd) dateStr = ` (${fd})`;
 }
 storyDropdownFragment.appendChild(createEl('option', { value: storyObject.id }, `${storyObject.id}${dateStr}`));
 adminStorySelectFragment.appendChild(createEl('option', { value: storyObject.id }, storyObject.id));
@@ -3493,9 +3489,8 @@ openOverlay('seasonHistoryBox');
 }
 async function compileMasterDataMatrix(seasonFilterString = "All") {
 const querySnapshotObject = await getDocs(collection(db, "competitions"));
-const today = new Date();
-const currentDateFormattedString = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getFullYear()).slice(-2)}`;
-let spreadsheetStringTemplateArr = [`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; }</style></head><body><table>`];
+const currentDateFormattedString = getFormattedDate(new Date());
+let spreadsheetStringTemplateArr = [`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; } .hdr-main { background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color); } .hdr-sub { background-color: var(--admin-color); color: #000; text-align: center; font-weight: bold; } .empty-row { text-align: center; font-style: italic; padding: 15px; }</style></head><body><table>`];
 let tempTableBodyContentStringArr = [];
 let storiesArray = [];
 querySnapshotObject.forEach(documentItem => {
@@ -3507,14 +3502,14 @@ storiesArray.push({ id: documentItem.id, data: dataObject });
 });
 storiesArray.sort((elementA, elementB) => (elementB.data.created || 0) - (elementA.data.created || 0));
 if (storiesArray.length === 0) {
-const emptyMessageString = `<tr><td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">No records found for Season: ${seasonFilterString}</td></tr>`;
+const emptyMessageString = `<tr><td colspan="5" class="empty-row">No records found for Season: ${seasonFilterString}</td></tr>`;
 return { rawHtmlTemplate: spreadsheetStringTemplateArr[0] + `</table></body></html>`, tableBodyRows: emptyMessageString };
 }
 storiesArray.forEach((storyObject) => {
 const dataObject = storyObject.data;
 const storyTitleString = sanitizeText(storyObject.id);
 spreadsheetStringTemplateArr.push(`<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>`);
-tempTableBodyContentStringArr.push(`<tr><th colspan="5" style="background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color);">📖 Story: ${storyTitleString}</th></tr><tr><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Date</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Reviewer</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Rating</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Author Guess</b></th><th style="background-color: var(--admin-color); color: #000; text-align: center;"><b>Suggested Title</b></th></tr>`);
+tempTableBodyContentStringArr.push(`<tr><th colspan="5" class="hdr-main">📖 Story: ${storyTitleString}</th></tr><tr><th class="hdr-sub">Date</th><th class="hdr-sub">Reviewer</th><th class="hdr-sub">Rating</th><th class="hdr-sub">Author Guess</th><th class="hdr-sub">Suggested Title</th></tr>`);
 let reviewRowsArray = [];
 Object.keys(dataObject).forEach(keyString => {
 if (keyString !== 'created' && keyString !== '_suggestions' && keyString !== '_suggesterName' && keyString !== '_guesses' && keyString !== '_authorGivenHeading' && keyString !== 'season') {
@@ -3528,7 +3523,7 @@ guess: sanitizeText(rev.authorGuess)
 }
 });
 if (reviewRowsArray.length === 0) {
-const emptyRowString = `<tr><td colspan="5" style="text-align: center; font-style: italic; padding: 15px;">No reviews submitted yet</td></tr>`;
+const emptyRowString = `<tr><td colspan="5" class="empty-row">No reviews submitted yet</td></tr>`;
 spreadsheetStringTemplateArr.push(emptyRowString);
 tempTableBodyContentStringArr.push(emptyRowString);
 } else {
