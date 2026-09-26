@@ -75,6 +75,11 @@
 --nav-divider-img: none;
 --dropdown-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
 }
+
+*, *::before, *::after {
+box-sizing: border-box;
+}
+
 body {
 font-family: 'Inter', "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 background: var(--bg-color);
@@ -90,7 +95,6 @@ transition: background 0.3s ease, color 0.3s ease;
 max-width: 800px;
 margin: 0 auto;
 padding: 0 28px;
-box-sizing: border-box;
 }
 .custom-select-wrapper {
 position: relative;
@@ -99,7 +103,6 @@ border: none !important;
 background: transparent !important;
 box-shadow: none !important;
 outline: none !important;
-box-sizing: border-box;
 }
 :where(.custom-select-trigger) {
 display: flex !important;
@@ -116,7 +119,6 @@ font-size: 15px;
 cursor: pointer;
 transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 user-select: none;
-box-sizing: border-box;
 }
 .custom-select-trigger:hover {
 border-color: var(--primary);
@@ -177,7 +179,6 @@ opacity: 0;
 visibility: hidden;
 transform: translateY(-8px);
 transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.2s;
-box-sizing: border-box;
 padding: 8px;
 }
 .custom-select-wrapper.open .custom-select-panel {
@@ -251,7 +252,6 @@ padding: 8px 28px;
 display: flex;
 justify-content: space-between;
 align-items: center;
-box-sizing: border-box;
 margin-bottom: 16px;
 width: 100vw;
 position: relative;
@@ -271,7 +271,6 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 padding: 0 4px;
-box-sizing: border-box;
 }
 .logo-group {
 display: flex;
@@ -485,7 +484,6 @@ width: 100%;
 padding: 10px 16px;
 border: 1px solid var(--border-color);
 border-radius: 14px;
-box-sizing: border-box;
 font-size: 15px;
 background-color: var(--input-bg);
 color: var(--input-text);
@@ -646,7 +644,6 @@ left: 50%;
 transform: translateX(-50%);
 color: var(--text-color);
 font-family: 'Inter', "SF Pro Display", -apple-system, sans-serif;
-box-sizing: border-box;
 }
 #modInterface.premium-dashboard {
 background: var(--bg-color);
@@ -660,7 +657,6 @@ padding: 36px 0 120px 0;
 max-width: 800px;
 margin: 0 auto;
 padding: 0 28px;
-box-sizing: border-box;
 }
 .premium-header { margin-bottom: 28px; }
 .premium-header h2 {
@@ -742,7 +738,6 @@ font-size: 16px;
 padding: 0 16px;
 height: 52px;
 font-weight: 500;
-box-sizing: border-box;
 }
 .premium-input:focus {
 outline: none;
@@ -784,7 +779,6 @@ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 margin-bottom: 28px;
 box-shadow: 0 10px 30px rgba(0, 180, 134, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
 text-align: left;
-box-sizing: border-box;
 }
 .premium-action-card:hover {
 transform: translateY(-3px);
@@ -844,7 +838,6 @@ display: flex;
 gap: 16px;
 margin-bottom: 28px;
 width: 100%;
-box-sizing: border-box;
 }
 .premium-stat-card {
 flex: 1;
@@ -857,7 +850,6 @@ flex-direction: column;
 justify-content: space-between;
 gap: 12px;
 box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-box-sizing: border-box;
 transition: transform 0.2s, box-shadow 0.2s;
 }
 .premium-stat-card:hover {
@@ -1100,7 +1092,6 @@ background: rgba(0, 20, 28, 0.95);
 backdrop-filter: blur(10px);
 border-top: 1px solid rgba(0, 180, 134, 0.45);
 display: flex;
-box-sizing: border-box;
 z-index: 99998;
 padding-bottom: env(safe-area-inset-bottom);
 }
@@ -1149,7 +1140,6 @@ color: var(--text-color);
 padding: 16px;
 font-family: inherit;
 font-size: 14px;
-box-sizing: border-box;
 resize: vertical;
 }
 .premium-textarea:focus { outline: none; border-color: var(--dev-color); }
@@ -1194,7 +1184,6 @@ backdrop-filter: blur(4px);
 display: flex;
 align-items: center;
 justify-content: center;
-box-sizing: border-box;
 padding: 20px;
 }
 .master-modal-overlay.hidden, #customModalOverlay.hidden {
@@ -1209,7 +1198,6 @@ width: 100%;
 max-width: 420px;
 color: var(--modal-text);
 box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-box-sizing: border-box;
 display: flex;
 flex-direction: column;
 max-height: 90vh;
@@ -1227,7 +1215,6 @@ max-height: 90vh;
 overflow-y: auto;
 color: var(--modal-text);
 box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-box-sizing: border-box;
 }
 .custom-modal-btn-row {
 display: flex;
