@@ -1480,12 +1480,12 @@ Menu
 <input type="text" id="feedbackNameInput" placeholder="Enter your name" required class="sys-lockable">
 </div>
 <div class="form-group">
-<label for="feedbackTextInput">Feedback / Suggestions *</label>
+<label for="feedbackTextInput">Feedback *</label>
 <textarea id="feedbackTextInput" rows="5" placeholder="Tell us what you think or what features can be added..." required class="sys-lockable"></textarea>
 </div>
-<div class="form-group">
-<button type="button" id="submitFeedbackBtn" class="btn-accent sys-lockable">Submit Feedback</button>
-<button type="button" id="cancelFeedbackBtn" class="shadow-none" style="background-color: var(--input-bg); color: var(--h3-color);">Cancel / Back</button>
+<div class="form-group d-flex gap-3 mt-3">
+<button type="button" id="submitFeedbackBtn" class="btn-accent sys-lockable" style="width: max-content; padding: 10px 20px;">Submit</button>
+<button type="button" id="cancelFeedbackBtn" class="shadow-none" style="background-color: var(--input-bg); color: var(--h3-color); width: max-content; padding: 10px 20px;">Cancel</button>
 </div>
 </div>
 
@@ -1608,7 +1608,7 @@ Authentication Panel
                         </button>
                         <div id="storyOptionsMenu" class="hidden premium-dropdown-menu">
                             <button type="button" id="editStoriesListBtn" class="premium-dropdown-item">
-                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 Edit Stories
                             </button>
                             <button type="button" id="previewStoryReviewsBtn" class="premium-dropdown-item">
@@ -1650,13 +1650,6 @@ Authentication Panel
             
             <div class="build-exclusive-row">
                 <div class="build-text">Build: <span id="devVersionDisplay" class="build-value">Loading...</span></div>
-                <div class="d-flex align-center gap-3">
-                    <strong id="exclusiveModeText" class="text-white text-md">Exclusive Mode</strong>
-                    <label class="switch m-0 scale-80">
-                        <input type="checkbox" id="devPauseToggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
             </div>
             
             <div id="newBuildAlertContainer" class="hidden premium-inner-card p-4 mb-4" style="border-color: rgba(220, 38, 38, 0.4);">
@@ -1685,6 +1678,10 @@ Authentication Panel
                 <button type="button" id="devSeasonResetBtn" class="dev-action-btn">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
                     Season Reset
+                </button>
+                <button type="button" id="devExclusiveModeBtn" class="dev-action-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span id="exclusiveModeBtnText">Exclusive Mode</span>
                 </button>
             </div>
             
@@ -1775,7 +1772,7 @@ Authentication Panel
 </button>
 <div class="d-flex gap-2 align-center ml-auto">
 <button type="button" id="esToggleEditBtn" class="bg-transparent border-none cursor-pointer p-1">
-<svg id="esPencilIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+<svg id="esPencilIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#28a745" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
 <svg id="esSaveIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
 </button>
 <button type="button" id="esCloseBtn" class="bg-transparent border-none cursor-pointer p-1 close-modal-btn">
@@ -2493,8 +2490,8 @@ const winnersChipsContainer = getElementById('winnersChipsContainer');
 const saveNotesBtn = getElementById('saveNotesBtn');
 const dailyReviewsTableBody = getElementById('dailyReviewsTableBody');
 const devSeasonResetBtn = getElementById('devSeasonResetBtn');
-const devPauseToggle = getElementById('devPauseToggle');
-const exclusiveModeText = getElementById('exclusiveModeText');
+const exclusiveModeBtnText = getElementById('exclusiveModeBtnText');
+const devExclusiveModeBtn = getElementById('devExclusiveModeBtn');
 const goToFeedbackBtn = getElementById('goToFeedbackBtn');
 const feedbackNameInput = getElementById('feedbackNameInput');
 const feedbackTextInput = getElementById('feedbackTextInput');
@@ -2770,7 +2767,7 @@ const currentName = feedbackNameInput.value.trim();
 const feedback = feedbackTextInput.value.trim();
 if(!currentName) { customAlert("Please enter your name."); return; }
 if(!feedback) { customAlert("Feedback box cannot be empty."); return; }
-handleAsyncAction(submitFeedbackBtn, "Submitting...", "Submit Feedback", async () => {
+handleAsyncAction(submitFeedbackBtn, "Submitting...", "Submit", async () => {
 await setDoc(doc(db, "app_feedback", "user_submissions"), {
 [currentName]: arrayUnion(feedback)
 }, { merge: true });
@@ -3078,7 +3075,6 @@ updateUserFormFieldsVisibility();
 isNameLockedByMod = !!data.isNameLocked;
 isSeasonStarted = !!data.seasonStarted;
 isSystemPaused = !!data.systemPaused;
-devPauseToggle.checked = isSystemPaused;
 evaluateSystemFreezeState();
 evaluateSetupFlow(); 
 } catch(error) {}
@@ -3132,16 +3128,23 @@ if (!isSystemPaused || isDeveloperModeUnlocked) updateGlobalConfig({ enableAutho
 toggleTitleSuggestionBtn.addEventListener('change', () => {
 if (!isSystemPaused || isDeveloperModeUnlocked) updateGlobalConfig({ enableTitleSuggestion: toggleTitleSuggestionBtn.checked });
 });
-devPauseToggle.addEventListener('change', async () => {
-const success = await updateGlobalConfig({ systemPaused: devPauseToggle.checked }, null, "Error syncing Exclusive Mode configuration.");
-if (!success) devPauseToggle.checked = !devPauseToggle.checked;
+
+devExclusiveModeBtn.addEventListener('click', async () => {
+const willPause = !isSystemPaused;
+if (await customConfirm(`Are you sure you want to ${willPause ? 'enable' : 'disable'} Exclusive Mode?`)) {
+await updateGlobalConfig({ systemPaused: willPause }, null, "Error syncing Exclusive Mode configuration.");
+}
 });
+
 function evaluateSystemFreezeState() {
 if (isSystemPaused) {
 pausedBanner.classList.remove('hidden');
 submitRatingBtn.disabled = true;
 setSafeText(submitRatingBtn, "System Paused");
-if (exclusiveModeText) exclusiveModeText.style.color = "var(--danger)";
+if (exclusiveModeBtnText) {
+exclusiveModeBtnText.textContent = "Exclusive Mode: ON";
+exclusiveModeBtnText.style.color = "var(--danger)";
+}
 if (isDeveloperModeUnlocked) {
 document.querySelectorAll('.sys-lockable').forEach(element => element.disabled = false);
 inputModName.disabled = isNameLockedByMod;
@@ -3153,7 +3156,10 @@ saveModNameBtn.disabled = true;
 }
 } else {
 pausedBanner.classList.add('hidden');
-if (exclusiveModeText) exclusiveModeText.style.color = "#FFFFFF";
+if (exclusiveModeBtnText) {
+exclusiveModeBtnText.textContent = "Exclusive Mode: OFF";
+exclusiveModeBtnText.style.color = "inherit";
+}
 document.querySelectorAll('.sys-lockable').forEach(element => element.disabled = false);
 evaluateSetupFlow();
 evaluateLocalStorageRestrictions();
