@@ -270,28 +270,6 @@ button:disabled { background-color: rgba(255, 255, 255, 0.08); color: rgba(154, 
 #customModalInput { margin-top: 15px; }
 .manual-header-row { border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 20px; }
 .manual-close-trigger { background: transparent; border: none; color: var(--danger); font-size: 24px; cursor: pointer; padding: 0; line-height: 1; }
-
-.sidebar-input-group {
-    display: flex; align-items: center; background-color: var(--input-bg);
-    border: 1px solid var(--border-color); border-radius: 12px; padding: 0 16px; height: 48px; margin-bottom: 8px;
-}
-.sidebar-input-group svg { flex-shrink: 0; color: var(--text-muted); margin-right: 12px; }
-.sidebar-input-group input, .sidebar-input-group select {
-    background: transparent !important; border: none !important; padding: 0 !important; height: 100% !important; box-shadow: none !important; margin:0 !important; flex:1 !important; color: var(--text-color) !important; font-size: 15px !important;
-}
-.sidebar-input-group input:focus, .sidebar-input-group select:focus {
-    box-shadow: none !important; border: none !important;
-}
-.sidebar-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 24px 0; }
-.sidebar-btn-full { display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 100%; padding: 14px 20px; border-radius: 14px; font-size: 15px; font-weight: 600; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); transition: transform 0.2s, filter 0.2s; color: white; }
-.sidebar-btn-full:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.sidebar-btn-full:active { transform: scale(0.98); }
-.sidebar-btn-blue { background-color: #008FC4; }
-.sidebar-btn-green { background-color: #00B486; }
-.sidebar-btn-icon-only { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 12px; background-color: rgba(255,255,255,0.05); border: none; color: var(--text-muted); transition: background 0.2s, color 0.2s; box-shadow: none; padding: 0; margin-top: 8px; }
-.sidebar-btn-icon-only:hover { background-color: rgba(255,255,255,0.1); color: var(--text-color); }
-#monthInputGroup .custom-select-wrapper { flex: 1; margin: 0; }
-#monthInputGroup .custom-select-trigger { background: transparent !important; border: none !important; padding: 0 !important; height: 100% !important; box-shadow: none !important; color: var(--text-color) !important; font-size: 15px !important; }
 </style>
 </head>
 <body>
@@ -330,96 +308,74 @@ button:disabled { background-color: rgba(255, 255, 255, 0.08); color: rgba(154, 
 <symbol id="icon-backspace" viewBox="0 0 24 24" fill="currentColor"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></symbol>
 <symbol id="icon-review-detail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></symbol>
 <symbol id="icon-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></symbol>
-<symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></symbol>
-<symbol id="icon-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></symbol>
 </defs>
 </svg>
 <div id="menuOverlay" class="menu-overlay"></div>
 <div id="sideMenu" class="side-menu">
-    <div class="side-menu-header" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-        <div style="display: flex; align-items: center; gap: 16px;">
-            <svg width="28" height="28" style="color: white; flex-shrink: 0;"><use href="#icon-calendar"></use></svg>
-            <div style="display: flex; flex-direction: column; gap: 2px;">
-                <div class="font-bold text-white" style="font-size: 16px; line-height: 1.2;">Season: <span id="sidebarSeasonDisplay">---</span></div>
-                <div class="text-muted" style="font-size: 14px; line-height: 1.2;">Moderator: <span id="sidebarModNameDisplay">---</span></div>
-            </div>
-        </div>
-        <button id="menuCloseBtn" class="side-menu-close">✕</button>
-    </div>
-    <div class="side-menu-content" style="display: flex; flex-direction: column; text-align: left;">
-        <div id="sidebarModOptions" class="hidden pt-1">
-            <div class="form-group m-0" id="modNameSetupGroup" style="text-align: left;">
-                <label for="inputModName">Moderator Name</label>
-                <div class="sidebar-input-group">
-                    <svg width="20" height="20"><use href="#icon-user"></use></svg>
-                    <input type="text" id="inputModName" placeholder="Handle" class="sys-lockable">
-                </div>
-                <button type="button" id="saveModNameBtn" class="sidebar-btn-icon-only sys-lockable cursor-pointer">
-                    <svg width="24" height="24"><use href="#icon-cloud-up"></use></svg>
-                </button>
-            </div>
-            
-            <hr class="sidebar-divider">
-            
-            <div class="form-group m-0" id="seasonSetupGroup" style="text-align: left;">
-                <label for="inputTopic">Subject</label>
-                <div class="sidebar-input-group mb-4">
-                    <svg width="20" height="20"><use href="#icon-file-text"></use></svg>
-                    <input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" class="sys-lockable">
-                </div>
-                
-                <hr class="sidebar-divider">
-                
-                <label for="inputMonth">Month</label>
-                <div class="sidebar-input-group mb-4" id="monthInputGroup">
-                    <svg width="20" height="20"><use href="#icon-calendar"></use></svg>
-                    <select id="inputMonth" class="cursor-pointer sys-lockable">
-                        <option value="">-- Select Month --</option>
-                        <option value="January">January</option>
-                        <option value="February">February</option>
-                        <option value="March">March</option>
-                        <option value="April">April</option>
-                        <option value="May">May</option>
-                        <option value="June">June</option>
-                        <option value="July">July</option>
-                        <option value="August">August</option>
-                        <option value="September">September</option>
-                        <option value="October">October</option>
-                        <option value="November">November</option>
-                        <option value="December">December</option>
-                    </select>
-                </div>
-                
-                <div style="display: flex; justify-content: flex-start; margin-bottom: 8px;">
-                    <button type="button" id="startSeasonBtn" class="sys-lockable text-muted" style="background: rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 20px; font-weight: 600; font-size: 14px; border: none;">Start Season</button>
-                </div>
-            </div>
-            
-            <hr class="sidebar-divider">
-            
-            <div id="advancedModOptions" class="hidden">
-                <button type="button" id="openTimeRestrictionsBtn" class="sidebar-btn-full sidebar-btn-blue sys-lockable border-none cursor-pointer">
-                    <svg width="20" height="20"><use href="#icon-clock"></use></svg>
-                    Custom Time Restrictions
-                </button>
-                
-                <hr class="sidebar-divider">
-                
-                <div class="form-group m-0">
-                    <label style="text-align: left; margin-bottom: 12px;">Season Summary</label>
-                    <button type="button" id="previewBtn" class="sidebar-btn-full sidebar-btn-green sys-lockable border-none cursor-pointer">
-                        <svg width="20" height="20"><use href="#icon-eye"></use></svg>
-                        Preview
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <button type="button" id="sidebarAboutBtn" class="sidebar-btn-full sidebar-btn-blue border-none cursor-pointer" style="margin-top: 12px;">
-            <svg width="20" height="20"><use href="#icon-info"></use></svg>
-            About
-        </button>
-    </div>
+<div class="side-menu-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+<div class="d-flex justify-between w-100 align-center">
+<div class="font-bold text-xl">
+<span class="text-silver">Season: </span>
+<span id="sidebarSeasonDisplay" class="text-gold shadow-text-gold">---</span>
+</div>
+<button id="menuCloseBtn" class="side-menu-close">✕</button>
+</div>
+<div class="font-bold text-xl">
+<span class="text-silver">Moderator: </span>
+<span id="sidebarModNameDisplay" class="text-white">---</span>
+</div>
+</div>
+<div class="side-menu-content d-flex flex-col" style="text-align: left;">
+<div id="sidebarModOptions" class="hidden mt-2 pt-1">
+<div class="form-group" id="modNameSetupGroup" style="text-align: left;">
+<label for="inputModName" style="text-align: left;">Moderator Name</label>
+<div class="d-flex gap-3 align-center" style="justify-content: flex-start;">
+<input type="text" id="inputModName" placeholder="Handle" class="m-0 flex-1 sys-lockable input-reduced">
+<button type="button" id="saveModNameBtn" class="btn-mod-action d-flex align-center justify-center w-auto sys-lockable btn-reduced">
+<svg width="20" height="20"><use href="#icon-cloud-up"></use></svg>
+</button>
+</div>
+</div>
+<div class="form-group mt-3" id="seasonSetupGroup" style="text-align: left;">
+<label for="inputTopic" style="text-align: left;">Subject</label>
+<input type="text" id="inputTopic" placeholder="e.g., Sci-Fi" class="mb-2 sys-lockable input-reduced w-100">
+<label for="inputMonth" style="text-align: left; display: block; margin-bottom: 6px;" class="font-bold">Month</label>
+<select id="inputMonth" class="cursor-pointer radius-2 mb-3 sys-lockable input-reduced" style="width: 80%;">
+<option value="">-- Select Month --</option>
+<option value="January">January</option>
+<option value="February">February</option>
+<option value="March">March</option>
+<option value="April">April</option>
+<option value="May">May</option>
+<option value="June">June</option>
+<option value="July">July</option>
+<option value="August">August</option>
+<option value="September">September</option>
+<option value="October">October</option>
+<option value="November">November</option>
+<option value="December">December</option>
+</select>
+<div class="d-flex justify-end mb-4">
+<button type="button" id="startSeasonBtn" class="btn-mod-action w-max m-0 sys-lockable btn-reduced">Start Season</button>
+</div>
+</div>
+<div id="advancedModOptions" class="hidden pt-2">
+<button type="button" id="openTimeRestrictionsBtn" class="btn-mod-action w-100 p-2 text-sm mt-2 mb-3">Custom Time Restrictions</button>
+<div class="form-group mt-3 mb-1">
+<label style="text-align: left;">Season Summary</label>
+<div class="d-flex flex-row gap-2 mt-1 w-100">
+<button id="previewBtn" class="btn-preview flex-1 p-3 text-md d-flex align-center justify-center sys-lockable">Preview</button>
+</div>
+</div>
+</div>
+</div>
+<div class="form-group pt-1 d-flex flex-row justify-end gap-2" style="margin-top: 25px;">
+<button type="button" id="sidebarAboutBtn" class="btn-accent w-max d-flex align-center justify-center gap-2">
+<svg width="16" height="16" class="block"><use href="#icon-info"></use></svg>
+About
+</button>
+</div>
+</div>
 </div>
 <div class="brand-purple-banner">
 <div class="banner-content-lock">
@@ -1726,6 +1682,272 @@ ui.sideMenu.classList.remove('open');
 ui.menuOverlay.classList.remove('visible');
 }
 }
+function showCustomModal(type, messageText, defaultValue = "") {
+return new Promise((resolve) => {
+if(messageText.includes('<table') || messageText.includes('<div') || messageText.includes('<br>')) {
+ui.customModalMessage.innerHTML = messageText;
+} else {
+setSafeText(ui.customModalMessage, messageText);
+}
+ui.customModalInput.value = defaultValue;
+if(type === 'alert') {
+ui.customModalInput.classList.add('hidden');
+ui.customModalCancel.classList.add('hidden');
+} else if(type === 'confirm') {
+ui.customModalInput.classList.add('hidden');
+ui.customModalCancel.classList.remove('hidden');
+} else if(type === 'prompt') {
+ui.customModalInput.classList.remove('hidden');
+ui.customModalCancel.classList.remove('hidden');
+}
+ui.customModalOverlay.classList.remove('hidden');
+const cleanup = () => {
+ui.customModalOverlay.classList.add('hidden');
+ui.customModalOk.onclick = null;
+ui.customModalCancel.onclick = null;
+};
+ui.customModalOk.onclick = () => {
+const value = ui.customModalInput.value;
+cleanup();
+if(type === 'prompt') resolve(value);
+else if(type === 'confirm') resolve(true);
+else resolve(true);
+};
+ui.customModalCancel.onclick = () => {
+cleanup();
+if(type === 'prompt') resolve(null);
+else if(type === 'confirm') resolve(false);
+else resolve(false);
+};
+});
+}
+
+async function handleAsyncAction(btn, loadTxt, origTxt, action, onErr) {
+btn.disabled = true;
+if(loadTxt) setSafeText(btn, loadTxt);
+try {
+await action();
+} catch (e) {
+if(onErr) onErr(e);
+else customAlert("Operation failed. Please check your connection.");
+} finally {
+btn.disabled = false;
+if(origTxt) {
+if(origTxt.includes('<svg')) btn.innerHTML = origTxt;
+else setSafeText(btn, origTxt);
+}
+}
+}
+
+const customAlert = (messageText) => showCustomModal('alert', messageText);
+const customConfirm = (messageText) => showCustomModal('confirm', messageText);
+const customPrompt = (messageText, defaultValue) => showCustomModal('prompt', messageText, defaultValue);
+const firebaseConfig = {
+apiKey: "AIzaSyDZlBZdqqet5e9Y-WCnAZ76daCQPVYMGRc",
+authDomain: "story-writing-competition.firebaseapp.com",
+projectId: "story-writing-competition",
+storageBucket: "story-writing-competition.firebasestorage.app",
+messagingSenderId: "494031666393",
+appId: "1:494031666393:web:27b2f4a51f1f7271c792c8"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app); 
+async function updateGlobalConfig(payload, successMsg = null, errorMsg = "Error syncing configuration.") {
+try {
+await setDoc(doc(db, "app_state", "global_config"), payload, { merge: true });
+if (successMsg) customAlert(successMsg);
+return true;
+} catch(error) {
+customAlert(errorMsg);
+return false;
+}
+}
+let currentFeedbackUser = null;
+let currentPreviewTab = 'all';
+let globalSeasonsSet = new Set();
+function openDetailedReviewModal(name, rating, guess, suggTitle, dateString) {
+setSafeText(ui.drModalName, name);
+let formattedDate = dateString;
+if(dateString !== "N/A" && dateString) {
+try { formattedDate = new Date(dateString).toLocaleString(); } catch(error){}
+}
+setSafeText(ui.drModalDate, formattedDate || "N/A");
+setSafeText(ui.drModalRating, rating);
+setSafeText(ui.drModalGuess, guess);
+setSafeText(ui.drModalSuggTitle, suggTitle);
+openOverlay('detailedReviewBox');
+}
+function buildPreviewTableHTML(tabType, currentStory) {
+let rowsHtml = '';
+Object.keys(activeStorySnapshotDataCache).forEach(key => {
+if (['created', 'season', '_suggestions', '_suggesterName', '_guesses'].includes(key)) return;
+const rev = normalizeReview(key, activeStorySnapshotDataCache[key]);
+if (tabType === 'all') {
+rowsHtml += `<tr><td>${sanitizeText(rev.reviewer)}</td><td>${sanitizeText(rev.displayDate)}</td><td>${sanitizeText(rev.score)}</td></tr>`;
+} else if (tabType === 'detailed' && rev.detailedReview && rev.detailedReview.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(rev.reviewer)}</td><td class="text-left" style="white-space: pre-wrap;">${sanitizeText(rev.detailedReview)}</td></tr>`;
+} else if (tabType === 'author' && rev.authorGuess && rev.authorGuess !== "None" && rev.authorGuess.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(rev.reviewer)}</td><td>${sanitizeText(rev.authorGuess)}</td></tr>`;
+} else if (tabType === 'title' && rev.suggestedTitle && rev.suggestedTitle !== "None" && rev.suggestedTitle.trim() !== "") {
+rowsHtml += `<tr><td>${sanitizeText(rev.reviewer)}</td><td>${sanitizeText(rev.suggestedTitle)}</td></tr>`;
+}
+});
+let theadHtml = '';
+if (tabType === 'all') {
+theadHtml = `<tr><th>Reviewer</th><th>Date</th><th>Rating</th></tr>`;
+} else if (tabType === 'detailed') {
+theadHtml = `<tr><th>Reviewer</th><th>Detailed Review</th></tr>`;
+} else if (tabType === 'author') {
+theadHtml = `<tr><th>Reviewer</th><th>Guess the author</th></tr>`;
+} else if (tabType === 'title') {
+theadHtml = `<tr><th>Reviewer</th><th>Title Suggestion</th></tr>`;
+}
+if (rowsHtml === '') {
+rowsHtml = `<tr><td colspan="3" class="text-center text-muted text-italic py-5">No records found.</td></tr>`;
+}
+return { theadHtml, rowsHtml };
+}
+function renderPreviewTable() {
+if (!activeStorySnapshotDataCache) return;
+ui.spHeading.textContent = `${ui.adminStorySelect.value}`;
+const { theadHtml, rowsHtml } = buildPreviewTableHTML(currentPreviewTab, ui.adminStorySelect.value);
+ui.spTableHead.innerHTML = theadHtml;
+ui.spTableBody.innerHTML = rowsHtml;
+}
+let currentModName = "Mod";
+let isNameLockedByMod = false;
+let isSeasonStarted = false;
+let arrayedStoriesList = [];
+let isSystemPaused = false;
+let isDeveloperModeUnlocked = false;
+let isModeratorAuthenticated = false;
+let accumulatedWinnersStateArray = [];
+let activeStorySnapshotDataCache = null;
+let isAuthorGuessEnabled = false;
+let isTitleSuggestionEnabled = false;
+let cachedAuthorGuessLockTime = "23:59";
+let cachedTitleSuggestionLockTime = "23:59";
+let globalSeasonCache = "Jan00";
+let headingToReviewerMap = {};
+let cachedFeedbackData = null;
+let cachedMaxCols = 0;
+let feedbackDevState = {};
+let isEditingStoryList = false;
+let currentVersionState = { 
+buildNumber: GIT_BUILD_NUMBER, 
+publishedDate: GIT_BUILD_DATE,
+publishedTime: GIT_BUILD_TIME,
+changesMade: [] 
+};
+function appendEmptyRow(tableBody, columnsSpan, text) {
+tableBody.innerHTML = '';
+const tableRow = createEl('tr');
+if (text === "No stories available." || text === "No reviews submitted for this story yet." || text === "Story data is empty or missing.") {
+const td = createEl('td', { colSpan: columnsSpan, className: "empty-state-cell p-0 border-none" });
+td.innerHTML = `<div class="premium-empty-state"><div class="empty-icon"><svg width="64" height="64"><use href="#icon-empty"></use></svg></div><h4 class="empty-title">${text}</h4><p class="empty-subtitle">Add a new story to see submissions here.</p></div>`;
+tableRow.appendChild(td);
+} else {
+tableRow.appendChild(createEl('td', { colSpan: columnsSpan, className: "text-center p-5 text-italic text-muted" }, text));
+}
+tableBody.appendChild(tableRow);
+}
+function handleLockedSuggestionInteraction(inputElement, lockTime, featureName) {
+if (inputElement.readOnly && !isDeveloperModeUnlocked) {
+inputElement.blur(); 
+const timeNow = new Date();
+const timeStringFormatted = `${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')}`;
+const targetStory = ui.storyDropdown.value;
+const activeStoryObject = arrayedStoriesList.find(story => story.id === targetStory);
+let isPreviousDay = false;
+if (activeStoryObject) {
+isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date().toDateString();
+}
+if (isPreviousDay || (ui.masterTimeRestrictionToggle.checked && timeStringFormatted > lockTime)) {
+customAlert("Submission time exceeded for the story.");
+} else {
+customAlert(`The ${featureName} feature is currently disabled by the moderator.`);
+}
+}
+}
+['click', 'focus'].forEach(event => {
+ui.authorGuessInput.addEventListener(event, () => handleLockedSuggestionInteraction(ui.authorGuessInput, cachedAuthorGuessLockTime, "Author Guess"));
+ui.titleSuggestionInput.addEventListener(event, () => handleLockedSuggestionInteraction(ui.titleSuggestionInput, cachedTitleSuggestionLockTime, "Title Suggestion"));
+});
+
+const switchTab = (isReviewer) => {
+ui.navBtnReviewer.classList.toggle('active-panel-indicator', isReviewer);
+ui.navBtnModerator.classList.toggle('active-panel-indicator', !isReviewer);
+ui.userInterface.classList.toggle('hidden', !isReviewer);
+ui.feedbackInterface.classList.add('hidden');
+ui.loginInterface.classList.toggle('hidden', isReviewer || isModeratorAuthenticated);
+ui.modInterface.classList.toggle('hidden', isReviewer || !isModeratorAuthenticated);
+ui.devInterface.classList.toggle('hidden', isReviewer || !isDeveloperModeUnlocked);
+if (ui.logoutBtn) ui.logoutBtn.classList.toggle('hidden', isReviewer || !isModeratorAuthenticated);
+};
+
+ui.ratingForm.addEventListener('submit', async (event) => {
+event.preventDefault(); 
+if (isSystemPaused && !isDeveloperModeUnlocked) {
+customAlert("System Maintenance Active. Submissions are temporarily paused.");
+return;
+}
+const targetStory = ui.storyDropdown.value;
+if (!targetStory) {
+customAlert("Please select a story from the dropdown first.");
+return;
+}
+const friendName = ui.friendNameInput.value.trim();
+let ratingRaw = ui.ratingValueInput.value.trim();
+let detailedReview = ui.detailedReviewInput ? ui.detailedReviewInput.value.trim() : "";
+let authorGuess = ui.authorGuessInput.value.trim() || "None";
+let titleSuggestion = ui.titleSuggestionInput.value.trim() || "None";
+if (!friendName) {
+customAlert("Please enter your name.");
+return;
+}
+if (!isDeveloperModeUnlocked && localStorage.getItem(`rated_${targetStory}`) === "true") {
+try {
+ratingRaw = JSON.parse(localStorage.getItem(`userdata_${targetStory}`)).score; 
+} catch (error) {}
+} else {
+if (isDeveloperModeUnlocked) {
+ratingRaw = ratingRaw === "" ? "N/A" : (parseInt(ratingRaw, 10) || ratingRaw);
+} else {
+const rating = parseInt(ratingRaw, 10);
+if (isNaN(rating) || rating < 1 || rating > 10) {
+customAlert("Please enter a valid rating between 1 and 10.");
+return;
+}
+ratingRaw = rating; 
+}
+}
+handleAsyncAction(ui.submitRatingBtn, "Submitting...", "Submit", async () => {
+await setDoc(doc(db, "competitions", targetStory), {
+[friendName]: { score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: new Date().toISOString() }
+}, { merge: true });
+if (!isDeveloperModeUnlocked) {
+localStorage.setItem(`rated_${targetStory}`, "true");
+localStorage.setItem(`userdata_${targetStory}`, JSON.stringify({ name: friendName, score: ratingRaw, detailedReview, authorGuess, suggestedTitle: titleSuggestion, date: new Date().toISOString() }));
+}
+customAlert("Review submitted successfully! Thank you.");
+evaluateLocalStorageRestrictions(); 
+}, () => customAlert("An error occurred while submitting your review. Please check your connection."));
+});
+
+function openFeedbackDetails(user, feedbacks) {
+currentFeedbackUser = user;
+setSafeText(ui.fdModalTitle, `Feedback from: ${user}`);
+ui.fdModalComments.innerHTML = '';
+feedbacks.forEach((feedbackText, index) => {
+ui.fdModalComments.appendChild(createEl('p', { className: "bg-dark-alt p-2 radius-1 border-gold-alt mt-0 mb-2" }, `${index + 1}. ${feedbackText}`));
+});
+if (feedbackDevState[user]) {
+ui.fdModalNotes.value = feedbackDevState[user].notes || "";
+ui.fdModalStatus.value = feedbackDevState[user].status || "Pending";
+}
+openOverlay('feedbackDetailBox');
+}
 
 function evaluateSetupFlow() {
 if (isSystemPaused && !isDeveloperModeUnlocked) return; 
@@ -1764,14 +1986,12 @@ ui.timeRestrictionContent.style.opacity = '0.4';
 ui.timeRestrictionContent.style.pointerEvents = 'none';
 }
 }
-if(ui.masterTimeRestrictionToggle) {
 ui.masterTimeRestrictionToggle.addEventListener('change', () => {
 syncTimeRestrictionUI();
 if (!isSystemPaused || isDeveloperModeUnlocked) {
 updateGlobalConfig({ enableMasterTimeRestriction: ui.masterTimeRestrictionToggle.checked });
 }
 });
-}
 function renderEditStoriesList() {
 const listContainer = ui.editStoriesList;
 let html = '';
@@ -1813,9 +2033,9 @@ if (document.activeElement !== ui.titleSuggestionLockTime) {
 ui.titleSuggestionLockTime.value = cachedTitleSuggestionLockTime;
 }
 if (data.enableMasterTimeRestriction !== undefined) {
-if(ui.masterTimeRestrictionToggle) ui.masterTimeRestrictionToggle.checked = !!data.enableMasterTimeRestriction;
+ui.masterTimeRestrictionToggle.checked = !!data.enableMasterTimeRestriction;
 } else {
-if(ui.masterTimeRestrictionToggle) ui.masterTimeRestrictionToggle.checked = true;
+ui.masterTimeRestrictionToggle.checked = true;
 }
 syncTimeRestrictionUI();
 updateUserFormFieldsVisibility();
@@ -1865,16 +2085,12 @@ ui.userTitleSuggestionGroup.classList.add('hidden');
 ui.titleSuggestionInput.value = "";
 }
 }
-if(ui.toggleAuthorGuessBtn) {
 ui.toggleAuthorGuessBtn.addEventListener('change', () => {
 if (!isSystemPaused || isDeveloperModeUnlocked) updateGlobalConfig({ enableAuthorGuess: ui.toggleAuthorGuessBtn.checked });
 });
-}
-if(ui.toggleTitleSuggestionBtn) {
 ui.toggleTitleSuggestionBtn.addEventListener('change', () => {
 if (!isSystemPaused || isDeveloperModeUnlocked) updateGlobalConfig({ enableTitleSuggestion: ui.toggleTitleSuggestionBtn.checked });
 });
-}
 
 function evaluateSystemFreezeState() {
 if (isSystemPaused) {
@@ -1924,7 +2140,7 @@ if (!activeStoryObject) return;
 const isPreviousDay = new Date(activeStoryObject.created).toDateString() !== new Date().toDateString();
 const timeNow = new Date();
 const timeStringFormatted = `${String(timeNow.getHours()).padStart(2, '0')}:${String(timeNow.getMinutes()).padStart(2, '0')}`;
-const masterEnabled = ui.masterTimeRestrictionToggle ? ui.masterTimeRestrictionToggle.checked : true;
+const masterEnabled = ui.masterTimeRestrictionToggle.checked;
 const pastAuthorGuessTime = masterEnabled && timeStringFormatted > cachedAuthorGuessLockTime;
 const pastTitleSuggestionTime = masterEnabled && timeStringFormatted > cachedTitleSuggestionLockTime;
 const hasRated = localStorage.getItem(`rated_${targetStory}`) === "true";
@@ -2056,7 +2272,6 @@ ui.adminStorySelect.value = ui.duStorySelect.value;
 loadCurrentStoryNotes(ui.adminStorySelect.value);
 });
 }
-if(ui.readerSuggestions) {
 ui.readerSuggestions.addEventListener('change', () => {
 const selectedHeadingValue = ui.readerSuggestions.value;
 if (selectedHeadingValue && headingToReviewerMap[selectedHeadingValue]) {
@@ -2065,7 +2280,6 @@ ui.headingSuggesterInput.value = headingToReviewerMap[selectedHeadingValue];
 ui.headingSuggesterInput.value = "";
 }
 });
-}
 onAuthStateChanged(auth, (userObject) => {
 if (userObject) {
 const isDev = ["dev@admin.com", "dev@kathasagaram.com"].includes(userObject.email);
@@ -2097,7 +2311,7 @@ chip.appendChild(removeBtn);
 ui.winnersChipsContainer.appendChild(chip);
 });
 }
-if(ui.correctGuesses) {
+
 ui.correctGuesses.addEventListener('change', () => {
 const selectedWinner = ui.correctGuesses.value;
 if (selectedWinner && !accumulatedWinnersStateArray.includes(selectedWinner)) {
@@ -2106,7 +2320,125 @@ renderAccumulatedWinnersChips();
 }
 ui.correctGuesses.value = "";
 });
+async function loadCurrentStoryNotes(storyIdParam) {
+if (!storyIdParam) return;
+clearDailyUpdatesUI();
+ui.dailyReviewsTableBody.innerHTML = '';
+if (ui.totalReviewsStat) ui.totalReviewsStat.textContent = "0";
+if (ui.activeReviewersStat) ui.activeReviewersStat.textContent = "0";
+const docSnapshotData = await getDoc(doc(db, "competitions", storyIdParam));
+if (docSnapshotData.exists()) {
+const dataObject = docSnapshotData.data();
+activeStorySnapshotDataCache = dataObject;
+const reviewersSetData = new Set();
+let reviewCountNumber = 0;
+let tableRowsHtmlString = '';
+let guessOptionsHtmlString = '<option value="" disabled selected>-- Select Winner --</option>';
+let titleOptionsHtmlString = '<option value="" disabled selected>-- Title --</option>';
+headingToReviewerMap = {};
+Object.keys(dataObject).forEach(keyString => {
+if (keyString !== 'created' && keyString !== 'season' && !keyString.startsWith('_')) {
+const reviewObj = dataObject[keyString];
+const rev = normalizeReview(keyString, reviewObj);
+reviewersSetData.add(keyString);
+reviewCountNumber++;
+guessOptionsHtmlString += `<option value="${sanitizeText(keyString)}">${sanitizeText(keyString)}</option>`;
+if (rev.suggestedTitle && rev.suggestedTitle !== "None") {
+titleOptionsHtmlString += `<option value="${sanitizeText(rev.suggestedTitle)}">${sanitizeText(rev.suggestedTitle)}</option>`;
+headingToReviewerMap[rev.suggestedTitle] = keyString;
 }
+tableRowsHtmlString += `<tr>
+<td><span class="font-bold" style="color: var(--text-color);">${sanitizeText(rev.reviewer)}</span></td>
+<td>${sanitizeText(rev.displayDate)}</td>
+<td><span class="font-bold" style="color: var(--primary);">${sanitizeText(rev.score)}</span></td>
+<td><button class="btn-clear-inline btn-icon-reduced m-0" onclick="openDetailedReviewModal('${sanitizeText(rev.reviewer)}', '${sanitizeText(rev.score)}', '${sanitizeText(rev.authorGuess)}', '${sanitizeText(rev.suggestedTitle)}', '${sanitizeText(rev.dateStr)}')"><svg width="18" height="18"><use href="#icon-review-detail"></use></svg></button></td>
+</tr>`;
+}
+});
+if (ui.totalReviewsStat) ui.totalReviewsStat.textContent = reviewCountNumber;
+if (ui.activeReviewersStat) ui.activeReviewersStat.textContent = reviewersSetData.size;
+if (reviewCountNumber > 0) {
+ui.dailyReviewsTableBody.innerHTML = tableRowsHtmlString;
+ui.correctGuesses.innerHTML = guessOptionsHtmlString;
+ui.readerSuggestions.innerHTML = titleOptionsHtmlString;
+} else {
+appendEmptyRow(ui.dailyReviewsTableBody, 4, "No reviews submitted for this story yet.");
+}
+if (dataObject._suggesterName) ui.headingSuggesterInput.value = dataObject._suggesterName;
+if (dataObject._suggestions) ui.readerSuggestions.value = dataObject._suggestions;
+if (dataObject._guesses) {
+accumulatedWinnersStateArray = dataObject._guesses.split(', ').filter(Boolean);
+renderAccumulatedWinnersChips();
+}
+} else {
+appendEmptyRow(ui.dailyReviewsTableBody, 4, "Story data is empty or missing.");
+}
+}
+async function compileMasterDataMatrix(seasonFilterString = "All") {
+const querySnapshotObject = await getDocs(collection(db, "competitions"));
+const currentDateFormattedString = getFormattedDate(new Date());
+let spreadsheetStringTemplateArr = [`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; font-family: sans-serif; }th { background-color: #2b4c7e; color: #ffffff; font-weight: bold; border: 1px solid #ccc; text-align: center; padding: 10px; }td { border: 1px solid #ccc; text-align: center; vertical-align: top; padding: 10px; }.story-heading { background-color: #4a7c59; color: white; font-size: 16px; font-weight: bold; text-align: center; padding: 12px; } .hdr-main { background-color: var(--primary); color: #000; font-size: 15px; text-align: center; padding: 12px; border: 1px solid var(--border-color); } .hdr-sub { background-color: var(--admin-color); color: #000; text-align: center; font-weight: bold; } .empty-row { text-align: center; font-style: italic; padding: 15px; }</style></head><body><table>`];
+let tempTableBodyContentStringArr = [];
+let storiesArray = [];
+querySnapshotObject.forEach(documentItem => {
+const dataObject = documentItem.data();
+const storedSeasonString = dataObject.season || "Legacy";
+if (seasonFilterString === "All" || seasonFilterString === storedSeasonString) {
+storiesArray.push({ id: documentItem.id, data: dataObject });
+}
+});
+storiesArray.sort((elementA, elementB) => (elementB.data.created || 0) - (elementA.data.created || 0));
+if (storiesArray.length === 0) {
+const emptyMessageString = `<tr><td colspan="5" class="empty-row">No records found for Season: ${seasonFilterString}</td></tr>`;
+return { rawHtmlTemplate: spreadsheetStringTemplateArr[0] + `</table></body></html>`, tableBodyRows: emptyMessageString };
+}
+storiesArray.forEach((storyObject) => {
+const dataObject = storyObject.data;
+const storyTitleString = sanitizeText(storyObject.id);
+spreadsheetStringTemplateArr.push(`<tr><th colspan="5" class="story-heading">📖 Story: ${storyTitleString}</th></tr><tr><th><b>Date</b></th><th><b>Reviewer</b></th><th><b>Rating</b></th><th><b>Author Guess</b></th><th><b>Suggested Title</b></th></tr>`);
+tempTableBodyContentStringArr.push(`<tr><th colspan="5" class="hdr-main">📖 Story: ${storyTitleString}</th></tr><tr><th class="hdr-sub">Date</th><th class="hdr-sub">Reviewer</th><th class="hdr-sub">Rating</th><th class="hdr-sub">Author Guess</th><th class="hdr-sub">Suggested Title</th></tr>`);
+let reviewRowsArray = [];
+Object.keys(dataObject).forEach(keyString => {
+if (keyString !== 'created' && keyString !== '_suggestions' && keyString !== '_suggesterName' && keyString !== '_guesses' && keyString !== '_authorGivenHeading' && keyString !== 'season') {
+const rev = normalizeReview(keyString, dataObject[keyString]);
+reviewRowsArray.push({
+reviewer: sanitizeText(rev.reviewer),
+score: sanitizeText(rev.score),
+title: sanitizeText(rev.suggestedTitle !== "None" ? rev.suggestedTitle : (typeof dataObject[keyString] === 'object' ? "None" : "Legacy")),
+guess: sanitizeText(rev.authorGuess)
+});
+}
+});
+if (reviewRowsArray.length === 0) {
+const emptyRowString = `<tr><td colspan="5" class="empty-row">No reviews submitted yet</td></tr>`;
+spreadsheetStringTemplateArr.push(emptyRowString);
+tempTableBodyContentStringArr.push(emptyRowString);
+} else {
+reviewRowsArray.forEach(reviewObject => {
+const rowHtmlString = `<tr><td>${currentDateFormattedString}</td><td>${reviewObject.reviewer}</td><td>${reviewObject.score}</td><td>${reviewObject.guess}</td><td>${reviewObject.title}</td></tr>`;
+spreadsheetStringTemplateArr.push(rowHtmlString);
+tempTableBodyContentStringArr.push(rowHtmlString);
+});
+}
+});
+spreadsheetStringTemplateArr.push(`</table></body></html>`);
+return { rawHtmlTemplate: spreadsheetStringTemplateArr.join(''), tableBodyRows: tempTableBodyContentStringArr.join('') };
+}
+async function loadPreviewTable() {
+if(!ui.previewLoadingBadge || !ui.previewTableBody || !ui.previewSeasonSelect) return;
+ui.previewLoadingBadge.style.display = "inline";
+try {
+const targetSeasonString = ui.previewSeasonSelect.value;
+const matrixDataObject = await compileMasterDataMatrix(targetSeasonString);
+ui.previewTableBody.innerHTML = matrixDataObject.tableBodyRows;
+} catch (error) {
+appendEmptyRow(ui.previewTableBody, 5, "Error compiling data.");
+} finally {
+ui.previewLoadingBadge.style.display = "none";
+}
+}
+if(ui.previewSeasonSelect) ui.previewSeasonSelect.addEventListener('change', loadPreviewTable);
 </script>
 </body>
 </html>
+
