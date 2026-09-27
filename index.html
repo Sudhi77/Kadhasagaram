@@ -108,7 +108,7 @@ background: var(--bg-color); color: var(--text-color); line-height: 1.6; padding
 .banner-content-lock { max-width: 800px; width: 100%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 4px; }
 .logo-group { display: flex; align-items: center; gap: 15px; }
 .banner-logo { height: 70px; width: 70px; object-fit: cover; border-radius: 50%; display: block; margin: 0; border: 2px solid rgba(0, 180, 134, 0.4); box-shadow: 0 4px 14px rgba(0,0,0,0.5); }
-.banner-topic { font-size: 20px; font-weight: 700; color: var(--text-color); margin: 0; text-align: right; line-height: 1.2; flex: 1; }
+.banner-topic { font-size: 20px; font-weight: 700; color: var(--text-color); margin: 0; text-align: right; line-height: 1; flex: 1; }
 .metadata-opposite-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 16px; width: 100%; }
 .menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--modal-overlay); z-index: 999998; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(4px); }
 .menu-overlay.visible { opacity: 1; pointer-events: auto; }
@@ -405,12 +405,12 @@ About
 </div>
 </div>
 <div class="brand-purple-banner">
-<div class="banner-content-lock" style="align-items: flex-start; padding-top: 5px;">
+<div class="banner-content-lock" style="align-items: flex-end; padding-top: 10px; padding-bottom: 10px;">
 <div class="logo-group">
 <img src="1000673554.png" alt="കഥാസാഗരം Logo" class="banner-logo">
 </div>
-<div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start;">
-<div id="topicDisplay" class="banner-topic" style="text-align: right; margin-top: 0;">*****</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; height: 70px;">
+<div id="topicDisplay" class="banner-topic" style="text-align: right; margin: 0; line-height: 1;">*****</div>
 <div id="monthDisplay" class="month-sub hidden" style="display:none;">*****</div>
 </div>
 </div>
@@ -533,9 +533,9 @@ Authentication Panel
         </div>
         <div class="mod-premium-card add-story-card">
             <div class="card-header-flex">
-                <div class="icon-circle">
+                <button type="button" id="btnAddStoryToggle" class="icon-circle" style="border: none; cursor: pointer; padding: 0;">
                     <svg width="26" height="26"><use href="#icon-plus"></use></svg>
-                </div>
+                </button>
                 <div class="header-text">
                     <h3>Add New Story</h3>
                     <p>Enter a new story name to get started</p>
@@ -544,10 +544,10 @@ Authentication Panel
                     <svg width="140" height="140"><use href="#icon-book"></use></svg>
                 </div>
             </div>
-            <div class="card-input-row">
+            <div class="card-input-row hidden" id="addStoryInputArea">
                 <input type="text" id="dashboardNewStoryInput" placeholder="Enter a new story name..." class="sys-lockable premium-input">
-                <button type="button" id="dashboardUpdateStoryBtn" class="sys-lockable premium-btn-square">
-                    <svg width="24" height="24"><use href="#icon-upload-tray"></use></svg>
+                <button type="button" id="dashboardUpdateStoryBtn" class="sys-lockable premium-btn-square" style="overflow: visible;">
+                    <svg width="24" height="24" style="transform: scale(3);"><use href="#icon-upload-tray"></use></svg>
                 </button>
             </div>
         </div>
@@ -917,7 +917,7 @@ Authentication Panel
 
 <script type="module">
 const ui = {};
-['menuOpenBtn','menuCloseBtn','sideMenu','menuOverlay','sidebarModOptions','advancedModOptions','sidebarAboutBtn','sidebarSeasonDisplay','sidebarModNameDisplay','masterTimeRestrictionToggle','timeRestrictionContent','currentDateDisplay','userInterface','feedbackInterface','modInterface','devInterface','loginInterface','pausedBanner','topicDisplay','monthDisplay','storyDropdown','adminStorySelect','localEmailInput','localPassInput','submitLoginBtn','inputModName','saveModNameBtn','inputMonth','inputTopic','startSeasonBtn','toggleAuthorGuessBtn','toggleTitleSuggestionBtn','authorGuessLockTime','titleSuggestionLockTime','updateLockTimesBtn','previewBtn','downloadBtn','dashboardNewStoryInput','dashboardUpdateStoryBtn','devVersionDisplay','devVersionHistoryBtn','newBuildAlertContainer','newBuildTagDisplay','devReleaseNotesInput','btnPublishReleaseNotes','ratingForm','submitRatingBtn','userAuthorGuessGroup','userTitleSuggestionGroup','readerSuggestions','headingSuggesterInput','correctGuesses','clearWinnersBtn','winnersChipsContainer','saveNotesBtn','dailyReviewsTableBody','devSeasonResetBtn','exclusiveModeBtnText','devExclusiveModeBtn','goToFeedbackBtn','feedbackNameInput','feedbackTextInput','submitFeedbackBtn','cancelFeedbackBtn','devLoadFeedbackBtn','devDownloadFeedbackBtn','feedbackTableHead','feedbackTableBody','navBtnReviewer','navBtnModerator','logoutBtn','previewStoryReviewsBtn','spTableHead','spTableBody','spHeading','spDownloadBtn','fdModalTitle','fdModalComments','fdModalNotes','fdModalStatus','fdModalSaveBtn','duStorySelect','devSeasonHistoryBtn','seasonHistoryList','totalStoriesStat','totalReviewsStat','activeReviewersStat','drModalName','drModalDate','drModalRating','drModalGuess','drModalSuggTitle','storyOptionsBtn','storyOptionsMenu','previewSeasonSelect','downloadSeasonSelect','confirmDownloadBtn','masterOverlay','customModalOverlay','customModalMessage','customModalInput','customModalCancel','customModalOk','editStoriesList','esToggleEditBtn','esDeleteBtn','esPencilIcon','esSaveIcon','previewLoadingBadge','previewTableBody','openDailyUpdatesBtn','openTimeRestrictionsBtn','editStoriesListBtn','cancelDownloadBtn','dynamicMasterModal'].forEach(id => { const e = document.getElementById(id); if(e) ui[id] = e; });
+['menuOpenBtn','menuCloseBtn','sideMenu','menuOverlay','sidebarModOptions','advancedModOptions','sidebarAboutBtn','sidebarSeasonDisplay','sidebarModNameDisplay','masterTimeRestrictionToggle','timeRestrictionContent','currentDateDisplay','userInterface','feedbackInterface','modInterface','devInterface','loginInterface','pausedBanner','topicDisplay','monthDisplay','storyDropdown','adminStorySelect','localEmailInput','localPassInput','submitLoginBtn','inputModName','saveModNameBtn','inputMonth','inputTopic','startSeasonBtn','toggleAuthorGuessBtn','toggleTitleSuggestionBtn','authorGuessLockTime','titleSuggestionLockTime','updateLockTimesBtn','previewBtn','downloadBtn','dashboardNewStoryInput','dashboardUpdateStoryBtn','devVersionDisplay','devVersionHistoryBtn','newBuildAlertContainer','newBuildTagDisplay','devReleaseNotesInput','btnPublishReleaseNotes','ratingForm','submitRatingBtn','userAuthorGuessGroup','userTitleSuggestionGroup','readerSuggestions','headingSuggesterInput','correctGuesses','clearWinnersBtn','winnersChipsContainer','saveNotesBtn','dailyReviewsTableBody','devSeasonResetBtn','exclusiveModeBtnText','devExclusiveModeBtn','goToFeedbackBtn','feedbackNameInput','feedbackTextInput','submitFeedbackBtn','cancelFeedbackBtn','devLoadFeedbackBtn','devDownloadFeedbackBtn','feedbackTableHead','feedbackTableBody','navBtnReviewer','navBtnModerator','logoutBtn','previewStoryReviewsBtn','spTableHead','spTableBody','spHeading','spDownloadBtn','fdModalTitle','fdModalComments','fdModalNotes','fdModalStatus','fdModalSaveBtn','duStorySelect','devSeasonHistoryBtn','seasonHistoryList','totalStoriesStat','totalReviewsStat','activeReviewersStat','drModalName','drModalDate','drModalRating','drModalGuess','drModalSuggTitle','storyOptionsBtn','storyOptionsMenu','previewSeasonSelect','downloadSeasonSelect','confirmDownloadBtn','masterOverlay','customModalOverlay','customModalMessage','customModalInput','customModalCancel','customModalOk','editStoriesList','esToggleEditBtn','esDeleteBtn','esPencilIcon','esSaveIcon','previewLoadingBadge','previewTableBody','openDailyUpdatesBtn','openTimeRestrictionsBtn','editStoriesListBtn','cancelDownloadBtn','dynamicMasterModal', 'btnAddStoryToggle', 'addStoryInputArea'].forEach(id => { const e = document.getElementById(id); if(e) ui[id] = e; });
 ui.friendNameInput = document.getElementById('friendName');
 ui.ratingValueInput = document.getElementById('ratingValue');
 ui.detailedReviewInput = document.getElementById('detailedReviewInput');
@@ -1024,6 +1024,14 @@ return;
 const btn = event.target.closest('button, #menuOverlay, .nav-split-trigger-btn');
 if (btn) {
 switch(btn.id) {
+case 'btnAddStoryToggle':
+if(ui.addStoryInputArea) {
+    ui.addStoryInputArea.classList.toggle('hidden');
+    if(!ui.addStoryInputArea.classList.contains('hidden') && ui.dashboardNewStoryInput) {
+        ui.dashboardNewStoryInput.focus();
+    }
+}
+break;
 case 'menuOpenBtn': toggleMenu(true); break;
 case 'menuCloseBtn': toggleMenu(false); break;
 case 'menuOverlay': toggleMenu(false); break;
@@ -1286,6 +1294,7 @@ if (!titleString) { customAlert("Enter a valid story title."); return; }
 handleAsyncAction(ui.dashboardUpdateStoryBtn, null, null, async () => {
 await setDoc(doc(db, "competitions", titleString), { created: Date.now(), season: globalSeasonCache }, { merge: true });
 ui.dashboardNewStoryInput.value = '';
+ui.addStoryInputArea.classList.add('hidden');
 customAlert(`Added: "${titleString}"`);
 }, () => customAlert("Error writing story."));
 break;
