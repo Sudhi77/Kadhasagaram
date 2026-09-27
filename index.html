@@ -261,7 +261,7 @@ button:disabled { background-color: rgba(255, 255, 255, 0.08); color: rgba(154, 
 .custom-modal-box { background: var(--modal-bg); border: var(--modal-border); border-radius: 24px; padding: 24px; width: 100%; max-width: 420px; color: var(--modal-text); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto; text-align: center; }
 .manual-wrapper-box { background: var(--modal-bg); border: var(--modal-border); border-radius: 24px; padding: 24px; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; color: var(--modal-text); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6); }
 .custom-modal-btn-row { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
-#customModalOk, #confirmDownloadBtn { background: var(--primary); color: #fff; border: none; padding: 12px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px; transition: filter 0.2s; }
+#customModalOk, #confirmDownloadBtn { background: var(--primary); color: #fff; border: none; padding: 12px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 15px; transition: filter 0.2s; }
 #customModalOk:hover, #confirmDownloadBtn:hover { filter: brightness(1.1); }
 #customModalCancel, #cancelDownloadBtn { background: var(--modal-btn-cancel-bg); color: var(--modal-btn-cancel-text); border: var(--modal-btn-cancel-border); padding: 12px 32px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px; transition: background 0.2s; }
 #customModalCancel:hover, #cancelDownloadBtn:hover { background: rgba(255,255,255,0.15); }
@@ -381,14 +381,14 @@ button:disabled { background-color: rgba(255, 255, 255, 0.08); color: rgba(154, 
 </div>
 </div>
 <div id="advancedModOptions" class="hidden pt-2">
-<button type="button" id="openTimeRestrictionsBtn" class="btn-mod-action sys-lockable mt-2 mb-3" style="width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; padding: 0 16px; box-sizing: border-box;">
+<button type="button" id="openTimeRestrictionsBtn" class="btn-mod-action sys-lockable mt-2 mb-3" style="width: 100%; min-height: 41px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; padding: 0 16px; box-sizing: border-box;">
 <svg width="18" height="18"><use href="#icon-clock"></use></svg>
 Custom Time Restrictions
 </button>
 <div class="form-group mt-3 mb-1" style="width: 100%;">
 <label style="text-align: left;">Season Summary</label>
 <div class="mt-1" style="width: 100%;">
-<button type="button" id="previewBtn" class="btn-clear-inline sys-lockable" style="width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; padding: 0 16px; box-sizing: border-box;">
+<button type="button" id="previewBtn" class="btn-clear-inline sys-lockable" style="width: 100%; min-height: 41px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; padding: 0 16px; box-sizing: border-box;">
 <svg width="18" height="18"><use href="#icon-eye"></use></svg>
 Preview
 </button>
@@ -397,7 +397,7 @@ Preview
 </div>
 </div>
 <div class="form-group pt-1 mt-4" style="width: 100%;">
-<button type="button" id="sidebarAboutBtn" class="btn-accent" style="width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; padding: 0 16px; box-sizing: border-box;">
+<button type="button" id="sidebarAboutBtn" class="btn-accent" style="width: 100%; min-height: 41px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; padding: 0 16px; box-sizing: border-box;">
 <svg width="18" height="18" class="block"><use href="#icon-info"></use></svg>
 About
 </button>
@@ -405,12 +405,14 @@ About
 </div>
 </div>
 <div class="brand-purple-banner">
-<div class="banner-content-lock">
+<div class="banner-content-lock" style="align-items: flex-start; padding-top: 5px;">
 <div class="logo-group">
 <img src="1000673554.png" alt="കഥാസാഗരം Logo" class="banner-logo">
-<div id="topicDisplay" class="banner-topic">*****</div>
 </div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start;">
+<div id="topicDisplay" class="banner-topic" style="text-align: right; margin-top: 0;">*****</div>
 <div id="monthDisplay" class="month-sub hidden" style="display:none;">*****</div>
+</div>
 </div>
 </div>
 <div class="container">
